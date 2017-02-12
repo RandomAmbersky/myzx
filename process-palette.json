@@ -12,7 +12,7 @@
     {
       "namespace": "process-palette",
       "action": "run-sjasm",
-      "command": "echo {projectPath}\n./sjasmplus --dos866 --dirbol main.asm\n./Fuse.app/Contents/MacOS/Fuse -s myzx.sna",
+      "command": "echo {projectPath}\n./sjasmplus --dos866 --dirbol main.asm\n./Fuse.app/Contents/MacOS/Fuse -s myzx.sna\nexit",
       "arguments": [],
       "cwd": "{projectPath}",
       "inputDialogs": [],
@@ -23,9 +23,9 @@
       "outputBufferSize": 80000,
       "maxCompleted": 3,
       "autoShowOutput": true,
-      "autoHideOutput": false,
+      "autoHideOutput": true,
       "scrollLockEnabled": false,
-      "singular": false,
+      "singular": true,
       "promptToSave": false,
       "saveOption": "none",
       "patterns": [
