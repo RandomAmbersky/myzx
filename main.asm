@@ -1,6 +1,12 @@
 DEVICE zxspectrum48
 org #6000;
 begin
+
+  ld hl,49152
+  ld de,16384
+  ld bc,6912
+  ldir
+
   LD    A,2
   CALL  5633
   LD    DE,TEXT1    ;печать текста, обозначенного меткой
@@ -13,6 +19,9 @@ begin
   di
   halt
   RET
+
+EN_FONT include "fonts/en_font.asm"
+
 TEXT1  DEFB  22,3,12,16,7,17,2
   DEFM  "TEMPORARY"
 TEXT1_end
