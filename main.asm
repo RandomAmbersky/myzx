@@ -8,7 +8,6 @@ begin
   ldir
   di
   halt
-  ret
 end
 
 display begin
