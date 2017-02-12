@@ -1,0 +1,42 @@
+{
+  "patterns": {
+    "P1": {
+      "expression": "(path):(line)"
+    },
+    "P2": {
+      "expression": "(path)\\s+(line)",
+      "path": "(?:\\/[\\w\\.\\-]+)+"
+    }
+  },
+  "commands": [
+    {
+      "namespace": "process-palette",
+      "action": "run-sjasm",
+      "command": "echo {projectPath}\n./sjasmplus --dos866 --dirbol main.asm\n./Fuse.app/Contents/MacOS/Fuse -s myzx.sna",
+      "arguments": [],
+      "cwd": "{projectPath}",
+      "inputDialogs": [],
+      "env": {},
+      "keystroke": "cmd-r",
+      "stream": true,
+      "outputTarget": "panel",
+      "outputBufferSize": 80000,
+      "maxCompleted": 3,
+      "autoShowOutput": true,
+      "autoHideOutput": false,
+      "scrollLockEnabled": false,
+      "singular": false,
+      "promptToSave": false,
+      "saveOption": "none",
+      "patterns": [
+        "default"
+      ],
+      "successOutput": "{stdout}",
+      "errorOutput": "{stdout}\n{stderr}",
+      "fatalOutput": "Failed to execute : {fullCommand}\n{stdout}\n{stderr}",
+      "successMessage": "Executed : {fullCommand}",
+      "errorMessage": "Executed : {fullCommand}\nReturned with code {exitStatus}\n{stderr}",
+      "fatalMessage": "Failed to execute : {fullCommand}\n{stdout}\n{stderr}"
+    }
+  ]
+}
