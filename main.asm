@@ -1,6 +1,6 @@
 DEVICE zxspectrum48
 org #6000;
-begin
+prg_start
 
   ld hl,49152
   ld de,16384
@@ -28,6 +28,10 @@ TEXT1_end
 TEXT2  DEFB  22,5,12
   DEFM  "CONSTANT"
 TEXT2_end
-end
+end_prg
 
-SAVESNA "myzx.sna",begin
+  SAVESNA "myzx.sna",prg_start
+//  DISPLAY /d,end_prg-my_start
+//  EMPTYTRD "myzx.trd"
+//  SAVETRD "myzx.trd","m.B",16384,EndBasic-Begin
+//  SAVETRD "myzx.trd", "m.C", my_start, end_prg-my_start
