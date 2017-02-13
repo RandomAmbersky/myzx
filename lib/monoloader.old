@@ -1,0 +1,35 @@
+
+    MODULE MonoLoader
+    ORG 16384 ;чтобы не забивала память, если захотите использовать прямо в программе
+    DISP 23867
+
+Basic    DW #100,EndBasic-Begin
+Begin    DW #30FD,#E,#B300,#5F,#F93A,#30C0,#E,#5300,#5D,#EA3A
+
+    DI
+
+    ;очистка экрана
+    XOR A
+    OUT (-2),A
+    LD HL,#5AFF
+    LD (HL),A
+    OR (HL)
+    DEC HL
+    JR Z,$-3
+
+    EI
+
+    //LD HL,#C000-1 ;адрес загрузки
+    //LD B,4 ;количество секторов
+    //CALL Load
+
+    //JP #C000-1 ;старт вашей программы
+
+    RET
+
+Load    LD DE,(#5CF4)
+    LD C,#05
+    JP #3D13
+
+    DB #D
+EndBasic
