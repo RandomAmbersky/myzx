@@ -2,6 +2,7 @@ DEVICE zxspectrum48
 org #6000;
 prg_start
 
+/*
   LD DE, #0000
   CALL calc_screen_addr_DE
 
@@ -9,7 +10,7 @@ prg_start
   ;DI
   ;HALT
 ; в DE - экранный адрес куда нужно выводить спрайт
-  LD HL, wear_green
+  LD HL, test
 spr_loop_2:
   LD A, #0F
   PUSH DE
@@ -19,11 +20,19 @@ spr_loop_1:
   LDI
   POP DE
   EX AF, AF'
-  ;call call_down_DE
-  INC D
+  call call_down_DE
   EX AF, AF'
   DEC A
   JR NZ,spr_loop_1
+*/
+
+  LD DE, #1212
+  LD A, #0
+  call map_call_show_sprite
+
+  LD DE, #1213
+  LD A, #1
+  call map_call_show_sprite
 
   ;CALL RAMKA_START
 
@@ -62,8 +71,13 @@ EN_FONT include "fonts/en_font.asm"
 
 include "ramka.asm"
 include "lib/screen_utils.asm"
-include "wear_green.ASM"
-include "test.ASM"
+include "lib/map.asm"
+
+SPR_BEGIN:
+
+  include "test.ASM"
+  include "wear_green.ASM"
+
 
 TEXT1  DEFB  22,3,12,16,7,17,2
   DEFM  "TEMPORARY"
