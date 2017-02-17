@@ -26,11 +26,11 @@ spr_loop_1:
   JR NZ,spr_loop_1
 */
 
-  LD DE, #1212
+  LD DE, #0000
   LD A, #0
   call map_call_show_sprite
 
-  LD DE, #1213
+  LD DE, #0202
   LD A, #1
   call map_call_show_sprite
 
@@ -40,8 +40,10 @@ spr_loop_1:
 //  LD HL,500
 //  CALL 949
 
-  DI
-  HALT
+;;  DI
+;;  HALT
+loop:
+  JP loop
   RET
 /*
   ld hl,49152
