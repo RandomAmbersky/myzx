@@ -4,7 +4,7 @@
 ; программа вычисляет адрес экрана по знакоместам
 ; Вход: DE - позиция в знакоместах
 ; Выход: DE - экранный адрес
-calc_screen_addr_DE:
+screen_calc_screen_addr_DE:
   LD A,E
   AND  7
   RRCA
@@ -23,7 +23,7 @@ calc_screen_addr_DE:
 ; Вход: HL - экранный адрес
 ; Выход: HL - экранный адрес
 
-call_down_DE:
+screen_calc_down_DE:
   INC D
   LD A,D
   AND 7
