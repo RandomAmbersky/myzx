@@ -1,7 +1,6 @@
 ; функция показа карты
 map_show_map:
-  ;LD BC, #100C ; width and height  - 16 x 12
-  LD BC, #100C
+  LD BC, #100C ; width and height  - 16 x 12
   LD HL, #0000 ; current pos variable
 map_loop2:
   PUSH BC
@@ -62,10 +61,18 @@ spr_loop_1
   LDI
   LDI
   PUSH HL
-  LD BC, 30
-  LD HL, DE
-  ADD HL, BC
-  LD DE, HL
+  ;LD BC, 30
+  ;EX DE, HL
+  ;ADD HL, BC
+  ;EX DE, HL
+  LD a,e
+  ADD a,30
+  LD e,a
+  JR NC, no_down8
+  LD a,d
+  ADD a,8
+  LD d,a
+no_down8:
   POP HL
   LDI
   LDI
