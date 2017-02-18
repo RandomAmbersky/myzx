@@ -8,7 +8,7 @@ map_loop2:
 map_loop:
   PUSH BC
   PUSH HL
-  LD A, #0
+  LD A, #1
   call map_show_sprite
   POP HL
   POP BC
@@ -58,7 +58,6 @@ spr_loop_1
   JR NZ,spr_loop_1
 
   POP DE; // original screen position
-  RET
   call screen_addr_to_attr_DE
   LDI
   LDI
