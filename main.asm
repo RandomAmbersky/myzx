@@ -5,6 +5,9 @@ prg_start
   ;DI
   call map_show_map;
   ;EI
+  ;LD HL, #0000
+  ;LD A, #00
+  ;call map_show_sprite
 
 loop:
   JP loop
