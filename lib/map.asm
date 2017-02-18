@@ -1,12 +1,14 @@
+; функция показа карты
 map_show_map:
-  LD BC, #100C ; width and height  - 16 x 12
-  LD DE, #0000
+  ;LD BC, #100C ; width and height  - 16 x 12
+  LD BC, #0C0C
+  LD DE, #0000 ; current pos variable
 map_loop2:
   PUSH BC
 map_loop:
   PUSH BC
   PUSH DE
-  LD A, #0
+  LD A, #1
   call map_show_sprite
   POP DE
   POP BC
@@ -21,7 +23,7 @@ map_loop:
 
 ; программа показывает один спрайт на карте
 ; Вход: DE - позиция в координатах карты
-; A - номер спрайта
+;       A - номер спрайта
 map_show_sprite:
 
   LD HL, DE ; DE x 2 - у нас ширина спрайта =2, то есть позиция 1x1 будет 2x2 в знакоместах
@@ -49,6 +51,12 @@ spr_loop_1:
   LDI ; => LD (DE)(HL); INC DE; INC HL; DEC BC;
   LDI
   POP DE
+  PUSH DE
+  INC DE
+  LDI
+  LDI
+  POP DE
+  INC C
   EX AF, AF'
   call screen_calc_down_DE
   EX AF, AF'
