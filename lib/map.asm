@@ -1,13 +1,33 @@
+map_show_map:
+  LD BC, #100C ; width and height  - 16 x 12
+  LD DE, #0000
+map_loop2:
+  PUSH BC
+map_loop:
+  PUSH BC
+  PUSH DE
+  LD A, #0
+  call map_show_sprite
+  POP DE
+  POP BC
+  INC D
+  DJNZ map_loop;
+  LD D, #00
+  INC E
+  POP BC; //origin
+  DEC C
+  JR NZ, map_loop2
+  RET
+
 ; программа показывает один спрайт на карте
 ; Вход: DE - позиция в координатах карты
 ; A - номер спрайта
-map_call_show_sprite:
+map_show_sprite:
 
   LD HL, DE ; DE x 2 - у нас ширина спрайта =2, то есть позиция 1x1 будет 2x2 в знакоместах
   ADD HL, HL
   LD DE, HL
 
-/*
   LD L, A
   LD H, 0; загружаем номер спрайта в HL
   ADD HL,HL; x2
@@ -20,13 +40,10 @@ map_call_show_sprite:
   ADD HL, BC
   LD BC, SPR_BEGIN;
   ADD HL, BC;
-*/
-  LD HL, DE
-  call screen_calc_scr_addr_HL
-  LD DE, HL
-  LD HL, test
-  LD A, #10
+
+  call screen_calc_scr_addr_DE
   PUSH DE
+  LD A, #10
 spr_loop_1:
   PUSH DE
   LDI ; => LD (DE)(HL); INC DE; INC HL; DEC BC;
