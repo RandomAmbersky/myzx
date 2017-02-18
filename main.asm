@@ -2,70 +2,11 @@ DEVICE zxspectrum48
 org #6000;
 prg_start
 
-/*
-  LD DE, #0000
-  CALL calc_screen_addr_DE
+  call map_show_map;
 
-  ;LD DE, HL
-  ;DI
-  ;HALT
-; в DE - экранный адрес куда нужно выводить спрайт
-  LD HL, test
-spr_loop_2:
-  LD A, #0F
-  PUSH DE
-spr_loop_1:
-  PUSH DE
-  LDI ; => LD (DE)(HL); INC DE; INC HL; DEC BC;
-  LDI
-  POP DE
-  EX AF, AF'
-  call call_down_DE
-  EX AF, AF'
-  DEC A
-  JR NZ,spr_loop_1
-*/
-
-  LD DE, #0000
-  LD A, #0
-  call map_call_show_sprite
-
-  LD DE, #0202
-  LD A, #1
-  call map_call_show_sprite
-
-  ;CALL RAMKA_START
-
-//  LD DE,40
-//  LD HL,500
-//  CALL 949
-
-;;  DI
-;;  HALT
 loop:
   JP loop
   RET
-/*
-  ld hl,49152
-  ld de,16384
-  ld bc,6912
-  ldir
-
-  LD    A,2
-  CALL  5633
-  LD    DE,TEXT1    ;печать текста, обозначенного меткой
-  LD    BC,TEXT1_end-TEXT1  ; TEXT1, длиной в 16 байт.
-  CALL  8252
-  CALL  3405        ;восстановление постоянных атрибутов.
-  LD    DE,TEXT2    ;печать текста, обозначенного меткой
-  LD    BC,TEXT2_end-TEXT2  ; TEXT2, длиной в 11 байт.
-  CALL  8252
-  di
-  halt
-  RET
-
-EN_FONT include "fonts/en_font.asm"
-*/
 
   STRUCT SPRITE
 
