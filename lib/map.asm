@@ -4,11 +4,10 @@ height byte 0
 ENDS
 
 ; функция показа карты
-; в HL -  указатель на начало карты
 map_show_map:
   LD BC, #100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
-  LD HL, MAP_BEGIN;
+  LD HL, my_map+struct_map_header; ; в HL -  указатель на начало карты
 map_loop2:
   PUSH BC
   PUSH HL
