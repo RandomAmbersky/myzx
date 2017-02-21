@@ -1,13 +1,93 @@
-STRUCT struct_map_header
+STRUCT str_map_point
+posY byte 0
+posX byte 0
+ENDS
+
+STRUCT str_map_header
 width byte 0
 height byte 0
 ENDS
 
+map_size equ 32
+
+; процедура установки курсора на карте ;)
+; по очереди вызываем вверх-вниз-влево-вправо чтобы собрать все возможные
+; случаи пересечения курсора с ограничителями
+map_set_cursor:
+  call map_move_cursor_up
+  call map_move_cursor_down
+  call map_move_cursor_left
+  call map_move_cursor_right
+RET
+
+; процедуры передвижения курсора
+; курсор свободно перемещается по экрану
+; если подходит к краю - то "сдвигает" окно просмотра в ту или иную сторону
+map_move_cursor_up:
+  LD A, (CURSOR_POS.posY)
+  DEC A
+  RET M; позиция по Y не может быть меньше нуля
+  LD (CURSOR_POS.posY), A
+  RET
+
+map_move_cursor_down:
+  LD A, (CURSOR_POS.posY)
+  INC A
+  CP 12; размер экрана нашего по Y
+  RET NC; позиция по Y не может быть больше 12
+  LD (CURSOR_POS.posY), A
+  RET
+
+map_move_cursor_left:
+  LD A, (CURSOR_POS.posX)
+  DEC A
+  RET M; позиция по Y не может быть меньше нуля
+  LD (CURSOR_POS.posX), A
+  RET
+
+map_move_cursor_right:
+  LD A, (CURSOR_POS.posX)
+  INC A
+  CP 16; размер экрана нашего по Y
+  RET NC; позиция по Y не может быть больше 12
+  LD (CURSOR_POS.posX), A
+  RET
+
+
+; тестовая функция заполняет спрайтами карту по очереди от 0 до 256 и далее опять 0...
+init_map_spr:
+  LD A, map_size; ширина
+  LD (my_map.width), A
+  LD (my_map.height), A
+  LD HL, my_map+str_map_header; ставим указатель на данные карты
+  LD BC, map_size * map_size; ширина x высота
+  LD E, #00
+init_map_loop:
+  LD (HL),E
+  INC HL
+  INC E
+  DEC BC
+  LD A,B
+  OR C
+  JR NZ,init_map_loop;
+  RET
+
+; функция показа карты и курсора на карте
+; CURSOR_POS - 2х байтовая позиция курсора в координатах карты
+; CURSOR_SPRITE - ячейка вида курсора
+map_show_map_and_cursor:
+  LD HL, WINDOW_POINTER;
+  call map_show_map
+  LD DE, (CURSOR_POS); E <-- Y, D <-- X
+  LD A, (CURSOR_SPRITE)
+  call map_show_sprite
+  RET;
+
 ; функция показа карты
+; в HL -  указатель на начало карты
 map_show_map:
   LD BC, #100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
-  LD HL, my_map+struct_map_header; ; в HL -  указатель на начало карты
 map_loop2:
   PUSH BC
   PUSH HL

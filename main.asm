@@ -2,25 +2,56 @@ DEVICE zxspectrum48
 org #6000;
 prg_start
 
-  ;LD DE, MAP_BEGIN;
-  call map_show_map;
+  ;call init_map_spr;
 
-  ;LD HL, #0F0B
-  ;LD A, #01
-  ;call map_show_sprite
+  LD HL, #0000
+  LD ( CURSOR_POS), HL
+  LD HL, (MAP_BEGIN)
+  LD (WINDOW_POINTER), HL
+  call map_set_cursor
 
-loop:
-  JP loop
+loop: ; слава капульцевичам!
+  call map_show_map_and_cursor
+WAIT
+  LD A, port_keys_6_7_8_9_0
+  IN A, (#FE)
+  BIT KEY_6_BIT, A
+  JR Z,LEFT
+  BIT KEY_7_BIT, A
+  JR Z,RIGHT
+  BIT KEY_8_BIT, A
+  JR Z,DOWN
+  BIT KEY_9_BIT, A
+  JR Z,UP
+  JR WAIT
+RIGHT:
+  call map_move_cursor_right
+  JR loop
+LEFT:
+  call map_move_cursor_left
+  JR loop
+UP:
+  call map_move_cursor_up
+  JR loop
+DOWN:
+  call map_move_cursor_down
+  JR loop
+SELECT:
   RET
 
 include "lib/screen_utils.asm"
 include "lib/map.asm"
+include "lib/keys.asm"
 
 SPR_BEGIN:
   include "rebelstar.asm"
 
+INFOBLOCK:
+CURSOR_SPRITE: defb #FF // номер спрайта который отвечает за курсор на карте
+CURSOR_POS str_map_point 0,0 // позиция курсора Y, X, начинаем с 0
+WINDOW_POINTER defw MAP_BEGIN; указывает адрес верхнего левого спрайта на карте
 
-my_map struct_map_header 32,32
+my_map str_map_header 32,32
 MAP_BEGIN:
   defb 1,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
   defb 2,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
