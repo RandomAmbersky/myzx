@@ -29,6 +29,9 @@ map_move_cursor_up:
   RET M; позиция по Y не может быть меньше нуля
   LD (CURSOR_POS.posY), A
   RET
+map_move_window_up:
+  LD HL, (WINDOW_POINTER)
+  RET
 
 map_move_cursor_down:
   LD A, (CURSOR_POS.posY)
@@ -37,20 +40,29 @@ map_move_cursor_down:
   RET NC; позиция по Y не может быть больше 12
   LD (CURSOR_POS.posY), A
   RET
+map_move_window_down:
+  LD HL, (WINDOW_POINTER)
+  RET
 
 map_move_cursor_left:
   LD A, (CURSOR_POS.posX)
   DEC A
-  RET M; позиция по Y не может быть меньше нуля
+  JP M, map_move_window_left; позиция по Y не может быть меньше нуля
   LD (CURSOR_POS.posX), A
+  RET
+map_move_window_left:
+  LD HL, (WINDOW_POINTER)
   RET
 
 map_move_cursor_right:
   LD A, (CURSOR_POS.posX)
   INC A
   CP 16; размер экрана нашего по Y
-  RET NC; позиция по Y не может быть больше 12
+  JR NC, map_move_window_right; позиция по Y не может быть больше 12
   LD (CURSOR_POS.posX), A
+  RET
+map_move_window_right:
+  LD HL, (WINDOW_POINTER)
   RET
 
 
