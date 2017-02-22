@@ -2,14 +2,19 @@ DEVICE zxspectrum48
 org #6000;
 prg_start
 
-  call init_map_spr;
+  ;call init_map_spr;
 
+  LD A, 200
+  LD (CURSOR_SPRITE), A; init cursor sprite
   LD HL, #0000
-  LD ( CURSOR_POS), HL
-  LD HL, (MAP_BEGIN)
-  LD (WINDOW_POINTER), HL
-  call map_set_cursor
+  LD ( CURSOR_POS ), HL ; init cursor pos 0,0
+  LD HL, MAP_BEGIN
+  LD (WINDOW_POINTER), HL ; init window pointer to MAP_BEGIN
+  ;LD DE, #0000
+  ;ADD HL, DE
+  ;call map_set_cursor
 
+start:
   call cursor_select
   ret
 
@@ -26,12 +31,13 @@ CURSOR_SPRITE: defb #FF // номер спрайта который отвеча
 CURSOR_POS str_map_point 0,0 // позиция курсора Y, X, начинаем с 0
 WINDOW_POINTER defw MAP_BEGIN; указывает адрес верхнего левого спрайта на карте
 
+
 my_map str_map_header 32,32
 MAP_BEGIN:
-  defb 1,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
-  defb 2,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
-  defb 3,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
-  defb 4,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+  defb 4,4,4,4,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+  defb 4,4,4,4,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+  defb 4,4,4,4,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+  defb 4,4,4,4,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
   defb 5,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
   defb 6,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
   defb 7,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1

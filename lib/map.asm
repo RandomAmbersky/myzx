@@ -37,11 +37,16 @@ map_move_cursor_down:
   LD A, (CURSOR_POS.posY)
   INC A
   CP 12; размер экрана нашего по Y
-  RET NC; позиция по Y не может быть больше 12
+  JR NC, map_move_window_down; позиция по Y не может быть больше 12
   LD (CURSOR_POS.posY), A
   RET
 map_move_window_down:
+  LD D, 0;
+  LD A, (my_map.width)
+  LD E, A
   LD HL, (WINDOW_POINTER)
+  ADD HL, DE;
+  LD (WINDOW_POINTER), HL
   RET
 
 map_move_cursor_left:
