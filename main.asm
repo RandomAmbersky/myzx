@@ -2,7 +2,7 @@ DEVICE zxspectrum48
 org #6000;
 prg_start
 
-  ;call init_map_spr;
+  call init_map_spr;
 
   LD HL, #0000
   LD ( CURSOR_POS), HL
@@ -10,35 +10,10 @@ prg_start
   LD (WINDOW_POINTER), HL
   call map_set_cursor
 
-loop: ; слава капульцевичам!
-  call map_show_map_and_cursor
-WAIT
-  LD A, port_keys_6_7_8_9_0
-  IN A, (#FE)
-  BIT KEY_6_BIT, A
-  JR Z,LEFT
-  BIT KEY_7_BIT, A
-  JR Z,RIGHT
-  BIT KEY_8_BIT, A
-  JR Z,DOWN
-  BIT KEY_9_BIT, A
-  JR Z,UP
-  JR WAIT
-RIGHT:
-  call map_move_cursor_right
-  JR loop
-LEFT:
-  call map_move_cursor_left
-  JR loop
-UP:
-  call map_move_cursor_up
-  JR loop
-DOWN:
-  call map_move_cursor_down
-  JR loop
-SELECT:
-  RET
+  call cursor_select
+  ret
 
+include "game_utils.asm"
 include "lib/screen_utils.asm"
 include "lib/map.asm"
 include "lib/keys.asm"

@@ -84,17 +84,6 @@ init_map_loop:
   JR NZ,init_map_loop;
   RET
 
-; функция показа карты и курсора на карте
-; CURSOR_POS - 2х байтовая позиция курсора в координатах карты
-; CURSOR_SPRITE - ячейка вида курсора
-map_show_map_and_cursor:
-  LD HL, WINDOW_POINTER;
-  call map_show_map
-  LD DE, (CURSOR_POS); E <-- Y, D <-- X
-  LD A, (CURSOR_SPRITE)
-  call map_show_sprite
-  RET;
-
 ; функция показа карты
 ; в HL -  указатель на начало карты
 map_show_map:
