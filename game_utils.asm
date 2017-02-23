@@ -11,19 +11,18 @@ cursor_select:
   LD A, (CURSOR_SPRITE)
   call map_show_sprite
 WAIT
-  LD A, port_keys_6_7_8_9_0
-  IN A, (#FE)
-  BIT KEY_6_BIT, A
+  call input_sinclair_key;
+  CP PRESS_LEFT
   JR Z,LEFT
-  BIT KEY_7_BIT, A
+  CP PRESS_RIGHT
   JR Z,RIGHT
-  BIT KEY_8_BIT, A
+  CP PRESS_DOWN
   JR Z,DOWN
-  BIT KEY_9_BIT, A
+  CP PRESS_UP
   JR Z,UP
-  BIT KEY_0_BIT, A
+  CP PRESS_FIRE
   JR Z,SELECT
-  JR WAIT
+  JR cursor_select
 RIGHT:
   call map_move_cursor_right
   JR cursor_select
