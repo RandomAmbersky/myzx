@@ -47,6 +47,43 @@ KEY_Q_BIT equ 0
 KEY_A_BIT equ 0
 KEY_CAPS_SHIFT_BIT equ 0
 
+; универсальные коды :)
+PRESS_FIRE equ  %11111111
+PRESS_UP equ    %00000001
+PRESS_DOWN equ  %00000010
+PRESS_RIGHT equ %00000100
+PRESS_LEFT equ  %00001000
+
+input_sinclair_key:
+  LD A, port_keys_6_7_8_9_0
+  IN A, (#FE)
+  BIT KEY_6_BIT, A
+  JR Z,key_press_left
+  BIT KEY_7_BIT, A
+  JR Z,key_press_right
+  BIT KEY_8_BIT, A
+  JR Z,key_press_down
+  BIT KEY_9_BIT, A
+  JR Z,key_press_up
+  BIT KEY_0_BIT, A
+  JR Z,key_press_fire
+  JR input_sinclair_key
+key_press_left:
+  LD A, PRESS_LEFT
+  RET
+key_press_right:
+  LD A, PRESS_RIGHT
+  RET
+key_press_down:
+  LD A, PRESS_DOWN
+  RET
+key_press_up:
+  LD A, PRESS_UP
+  RET
+key_press_fire:
+  LD A, PRESS_FIRE
+  RET
+
 ; How to read the keyboard:
 ;
 ; Step 1 - select key row in the accumulator by loading port number to the left
