@@ -1,4 +1,4 @@
 
-mapSize=16; размер карты
+mapSize=100; размер карты
 
-DEFINE tileFile "rebelstar.asm"
+DEFINE tileFile "rebelstar_.asm"
