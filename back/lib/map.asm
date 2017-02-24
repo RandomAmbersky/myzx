@@ -1,77 +1,7 @@
-STRUCT str_map_point
-posY byte 0
-posX byte 0
-ENDS
-
-STRUCT str_map_header
-width byte 0
-height byte 0
-ENDS
-
-map_size equ 32
-
-; процедура установки курсора на карте ;)
-; по очереди вызываем вверх-вниз-влево-вправо чтобы собрать все возможные
-; случаи пересечения курсора с ограничителями
-map_set_cursor:
-  call map_move_cursor_up
-  call map_move_cursor_down
-  call map_move_cursor_left
-  call map_move_cursor_right
-RET
-
-; процедуры передвижения курсора
-; курсор свободно перемещается по экрану
-; если подходит к краю - то "сдвигает" окно просмотра в ту или иную сторону
-map_move_cursor_up:
-  LD A, (CURSOR_POS.posY)
-  DEC A
-  RET M; позиция по Y не может быть меньше нуля
-  LD (CURSOR_POS.posY), A
-  RET
-map_move_window_up:
-  LD HL, (WINDOW_POINTER)
-  RET
-
-map_move_cursor_down:
-  LD A, (CURSOR_POS.posY)
-  INC A
-  CP 12; размер экрана нашего по Y
-  JR NC, map_move_window_down; позиция по Y не может быть больше 12
-  LD (CURSOR_POS.posY), A
-  RET
-map_move_window_down:
-  LD D, 0;
-  LD A, (my_map.width)
-  LD E, A
-  LD HL, (WINDOW_POINTER)
-  ADD HL, DE;
-  LD (WINDOW_POINTER), HL
-  RET
-
-map_move_cursor_left:
-  LD A, (CURSOR_POS.posX)
-  DEC A
-  JP M, map_move_window_left; позиция по Y не может быть меньше нуля
-  LD (CURSOR_POS.posX), A
-  RET
-map_move_window_left:
-  LD HL, (WINDOW_POINTER)
-  RET
-
-map_move_cursor_right:
-  LD A, (CURSOR_POS.posX)
-  INC A
-  CP 16; размер экрана нашего по Y
-  JR NC, map_move_window_right; позиция по Y не может быть больше 12
-  LD (CURSOR_POS.posX), A
-  RET
-map_move_window_right:
-  LD HL, (WINDOW_POINTER)
-  RET
-
+  MODULE map
 
 ; тестовая функция заполняет спрайтами карту по очереди от 0 до 256 и далее опять 0...
+map_size equ 16
 init_map_spr:
   LD A, map_size; ширина
   LD (my_map.width), A
@@ -89,26 +19,86 @@ init_map_loop:
   JR NZ,init_map_loop;
   RET
 
+; процедуры обсчета движения на карте
+; фактически - проверка на выход за левые, правые, верхние и нижние границы карты
+MAP_POS str_map_point 0,0; обсчитываемая процедурой точка
+MAP_ADDR defw 0; адрес на карте считаемый по MAP_POS процедурой map_pos_to_addr
+
+pos_up:
+  LD A, (MAP_POS.posY)
+  DEC A
+  RET M; позиция по Y не может быть меньше нуля
+  LD (MAP_POS.posY), A
+  RET
+
+pos_down:
+  LD A, (my_map.height)
+  LD E, A
+  LD A, (MAP_POS.posY)
+  INC A
+  CP E
+  RET NC
+  LD (MAP_POS.posY), A
+  RET
+
+pos_left:
+  LD A, (MAP_POS.posX)
+  DEC A
+  RET M
+  LD (MAP_POS.posX), A
+  RET
+
+pos_right:
+  LD A, (my_map.width)
+  LD E, A
+  LD A, (MAP_POS.posX)
+  INC A
+  CP E; размер экрана нашего по Y
+  RET NC
+  LD (MAP_POS.posX), A
+  RET
+
+; пересчитываем значение из MAP_POS в адрес, указывающий
+; на верхнюю левую ячейку карты, отображаемой на экране
+; в котором спрайт из MAP_POS стоит как бы в центре :)
+pos_to_window_addr:
+  LD BC, #0608; 1/2 размера экрана в спрайтах по Y и X
+pos_x_min_to_window:
+  LD A, (MAP_POS.posX)
+  SUB B; // половина нашего окна по Y
+  JP P,map_pos_x_max_to_window; если позиция больше чем половина карты - то все нормально, переходим к проверке на макс. по Y
+  LD H,C;
+  JR
+pos_x_0_to_window:
+pos_x_max_to_window:
+
+pos_y_min_to_window:
+pos_y_max_to_window:
+
+  LD DE, my_map+str_map_header
+  LD (MAP_ADDR), DE
+  RET
+
 ; функция показа карты
 ; в HL -  указатель на начало карты
-map_show_map:
+show:
   LD BC, #100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
-map_loop2:
+loop2:
   PUSH BC
   PUSH HL
-map_loop:
+loop:
   PUSH DE
   PUSH BC
   PUSH HL
   LD A,(HL)
-  call map_show_sprite
+  call show_sprite
   POP HL
   INC HL
   POP BC
   POP DE
   INC D
-  DJNZ map_loop;
+  DJNZ loop;
   LD D, #00
   INC E
   POP HL; //origin map pointer
@@ -125,9 +115,9 @@ map_loop:
   RET
 
 ; программа показывает один спрайт на карте
-; Вход: DE - позиция в координатах карты
+; Вход: DE - позиция в координатах экрана
 ;       A - номер спрайта
-map_show_sprite:
+show_sprite:
 
   LD HL, DE ; DE x 2 - у нас ширина спрайта =2, то есть позиция 1x1 будет 2x2 в знакоместах
   ADD HL, HL
@@ -157,7 +147,6 @@ spr_loop_1
   EX AF,AF'
   CALL screen_calc_down_DE; в DE адрес опускаем на линию ниже
   EX AF,AF'
-  ;INC D
   DEC A
   JR NZ,spr_loop_1
 
@@ -183,3 +172,5 @@ no_down8:
   LDI
 
   RET
+
+  ENDMODULE

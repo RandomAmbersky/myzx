@@ -47,6 +47,15 @@ KEY_Q_BIT equ 0
 KEY_A_BIT equ 0
 KEY_CAPS_SHIFT_BIT equ 0
 
+port_keys_b_n_m_ss_sp equ #7F
+port_keys_h_j_k_l_en equ #BF
+port_keys_y_u_i_o_p equ #DF
+port_keys_6_7_8_9_0 equ #EF
+port_keys_5_4_3_2_1 equ #F7
+port_keys_t_r_e_w_q equ #FB
+port_keys_g_f_d_s_a equ #FD
+port_keys_v_c_x_z_cs equ #FE
+
 ; универсальные коды :)
 PRESS_FIRE equ  %11111111
 PRESS_UP equ    %00000001
@@ -54,6 +63,8 @@ PRESS_DOWN equ  %00000010
 PRESS_RIGHT equ %00000100
 PRESS_LEFT equ  %00001000
 
+; ожидание ввода одной из клавиш синклер-джойстика
+; после нажатия возвращаем код PRESS_X в A
 input_sinclair_key:
   LD A, port_keys_6_7_8_9_0
   IN A, (#FE)
@@ -101,17 +112,6 @@ key_press_fire:
 ;                            key is pressed
 ; Step 2 - in a, ($FE)
 ; Step 3 - look for bit values of 0 to find pressed keys, as shown above
-
-; --- and this is end of part zxlib :)
-
-port_keys_b_n_m_ss_sp equ #7F
-port_keys_h_j_k_l_en equ #BF
-port_keys_y_u_i_o_p equ #DF
-port_keys_6_7_8_9_0 equ #EF
-port_keys_5_4_3_2_1 equ #F7
-port_keys_t_r_e_w_q equ #FB
-port_keys_g_f_d_s_a equ #FD
-port_keys_v_c_x_z_cs equ #FE
 
 ; example
 
