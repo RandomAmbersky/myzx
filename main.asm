@@ -1,12 +1,15 @@
 DEVICE zxspectrum48
-org #6000;
+org #8000;
 
 prg_start:
   call game.init;
   call game.start;
   RET
-end_prg
 
   include "engine/game.asm"
+
+end_code
+
+  display /D, $-prg_start, " size, ", /D, 0x10000-$, " free"
 
   SAVESNA "myzx.sna",prg_start
