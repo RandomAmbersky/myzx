@@ -1,9 +1,10 @@
 DEVICE zxspectrum48
-org #8000;
+org #7000;
 
 prg_start:
-  call game.init;
-  call game.start;
+  call game.init
+  call game.start
+  ;call input.get_sinclair_key
   RET
 
   include "engine/game.asm"

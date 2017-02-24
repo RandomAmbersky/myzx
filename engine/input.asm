@@ -59,11 +59,11 @@ port_keys_g_f_d_s_a equ #FD
 port_keys_v_c_x_z_cs equ #FE
 
   ; универсальные коды :)
-PRESS_FIRE equ  %11111111
-PRESS_UP equ    %00000001
-PRESS_DOWN equ  %00000010
-PRESS_RIGHT equ %00000100
-PRESS_LEFT equ  %00001000
+FIRE equ  %11111111
+UP equ    %00000001
+DOWN equ  %00000010
+RIGHT equ %00000100
+LEFT equ  %00001000
 
   ; ожидание ввода одной из клавиш синклер-джойстика
   ; после нажатия возвращаем код PRESS_X в A
@@ -82,19 +82,19 @@ get_sinclair_key:
     JR Z,key_press_fire
     JR get_sinclair_key
 key_press_left:
-    LD A, PRESS_LEFT
+    LD A, LEFT
     RET
 key_press_right:
-    LD A, PRESS_RIGHT
+    LD A, RIGHT
     RET
 key_press_down:
-    LD A, PRESS_DOWN
+    LD A, DOWN
     RET
 key_press_up:
-    LD A, PRESS_UP
+    LD A, UP
     RET
 key_press_fire:
-    LD A, PRESS_FIRE
+    LD A, FIRE
     RET
 
   ; How to read the keyboard:
