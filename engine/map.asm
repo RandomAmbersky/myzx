@@ -24,21 +24,25 @@ init_map_loop:
 ; Выход: HL - указатель
 pos_to_addr:
   LD HL, #0000
+  LD C,E; запоминаем posX в C
   LD A,D
   CP 00
-  JR Z, no_mul; если ноль по Y то не множим ничего
-  LD L,mapSize
-  LD B,D
+  JR Z, no_mul; если ноль по Y то не будем прибавлять ничего
+  LD B,D; кидаем posY в B - по B будет автодекрементный цикл
+  LD DE, mapSize;
 mul_loop:
-  ADD HL,HL
+  ADD HL,DE
   DJNZ mul_loop
 no_mul
   LD D,0
+  LD E,C
   ADD HL,DE; в HL у нас
   LD DE, mapArray
   ADD HL, DE
   RET
 
-mapArray DEFS mapSize*mapSize
+mapArray
+  ;DEFS mapSize*mapSize
+include "dummy_map.asm"
 
   ENDMODULE

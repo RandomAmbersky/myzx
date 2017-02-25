@@ -2,11 +2,17 @@
 
 include "engine/screen.asm"
 
+scrWidth equ #10
+scrHeight equ #0C
+
+scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
+scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
+
 mapPos defb 0,0
 
 init:
   initSpriteArray2x2 mapTiles
-  LD HL, #0100
+  LD HL, #0000
   LD (mapPos), HL
   RET
 
@@ -61,12 +67,6 @@ scr_up:
   LD (mapPos+1),A
   RET
 
-scr_down:
-  LD A, (mapPos+1)
-  INC A
-  LD (mapPos+1),A
-  RET
-
 scr_left:
   LD A, (mapPos)
   DEC A
@@ -74,9 +74,19 @@ scr_left:
   LD (mapPos),A
   RET
 
+scr_down:
+  LD A, (mapPos+1)
+  INC A
+  CP scrWindowMaxY
+  RET NC
+  LD (mapPos+1),A
+  RET
+
 scr_right:
   LD A, (mapPos)
   INC A
+  CP scrWindowMaxX
+  RET NC
   LD (mapPos),A
   RET
 

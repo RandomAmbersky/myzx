@@ -1,7 +1,7 @@
   MODULE game
 
 init
-  call map.init
+  ;call map.init
   call gamescreen.init
   RET
 
