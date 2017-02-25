@@ -1,7 +1,7 @@
   MODULE map
 
 init
-  call init_map
+  ;call init_map
   RET
 
 ; тестовая функция заполняет спрайтами карту по очереди от 0 до 256 и далее опять 0...
@@ -20,15 +20,15 @@ init_map_loop:
   RET
 
 ; переводим pos в указатель на ячейку в массиве карты
-; Вход: DE - pos,  D - y, E - x
+; Вход: DE - pos,  D - x, E - y
 ; Выход: HL - указатель
 pos_to_addr:
   LD HL, #0000
-  LD C,E; запоминаем posX в C
-  LD A,D
+  LD C,D; запоминаем posX в C
+  LD A,E
   CP 00
   JR Z, no_mul; если ноль по Y то не будем прибавлять ничего
-  LD B,D; кидаем posY в B - по B будет автодекрементный цикл
+  LD B,E; кидаем posY в B - по B будет автодекрементный цикл
   LD DE, mapSize;
 mul_loop:
   ADD HL,DE
@@ -42,7 +42,7 @@ no_mul
   RET
 
 mapArray
-  DEFS mapSize*mapSize
-;include "dummy_map.asm"
+  ;DEFS mapSize*mapSize
+include "dummy_map.asm"
 
   ENDMODULE
