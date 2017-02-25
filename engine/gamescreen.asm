@@ -2,17 +2,29 @@
 
 include "engine/screen.asm"
 
+mapPos defb 0,0
+
 init:
   initSpriteArray2x2 mapTiles
+  LD HL, #0100
+  LD (mapPos), HL
   RET
 
-; функция показа карты
 show:
+  LD DE, (mapPos)
+  call lookAt;
+  RET
+
+; показать точку на карте
+; в DE - позиция: D-y, E-x
+lookAt:
+  call map.pos_to_addr
   call showMap
   RET
 
+; функция показа карты
+; в HL - указатель на позицию в mapArray
 showMap:
-  LD HL, map.mapArray
   LD BC, #100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
 loop2:
@@ -41,6 +53,33 @@ loop:
   DEC C
   JR NZ, loop2
   RET
+
+scr_up:
+  LD A, (mapPos+1)
+  DEC A
+  RET M
+  LD (mapPos+1),A
+  RET
+
+scr_down:
+  LD A, (mapPos+1)
+  INC A
+  LD (mapPos+1),A
+  RET
+
+scr_left:
+  LD A, (mapPos)
+  DEC A
+  RET M
+  LD (mapPos),A
+  RET
+
+scr_right:
+  LD A, (mapPos)
+  INC A
+  LD (mapPos),A
+  RET
+
 
 mapTiles include tileFile
 

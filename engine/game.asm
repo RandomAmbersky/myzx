@@ -6,7 +6,7 @@ init
   RET
 
 start:
-cursor_mode_loop:
+cursor_loop:
   call gamescreen.show
   call input.get_sinclair_key
   CP input.LEFT
@@ -19,24 +19,23 @@ cursor_mode_loop:
   JR Z,UP
   CP input.FIRE
   JR Z,SELECT
-  JP cursor_mode_loop
+  JP cursor_loop
 RIGHT
-    RET
-    ;call map.pos_right
-    JR cursor_mode_loop
+    call gamescreen.scr_right
+    JR cursor_loop
 LEFT
-    ;call map.pos_left
-    JR cursor_mode_loop
+    call gamescreen.scr_left
+    JR cursor_loop
 UP
-    ;call map.pos_up
-    JR cursor_mode_loop
+    call gamescreen.scr_up
+    JR cursor_loop
 DOWN
-    ;call map.pos_down
-    JR cursor_mode_loop
+    call gamescreen.scr_down
+    JR cursor_loop
 SELECT
     RET
 
-hero_mode_loop:
+hero_loop:
 
     RET
 
