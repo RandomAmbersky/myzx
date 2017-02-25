@@ -1,7 +1,7 @@
   MODULE game
 
 init
-  ;call map.init
+  call map.init
   call gamescreen.init
   RET
 
@@ -21,16 +21,16 @@ cursor_loop:
   JR Z,SELECT
   JP cursor_loop
 RIGHT
-    call gamescreen.scr_right
+    call gamescreen.cur_right
     JR cursor_loop
 LEFT
-    call gamescreen.scr_left
+    call gamescreen.cur_left
     JR cursor_loop
 UP
-    call gamescreen.scr_up
+    call gamescreen.cur_up
     JR cursor_loop
 DOWN
-    call gamescreen.scr_down
+    call gamescreen.cur_down
     JR cursor_loop
 SELECT
     RET
