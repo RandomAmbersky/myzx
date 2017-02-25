@@ -8,13 +8,14 @@ scrHeight equ #0C
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
 
-mapPos defb 0,0
-curPos defb 0,0
+mapPos Point 0,0
+curPos Point 0,0
 
 init:
   initSpriteArray2x2 mapTiles
   LD HL, #0000
   LD (mapPos), HL
+  LD HL, #0001
   LD (curPos), HL
   RET
 
@@ -22,17 +23,13 @@ show:
   LD DE, (mapPos)
   call lookAtMap;
   LD DE, (curPos)
-  LD A, E
-  LD E, D
-  LD D, A
-  LD A, #ff
+  LD A, #09
   call screen.show_sprite_2x2
   RET
 
 ;show_cursor:
   ;LD DE, (curPos)
   ;LD A, #FF
-
 
 ; показать точку на карте
 ; в DE - позиция: D-y, E-x
@@ -75,64 +72,64 @@ loop:
 
 ; двигаем экран
 scr_up:
-  LD A, (mapPos+1)
+  LD A, (mapPos.y)
   DEC A
   RET M
-  LD (mapPos+1),A
+  LD (mapPos.y),A
   RET
 
 scr_left:
-  LD A, (mapPos)
+  LD A, (mapPos.x)
   DEC A
   RET M
-  LD (mapPos),A
+  LD (mapPos.x),A
   RET
 
 scr_down:
-  LD A, (mapPos+1)
+  LD A, (mapPos.y)
   INC A
   CP scrWindowMaxY
   RET NC
-  LD (mapPos+1),A
+  LD (mapPos.y),A
   RET
 
 scr_right:
-  LD A, (mapPos)
+  LD A, (mapPos.x)
   INC A
   CP scrWindowMaxX
   RET NC
-  LD (mapPos),A
+  LD (mapPos.x),A
   RET
 
 ; двигаем курсор
 cur_up:
-  LD A, (curPos+1)
+  LD A, (curPos.y)
   DEC A
   JP M, scr_up
-  LD (curPos+1),A
+  LD (curPos.y),A
   RET
 
 cur_left:
-  LD A, (curPos)
+  LD A, (curPos.x)
   DEC A
   JP M, scr_left
-  LD (curPos),A
+  LD (curPos.x),A
   RET
 
 cur_down:
-  LD A, (curPos+1)
+  LD A, (curPos.y)
   INC A
   CP scrHeight
   JP NC, scr_down
-  LD (curPos+1),A
+  LD (curPos.y),A
   RET
 
 cur_right:
-  LD A, (curPos)
+  LD A, (curPos.x)
   INC A
   CP scrWidth
   JP NC, scr_right
-  LD (curPos),A
+  LD (curPos.x),A
   RET
 
 mapTiles include tileFile
