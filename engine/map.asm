@@ -42,7 +42,7 @@ no_mul
   RET
 
 mapArray
-  ;DEFS mapSize*mapSize
-include "dummy_map.asm"
+  DEFS mapSize*mapSize
+;include "dummy_map.asm"
 
   ENDMODULE

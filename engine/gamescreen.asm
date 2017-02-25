@@ -9,21 +9,34 @@ scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция 
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
 
 mapPos defb 0,0
+curPos defb 0,0
 
 init:
   initSpriteArray2x2 mapTiles
   LD HL, #0000
   LD (mapPos), HL
+  LD (curPos), HL
   RET
 
 show:
   LD DE, (mapPos)
-  call lookAt;
+  call lookAtMap;
+  LD DE, (curPos)
+  LD A, E
+  LD E, D
+  LD D, A
+  LD A, #ff
+  call screen.show_sprite_2x2
   RET
+
+;show_cursor:
+  ;LD DE, (curPos)
+  ;LD A, #FF
+
 
 ; показать точку на карте
 ; в DE - позиция: D-y, E-x
-lookAt:
+lookAtMap:
   call map.pos_to_addr
   call showMap
   RET
@@ -60,6 +73,7 @@ loop:
   JR NZ, loop2
   RET
 
+; двигаем экран
 scr_up:
   LD A, (mapPos+1)
   DEC A
@@ -90,6 +104,36 @@ scr_right:
   LD (mapPos),A
   RET
 
+; двигаем курсор
+cur_up:
+  LD A, (curPos+1)
+  DEC A
+  JP M, scr_up
+  LD (curPos+1),A
+  RET
+
+cur_left:
+  LD A, (curPos)
+  DEC A
+  JP M, scr_left
+  LD (curPos),A
+  RET
+
+cur_down:
+  LD A, (curPos+1)
+  INC A
+  CP scrHeight
+  JP NC, scr_down
+  LD (curPos+1),A
+  RET
+
+cur_right:
+  LD A, (curPos)
+  INC A
+  CP scrWidth
+  JP NC, scr_right
+  LD (curPos),A
+  RET
 
 mapTiles include tileFile
 
