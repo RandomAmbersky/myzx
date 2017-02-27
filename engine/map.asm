@@ -22,7 +22,7 @@ init_map_loop:
 ; переводим pos в указатель на ячейку в массиве карты
 ; Вход: DE - pos,  D - x, E - y
 ; Выход: HL - указатель
-pos_to_addr:
+pos_to_addr
   LD HL, #0000
   LD C,D; запоминаем posX в C
   LD A,E
@@ -30,7 +30,7 @@ pos_to_addr:
   JR Z, no_mul; если ноль по Y то не будем прибавлять ничего
   LD B,E; кидаем posY в B - по B будет автодекрементный цикл
   LD DE, mapSize;
-mul_loop:
+mul_loop
   ADD HL,DE
   DJNZ mul_loop
 no_mul
@@ -41,8 +41,7 @@ no_mul
   ADD HL, DE
   RET
 
-mapArray
+mapArray include mapFile
   ;DEFS mapSize*mapSize
-include "dummy_map.asm"
 
   ENDMODULE

@@ -2,6 +2,7 @@
 
 init
   call map.init
+  call personages.init
   call gamescreen.init
   RET
 
@@ -78,5 +79,6 @@ hero_loop:
 
   include "engine/defines.asm"
   include "engine/gamescreen.asm"
+  include "engine/personages.asm"
   include "engine/input.asm"
   include "engine/map.asm"
