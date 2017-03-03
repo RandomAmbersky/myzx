@@ -13,7 +13,7 @@ mapPos Point 0,0
 curPos Point 0,0
 
 init:
-  initSpriteArray2x2 mapTiles
+  initSpriteArray mapTiles
   LD HL, #0000
   LD (mapPos), HL
   LD HL, #0001
