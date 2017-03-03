@@ -10,11 +10,11 @@
 SCREEN_ADDR EQU #4000
 ATTR_ADDR EQU SCREEN_ADDR+#1800
 
-sprArray2x2 defw 0; указатель на массив спрайтов
+sprArray defw 0; указатель на массив спрайтов
 
-MACRO initSpriteArray2x2 n
+MACRO initSpriteArray n
   LD HL, n
-  LD (screen.sprArray2x2), HL
+  LD (screen.sprArray), HL
 ENDM
 
 ; вычисляем позицию адрес по позиции знакоместа
@@ -69,6 +69,46 @@ calc_down_line_DE:
 ; программа показывает один спрайт на карте
 ; Вход: DE - координаты знакоместа в координатах экрана
 ;       A - номер спрайта
+show_tile_4x4:
+  LD HL, DE ; DE x 4 - у нас ширина спрайта =2, то есть позиция 1x1 будет 4x4 в знакоместах
+  ADD HL, HL
+  ADD HL, HL
+  LD DE, HL
+
+  LD L, A
+  LD H, 0; загружаем номер спрайта в HL
+  ADD HL,HL; x2
+  ADD HL,HL; x4
+  ADD HL,HL; x8
+  ADD HL,HL; x16
+  PUSH HL
+  ADD HL,HL; x32
+  ADD HL,HL; x64
+  ADD HL,HL; x128
+  POP BC
+  ADD HL,BC
+  LD BC, (sprArray);
+  ADD HL, BC;
+  call calc_pos_to_addr_DE
+  LD A, 32
+spr_loop_4x4
+    PUSH DE
+    LDI
+    LDI
+    LDI
+    LDI
+    POP DE
+    EX AF,AF'
+    CALL calc_down_line_DE; в DE адрес опускаем на линию ниже
+    EX AF,AF'
+    DEC A
+    JR NZ,spr_loop_4x4
+
+  RET
+
+; программа показывает один спрайт на карте
+; Вход: DE - координаты знакоместа в координатах экрана
+;       A - номер спрайта
 show_tile_2x2:
 
   LD HL, DE ; DE x 2 - у нас ширина спрайта =2, то есть позиция 1x1 будет 2x2 в знакоместах
@@ -85,7 +125,7 @@ show_tile_2x2:
   ADD HL,HL; x32
   POP BC; // снимаем со стека x4 - еще 4 байта цветности
   ADD HL, BC
-  LD BC, (sprArray2x2);
+  LD BC, (sprArray);
   ADD HL, BC;
 
   call calc_pos_to_addr_DE
