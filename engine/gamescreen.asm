@@ -2,8 +2,10 @@
 
 include "engine/screen.asm"
 
-scrWidth equ #10
-scrHeight equ #0C
+tileSize equ 2; сколько знакомест в одном спрайте
+
+scrWidth equ 32/tileSize ; 32 знакоместа по горизонтали
+scrHeight equ 24/tileSize; 24 знакоместа по вертикали
 
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
@@ -27,10 +29,6 @@ show:
   call screen.show_sprite_2x2
   RET
 
-;show_cursor:
-  ;LD DE, (curPos)
-  ;LD A, #FF
-
 ; показать точку на карте
 ; в DE - позиция: D-y, E-x
 lookAtMap:
@@ -41,7 +39,7 @@ lookAtMap:
 ; функция показа карты
 ; в HL - указатель на позицию в mapArray
 showMap:
-  LD BC, #100C ; width and height screen - 16 x 12
+  LD BC, scrWidth*256 + scrHeight ;#100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
 loop2:
   PUSH BC
