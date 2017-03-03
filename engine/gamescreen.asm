@@ -2,8 +2,7 @@
 
 include "engine/screen.asm"
 
-tileSize equ 2; сколько знакомест в одном спрайте
-
+; это уже подсчеты...
 scrWidth equ 32/tileSize ; 32 знакоместа по горизонтали
 scrHeight equ 24/tileSize; 24 знакоместа по вертикали
 
@@ -26,7 +25,7 @@ show:
   call lookAtMap;
   LD DE, (curPos)
   LD A, #09
-  call screen.show_sprite_2x2
+  call show_tile
   RET
 
 ; показать точку на карте
@@ -49,7 +48,7 @@ loop:
   PUSH BC
   PUSH HL
   LD A,(HL)
-  call screen.show_sprite_2x2
+  call show_tile
   POP HL
   INC HL
   POP BC
