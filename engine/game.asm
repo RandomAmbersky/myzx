@@ -11,6 +11,14 @@ init
 start:
 
 cursor_loop:
+  call Gamescreen.getCursorCell; в Gamescreen.mapCurPos координаты карты
+  LD DE, ( Gamescreen.mapCurPos ); проверяем показывает ли персонаж на курсор
+
+  screen.PRINT_AT_FF 1, 1, 10
+
+  call Personages.find_at
+  RET NZ;
+
   call Gamescreen.show
   call input.get_sinclair_key
   ;JP move_map;

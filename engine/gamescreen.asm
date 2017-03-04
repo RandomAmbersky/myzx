@@ -11,6 +11,7 @@ scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция 
 
 mapPos Point 0,0
 curPos Point 0,0
+mapCurPos Point 0,0
 
 init:
   initSpriteArray mapTiles
@@ -26,8 +27,9 @@ show:
   LD A, #09
   call show_tile
 
+; получаем код ячейки под курсором
   call getCursorCell
-
+; и печатаем его
   LD C, A
   LD B, 0
   LD DE, #0101
@@ -39,10 +41,12 @@ show:
 ; Вход - нет, все берется из mapPos и curPos
 ; Выход:
 ;   A - код в ячейке карты под курсором
+;   mapCurPos - mapPos + curPos
 getCursorCell:
   LD DE, (mapPos)
   LD HL, (curPos)
   ADD HL, DE
+  LD (mapCurPos), HL
   PUSH HL
   POP DE
   call Map.pos_to_addr
