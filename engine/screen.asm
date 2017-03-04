@@ -165,4 +165,29 @@ no_down8:
   LDI
   RET
 
+; DE - D - y, E - x
+; BC - число
+print_at_ff
+  PUSH BC
+
+  LD A, D
+  LD ( DATA1+1), A
+  LD A, E
+  LD ( DATA1+2), A
+
+  LD A,2
+  CALL 5633
+
+  LD DE,DATA1
+  LD BC,5
+  CALL 8252
+
+  POP BC
+  CALL 6683
+
+  RET
+DATA1 DEFB 22,5,14     ;управляющие коды для AT 5,14
+      DEFB  20,1        ;управляющие коды для INVERSE 1
+;  SETSCR .........
+
   ENDMODULE

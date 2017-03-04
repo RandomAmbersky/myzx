@@ -20,6 +20,6 @@ DEFINE persFile "character_list.asm"
 
 
 STRUCT Point
-y db 00
-x db 00
+y db 0
+x db 0
 ENDS

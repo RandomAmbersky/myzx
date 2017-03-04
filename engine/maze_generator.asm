@@ -55,7 +55,7 @@ rnd
   RET
 
 fast_init_maze
-  LD HL, map.mapArray
+  LD HL, Map.mapArray
   LD BC, mapSize * mapSize; ширина x высота
   ;LD E, #00
 init_fast_map_loop:
@@ -81,7 +81,7 @@ maze_no_life_fast:
 
 ; рисуем ЛАБИРИНТ! :)
 init_maze
-  LD HL, map.mapArray
+  LD HL, Map.mapArray
   LD BC, mapSize*256 + mapSize ;#100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
 maze_loop2:

@@ -1,4 +1,4 @@
-  MODULE gamescreen
+  MODULE Gamescreen
 
 include "engine/screen.asm"
 
@@ -16,22 +16,45 @@ init:
   initSpriteArray mapTiles
   LD HL, #0000
   LD (mapPos), HL
-  LD HL, #0001
+  LD HL, #0000
   LD (curPos), HL
   RET
 
 show:
-  LD DE, (mapPos)
-  call lookAtMap;
+  call lookAtMap_def;
   LD DE, (curPos)
   LD A, #09
   call show_tile
+
+  call getCursorCell
+
+  LD C, A
+  LD B, 0
+  LD DE, #0101
+  call screen.print_at_ff
+
+  RET
+
+; получить код ячейки под курсором
+; Вход - нет, все берется из mapPos и curPos
+; Выход:
+;   A - код в ячейке карты под курсором
+getCursorCell:
+  LD DE, (mapPos)
+  LD HL, (curPos)
+  ADD HL, DE
+  PUSH HL
+  POP DE
+  call Map.pos_to_addr
+  LD A, (HL)
   RET
 
 ; показать точку на карте
 ; в DE - позиция: D-y, E-x
+lookAtMap_def:
+  LD DE, (mapPos)
 lookAtMap:
-  call map.pos_to_addr
+  call Map.pos_to_addr
   call showMap
   RET
 
