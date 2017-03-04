@@ -63,6 +63,7 @@ calc_down_line_DE:
     RET C
     LD A,D
     SUB 8
+    ;ADD A,-8
     LD D,A
     RET
 

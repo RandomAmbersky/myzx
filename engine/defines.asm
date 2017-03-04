@@ -1,7 +1,8 @@
 
 ; MAP ZONE
 mapSize=32;100; размер карты; а в RebelStar2 - 50x80
-DEFINE mapFile "dummy_map.asm"
+;DEFINE mapFile "dummy_map.asm"
+DEFINE mapFile "mage_map.asm"
 
 ;  TILE ZONE REBELSTAR
 ;DEFINE tileFile "rebelstar.asm"

@@ -2,6 +2,8 @@
 
 init
   call map.init
+  call MazeGenerator.init
+  call MazeGenerator.fast_init_maze
   call personages.init
   call gamescreen.init
   RET
@@ -9,6 +11,7 @@ init
 start:
 
 cursor_loop:
+  call MazeGenerator.fast_init_maze
   call gamescreen.show
   call input.get_sinclair_key
   ;JP move_map;
@@ -82,3 +85,4 @@ hero_loop:
   include "engine/personages.asm"
   include "engine/input.asm"
   include "engine/map.asm"
+  include "engine/maze_generator.asm"
