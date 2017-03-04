@@ -1,8 +1,9 @@
   MODULE Personages
 
 STRUCT pers
-y db 0; pos y
-x db 0; pos x
+pos Point 0,0
+;y db 0; pos y
+;x db 0; pos x
 action db 0; action
 action_max db 0; action max
 hp db 0;hit point
@@ -22,26 +23,29 @@ ENDS
 currPersonage dw 0; pointer to persArray
 
 ; в поиске персонажа
-; Вход: DE - позиция на карте, D-y, E-x
+; Вход: DE - позиция на карте, D-x, E-y
 ; Выход - A=1, в currPersonage указатель на персонажа
 ;         A=0 если персонаж не найден
 find_at:
-  LD IX, (persArray); указатель на массив персонажей
+  LD IX, persArray; указатель на массив персонажей
   LD B, PersonagesNum; число персонажей
  ;  проверяем совпадают ли координаты c персонажем
 check_pers:
-  LD A, (IX+pers.y)
-  CP D
-  JR NZ, next_pers
-  LD A, (IX+pers.x)
+  LD A, (IX+pers.pos.y)
   CP E
+  JR NZ, next_pers
+  LD A, (IX+pers.pos.x)
+  CP D
   JR NZ, next_pers
 ; нашли!
   LD (currPersonage), IX
-  LD A,1
+  LD A, 1;
   RET
 next_pers:
+  PUSH BC
+  LD BC, pers
   ADD IX, BC
+  POP BC
   DJNZ check_pers
   XOR A
   RET; не нашли :(
@@ -49,33 +53,33 @@ next_pers:
 ; передвижение персонажа
 ; указатель на текущего персонажа - IX
 move_up
-  LD A, (IX+pers.y)
+  LD A, (IX+pers.pos.y)
   DEC A
   RET M
-  LD (IX+pers.y),A
+  LD (IX+pers.pos.y),A
   RET
 
 move_down
-  LD A, (IX+pers.x)
+  LD A, (IX+pers.pos.x)
   DEC A
   RET M
-  LD (IX+pers.x),A
+  LD (IX+pers.pos.x),A
   RET
 
 move_right
-  LD A, (IX+pers.x)
+  LD A, (IX+pers.pos.x)
   INC A
   CP mapSize
   RET NC
-  LD (IX+pers.x),A
+  LD (IX+pers.pos.x),A
   RET
 
 move_left
-  LD A, (IX+pers.x)
+  LD A, (IX+pers.pos.x)
   INC A
   CP mapSize
   RET NC
-  LD (IX+pers.x),A
+  LD (IX+pers.pos.x),A
   RET
 
 init
@@ -98,8 +102,7 @@ init_loop; пробегаемся по всем персонажам и разм
 ; в HL - указатель на персонажа
 init_personage;
   LD IX,HL
-  LD D, (IX+pers.y); pos y
-  LD E, (IX+pers.x); pos x
+  LD DE, (IX+pers.pos)
   call Map.pos_to_addr
   LD A, (HL)
   LD (IX+pers.floor),A; ячейку карты ставим на пол персонажа

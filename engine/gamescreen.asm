@@ -17,7 +17,7 @@ init:
   initSpriteArray mapTiles
   LD HL, #0000
   LD (mapPos), HL
-  LD HL, #0000
+  LD HL, #0303
   LD (curPos), HL
   RET
 
@@ -30,10 +30,10 @@ show:
 ; получаем код ячейки под курсором
   call getCursorCell
 ; и печатаем его
-  LD C, A
-  LD B, 0
-  LD DE, #0101
-  call screen.print_at_ff
+  ;LD C, A
+  ;LD B, 0
+  ;LD DE, #0101
+  ;call screen.print_at_ff
 
   RET
 
@@ -43,10 +43,10 @@ show:
 ;   A - код в ячейке карты под курсором
 ;   mapCurPos - mapPos + curPos
 getCursorCell:
-  LD DE, (mapPos)
-  LD HL, (curPos)
+  LD DE, (mapPos); D-x E-y
+  LD HL, (curPos); D-x E-y
   ADD HL, DE
-  LD (mapCurPos), HL
+  LD (mapCurPos), HL; D-x E-y
   PUSH HL
   POP DE
   call Map.pos_to_addr
