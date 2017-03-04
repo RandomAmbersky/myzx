@@ -25,7 +25,7 @@ currPersonage dw 0; pointer to persArray
 ; Вход: DE - позиция на карте, D-y, E-x
 ; Выход - A=1, в currPersonage указатель на персонажа
 ;         A=0 если персонаж не найден
-find_at
+find_at:
   LD IX, (persArray); указатель на массив персонажей
   LD B, PersonagesNum; число персонажей
  ;  проверяем совпадают ли координаты c персонажем
@@ -45,7 +45,6 @@ next_pers:
   DJNZ check_pers
   XOR A
   RET; не нашли :(
-
 
 ; передвижение персонажа
 ; указатель на текущего персонажа - IX

@@ -167,6 +167,14 @@ no_down8:
 
 ; DE - D - y, E - x
 ; BC - число
+MACRO PRINT_AT_FF x,y,f
+  LD B, 0
+  LD C, f
+  LD D, x
+  LD E, y
+  call print_at_ff
+ENDM
+
 print_at_ff
   PUSH BC
 
