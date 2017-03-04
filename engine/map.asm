@@ -1,4 +1,4 @@
-  MODULE map
+  MODULE Map
 
 init
   ;call init_map

@@ -1,4 +1,4 @@
-  MODULE personages
+  MODULE Personages
 
 STRUCT pers
 y db 0; pos y
@@ -22,12 +22,30 @@ ENDS
 currPersonage dw 0; pointer to persArray
 
 ; в поиске персонажа
-; Вход: DE - позиция на карте
+; Вход: DE - позиция на карте, D-y, E-x
 ; Выход - A=1, в currPersonage указатель на персонажа
 ;         A=0 если персонаж не найден
 find_at
+  LD IX, (persArray); указатель на массив персонажей
+  LD B, PersonagesNum; число персонажей
+ ;  проверяем совпадают ли координаты c персонажем
+check_pers:
+  LD A, (IX+pers.y)
+  CP D
+  JR NZ, next_pers
+  LD A, (IX+pers.x)
+  CP E
+  JR NZ, next_pers
+; нашли!
+  LD (currPersonage), IX
+  LD A,1
+  RET
+next_pers:
+  ADD IX, BC
+  DJNZ check_pers
   XOR A
   RET; не нашли :(
+
 
 ; передвижение персонажа
 ; указатель на текущего персонажа - IX
@@ -83,7 +101,7 @@ init_personage;
   LD IX,HL
   LD D, (IX+pers.y); pos y
   LD E, (IX+pers.x); pos x
-  call map.pos_to_addr
+  call Map.pos_to_addr
   LD A, (HL)
   LD (IX+pers.floor),A; ячейку карты ставим на пол персонажа
   LD A, (IX+pers.sprite)

@@ -1,18 +1,17 @@
   MODULE game
 
 init
-  call map.init
+  call Map.init
   call MazeGenerator.init
   call MazeGenerator.fast_init_maze
-  call personages.init
-  call gamescreen.init
+  call Personages.init
+  call Gamescreen.init
   RET
 
 start:
 
 cursor_loop:
-  call MazeGenerator.fast_init_maze
-  call gamescreen.show
+  call Gamescreen.show
   call input.get_sinclair_key
   ;JP move_map;
   JP move_cursor;
@@ -44,31 +43,31 @@ move_cursor:
   JP cursor_loop
 
 CUR_RIGHT
-    call gamescreen.cur_right
+    call Gamescreen.cur_right
     JR cursor_loop
 CUR_LEFT
-    call gamescreen.cur_left
+    call Gamescreen.cur_left
     JR cursor_loop
 CUR_UP
-    call gamescreen.cur_up
+    call Gamescreen.cur_up
     JR cursor_loop
 CUR_DOWN
-    call gamescreen.cur_down
+    call Gamescreen.cur_down
     JR cursor_loop
 CUR_SELECT
     RET
 
 MAP_RIGHT
-    call gamescreen.scr_right
+    call Gamescreen.scr_right
     JR cursor_loop
 MAP_LEFT
-    call gamescreen.scr_left
+    call Gamescreen.scr_left
     JR cursor_loop
 MAP_UP
-    call gamescreen.scr_up
+    call Gamescreen.scr_up
     JR cursor_loop
 MAP_DOWN
-    call gamescreen.scr_down
+    call Gamescreen.scr_down
     JR cursor_loop
 MAP_SELECT
     RET
