@@ -22,6 +22,23 @@ ENDS
 
 currPersonage dw 0; pointer to persArray
 
+; получить указатель на данные персонажа в currPersonage
+; по его номеру
+; Вход: A - номер персонажа
+; Выход: указатель на данные персонажа в currPersonage, в HL
+getHero:
+  LD HL, persArray
+  CP 00
+  JR Z, ret_hero
+  LD DE, pers; длина записи о персонаже
+  LD B, A; номер персонажа
+loop_get_hero:
+  ADD HL, DE
+  DJNZ loop_get_hero
+ret_hero:
+  LD (currPersonage), HL
+  RET
+
 ; в поиске персонажа
 ; Вход: DE - позиция на карте, D-x, E-y
 ; Выход - A=1, в currPersonage указатель на персонажа
