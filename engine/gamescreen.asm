@@ -22,11 +22,12 @@ init:
   RET
 
 show:
+  ;LD A,0
+  ;call lookAtHero
   call lookAtMap_def;
   LD DE, (curPos)
   LD A, #09
   call show_tile
-
 ; получаем код ячейки под курсором
   call getCursorCell
 ; и печатаем его
@@ -34,7 +35,6 @@ show:
   ;LD B, 0
   ;LD DE, #0101
   ;call screen.print_at_ff
-
   RET
 
 ; получить код ячейки под курсором
@@ -60,6 +60,29 @@ lookAtMap_def:
 lookAtMap:
   call Map.pos_to_addr
   call showMap
+  RET
+
+; "Смотрим на героя"
+; Вход: в A - номер персонажа
+; Выход: в HL и mapPos - координаты карты когда персонаж в центре
+lookAtHero:
+  call Personages.getHero
+  LD IX, (Personages.currPersonage)
+  LD BC, #0404; C - y, B - x
+lookAtHero_y:
+  LD A, (IX+Personages.pers.pos.y); получаем позицию по Y
+  SUB B
+  JR NC, lookAtHero_set_y
+  XOR A
+lookAtHero_set_y:
+  LD L, A; загружаем в L значение по Y
+  LD A, (IX+Personages.pers.pos.x); получаем позицию по X
+  SUB C
+  JR NC, lookAtHero_set_x
+  XOR A
+lookAtHero_set_x:
+  LD H, A; загружаем в H значение по X
+  LD (mapPos), HL; L - Y, H - x
   RET
 
 ; функция показа карты
