@@ -1,18 +1,30 @@
   MODULE MazeGenerator
 
 init
-  call randomize
-  call rnd255
+; call randomize
+;  call rnd255
   RET
 ; тестовая функция рисует "решетку на карте"
-init_map_grid:
-  LD BC, mapSize * mapSize; ширина x высотаs
-  RET
+;init_map_grid:
+  ;LD BC, mapSize * mapSize; ширина x высотаs
+  ;RET
 
-ADDR_RND DEFW 0
-randomize
+;ADDR_RND DEFW 0
+;randomize
+  ;LD HL, (23670)
+  ;LD (ADDR_RND), HL
+rnd255
   LD HL, (23670)
-  LD (ADDR_RND), HL
+  LD A,H
+  AND 31
+  ADD A,7
+  LD H,A
+  INC L
+  LD (23670),HL
+  LD A,R
+  XOR (HL)
+  RET
+/*
 rnd255
   ;PUSH BC
   ;PUSH DE
@@ -53,26 +65,21 @@ rnd
   CALL 12457
   LD A,H
   RET
-
+*/
 fast_init_maze
   LD HL, Map.mapArray
   LD BC, mapSize * mapSize; ширина x высота
-  ;LD E, #00
 init_fast_map_loop:
-  ;PUSH DE
   PUSH BC
   PUSH HL
   call rnd255;
   POP HL
-  CP 45
+  CP 40
   JR NC, maze_no_life_fast
   LD (HL), 01
 maze_no_life_fast:
   POP BC
-  ;POP DE
-  ;LD (HL),E
   INC HL
-  ;INC E
   DEC BC
   LD A,B
   OR C
@@ -91,11 +98,11 @@ maze_loop:
   PUSH DE
   PUSH BC
   PUSH HL
-  call rnd
+  call rnd255
   POP HL
-  CP 40
+  CP 50
   JR NC, maze_no_life
-  LD A, 1
+  LD A, #ff
   LD (HL), A
 maze_no_life:
   INC HL
@@ -114,6 +121,5 @@ maze_no_life:
   DEC C
   JR NZ, maze_loop2
   RET
-
 
 ENDMODULE
