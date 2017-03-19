@@ -2,8 +2,6 @@
 
 STRUCT pers
 pos Point 0,0
-;y db 0; pos y
-;x db 0; pos x
 action db 0; action
 action_max db 0; action max
 hp db 0;hit point

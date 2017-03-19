@@ -1,6 +1,7 @@
   MODULE game
 
 init
+  call Sound.explos
   call Map.init
   call MazeGenerator.init
   call MazeGenerator.fast_init_maze
@@ -9,8 +10,11 @@ init
   RET
 
 start:
+  ;call Sound.skrebok
+  ;ret
 
 cursor_loop:
+  ;call Sound.skrebok
   ;call Gamescreen.getCursorCell; в Gamescreen.mapCurPos координаты ячейки карты на которую показывает курсор
   ;LD DE, ( Gamescreen.mapCurPos ); проверяем показывает ли персонаж на курсор
 ;display /H, $
@@ -65,6 +69,7 @@ CUR_DOWN
 CUR_SELECT
     LD A,1
     call Gamescreen.lookAtHero
+    ;call Sound.hiss
     JR cursor_loop
     ;RET
 
@@ -93,6 +98,7 @@ hero_loop:
   include "engine/defines.asm"
   include "engine/gamescreen.asm"
   include "engine/personages.asm"
+  include "engine/sound.asm"
   include "engine/input.asm"
   include "engine/map.asm"
   include "engine/maze_generator.asm"

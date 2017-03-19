@@ -1,4 +1,4 @@
-DEVICE zxspectrum48
+DEVICE zxspectrum128
 org #7000;
 
 prg_start:
