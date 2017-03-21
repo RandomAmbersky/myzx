@@ -255,6 +255,34 @@ EXPL3  LD    B,E
        EI
        RET
 
+rnd: LD B, #ff
+rnd_loop:
+
+  call random
+  OUT (254), A
+  XOR A
+  OUT (254), A
+  ;PUSH BC
+  ;DJNZ  $        ;задержка
+  ;POP BC
+  DJNZ  rnd_loop        ;задержка
+
+  LD A,0
+  OUT (254), A
+
+  RET
+
+random  PUSH BC:LD A,(R1),C,A
+               LD A,(R2):ADD A,C:LD C,A
+               LD (R1),A,A,(R3)
+               SUB C:LD C,A,(R2),A
+               RRCA:LD (R3),A
+               LD A,C:POP BC
+               RET
+
+R1      DB #15
+R2      DB #70
+R3      DB #FD
 // only for 128-k spectrum
 /*
 melody:

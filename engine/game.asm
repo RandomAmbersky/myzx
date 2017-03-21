@@ -1,7 +1,7 @@
   MODULE game
 
 init
-  call Sound.explos
+  ;call Sound.rnd
   call Map.init
   call MazeGenerator.init
   call MazeGenerator.fast_init_maze
@@ -14,7 +14,7 @@ start:
   ;ret
 
 cursor_loop:
-  ;call Sound.skrebok
+  ;call Sound.rnd
   ;call Gamescreen.getCursorCell; в Gamescreen.mapCurPos координаты ячейки карты на которую показывает курсор
   ;LD DE, ( Gamescreen.mapCurPos ); проверяем показывает ли персонаж на курсор
 ;display /H, $
