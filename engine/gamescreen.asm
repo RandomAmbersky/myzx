@@ -1,6 +1,6 @@
   MODULE Gamescreen
 
-include "engine/screen.asm"
+include "engine/sys/screen.asm"
 
 ; это уже подсчеты...
 scrWidth equ 32/tileSize ; 32 знакоместа по горизонтали
