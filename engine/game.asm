@@ -95,10 +95,9 @@ hero_loop:
 
   ENDMODULE
 
-  include "engine/defines.asm"
+  include "engine/defines_engine.asm"
   include "engine/gamescreen.asm"
   include "engine/personages.asm"
-  include "engine/sound.asm"
-  include "engine/input.asm"
+  include "engine/sys/input.asm"
   include "engine/map.asm"
   include "engine/maze_generator.asm"

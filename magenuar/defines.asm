@@ -14,12 +14,5 @@ DEFINE tileFile "mage_sprite.asm"
 DEFINE tileSize 4; сколько знакомест в одном спрайте
 DEFINE show_tile screen.show_tile_4x4
 
-
 ; CHARACTERS ZONE
 DEFINE persFile "character_list.asm"
-
-
-STRUCT Point
-y db 0
-x db 0
-ENDS
