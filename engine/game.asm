@@ -1,7 +1,7 @@
   MODULE game
 
 init
-  ;call Sound.rnd
+  call Sound.rnd
   call Map.init
   call MazeGenerator.init
   call MazeGenerator.fast_init_maze
@@ -10,7 +10,7 @@ init
   RET
 
 start:
-  ;call Sound.skrebok
+  call Sound.skrebok
   ;ret
 
 cursor_loop:
@@ -99,5 +99,6 @@ hero_loop:
   include "engine/gamescreen.asm"
   include "engine/personages.asm"
   include "engine/sys/input.asm"
+  include "engine/sys/sound.asm"
   include "engine/map.asm"
   include "engine/maze_generator.asm"
