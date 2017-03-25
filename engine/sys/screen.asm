@@ -35,20 +35,19 @@ calc_pos_to_addr_DE:
     RET
 
 ; вычисляем адресацию экрана по номеру строчки
-; вход - A - номер строчки
-; выход - DE - адрес экрана
+; Вход: A - номер строчки
+; Выход - DE - адрес экрана
 calc_str_begin_to_addr: //E-y
     PUSH AF
-    ;LD  A,E; D <- Ey
-    AND #18;
-    OR #40;
+    AND #18
+    OR #40
     LD D,A
     POP AF
     AND 7
     RRCA
     RRCA
     RRCA
-    LD E,A;
+    LD E,A
     RET
 
 ; процедура пересчета адреса в экранной области
@@ -68,7 +67,6 @@ addr_to_attr_DE:
 ; перемещаемся на 1 линию в знакоместе ниже
 ; Вход: DE- экранный адрес
 ; Выход: DE - экранный адрес
-
 calc_down_line_DE:
     INC D
     LD A,D
