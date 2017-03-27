@@ -1,7 +1,8 @@
 DEVICE zxspectrum128
-org #6000;
+org #7000;
 
 prg_start:
+  call datablock.int_init
   call game.init
   call game.start
   RET
