@@ -2,7 +2,8 @@
 
 Использую:
 - MacOS
-- Atom с плагином prosess-palette
+- Atom с плагинами language-assembler-sjasmplus и prosess-palette
 - sjasmplus от https://github.com/z00m128/sjasmplus
 - Fuse под MacOs
-- SevenuP ( + Wine для запуска его Windows-версии)
+- ZX-Paintbrush ( + Wine для запуска его Windows-версии)
+
