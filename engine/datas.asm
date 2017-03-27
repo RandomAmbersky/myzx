@@ -1,7 +1,7 @@
   MODULE datablock
 
-ORG #9000
-tiles_start equ $
+;ORG #9000
+;tiles_start equ $
   DISPLAY "--- datablock begin: ",$
 mapTiles include tileFile
   DISPLAY "tileFile end ",$
@@ -33,6 +33,7 @@ int_init:
    IM   2
    EI
    RET
+frame_counter: defb 00
  ORG  #E1E1
 interrupt_routine:
  DI
@@ -43,9 +44,17 @@ interrupt_routine:
  push ix
  ;call 49158          ; play music.
  ;rst 56              ; ROM routine, read keys and update clock.
- ld hl, SCREEN_ADDR
- ld de, #4000
- CALL shadowscreen.copy_to_buf
+ ;ld a, (frame_counter)
+ ;INC A
+ ;CP 50
+ ;JR NC, return_routine:
+ ;ld hl, SCREEN_ADDR
+ ;ld de, #4000
+ ;CALL shadowscreen.copy_to_buf
+ ;XOR a
+return_routine:
+ ;inc a
+ ;ld (frame_counter), a
  pop ix              ; restore registers.
  pop de
  pop hl
