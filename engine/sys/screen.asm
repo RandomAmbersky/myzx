@@ -1,21 +1,17 @@
   MODULE screen
 
   ;-------------------------------------
-  ;3(C) 1994 А.А.Иванов (ZX-Ревю N3 1994)
+  ;(C) 1994 А.А.Иванов (ZX-Ревю N3 1994)
   ;-------------------------------------
   ; программа вычисляет адрес экрана по знакоместам
   ; Вход: DE - позиция в знакоместах
   ; Выход: DE - экранный адрес
 
-SCREEN_ADDR EQU #4000
-ATTR_ADDR EQU SCREEN_ADDR+#1800
-
 sprArray defw 0; указатель на массив спрайтов
 
-MACRO initSpriteArray n
-  LD HL, n
-  LD (screen.sprArray), HL
-ENDM
+;initSpriteArray:
+  ;LD (screen.sprArray), HL
+  ;RET
 
 ; вычисляем позицию адрес по позиции знакоместа
 ; DE - D-x, E-y
@@ -30,7 +26,7 @@ calc_pos_to_addr_DE:
     LD   E,A
     LD   A,D
     AND  #18
-    OR   #40
+    OR   SCREEN_ADDR_H
     LD   D,A
     RET
 
@@ -40,7 +36,7 @@ calc_pos_to_addr_DE:
 calc_str_begin_to_addr: //E-y
     PUSH AF
     AND #18
-    OR #40
+    OR SCREEN_ADDR_H
     LD D,A
     POP AF
     AND 7
