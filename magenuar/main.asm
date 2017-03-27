@@ -6,7 +6,7 @@ prg_start:
   call game.start
   RET
 
-  include "defines.asm"
+  include "magenuar/defines.asm"
   include "engine/game.asm"
 
 end_code
