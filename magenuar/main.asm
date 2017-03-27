@@ -4,6 +4,7 @@ org #7000;
   include "magenuar/defines.asm"
 
 prg_start:
+  call datablock.int_init
   call game.init
   call game.start
   RET

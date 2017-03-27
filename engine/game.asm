@@ -24,11 +24,11 @@ cursor_loop:
   ;CP 1
   ;RET Z;
   call Gamescreen.show
-  DI
-  ld hl, SCREEN_ADDR
-  ld de, #4000
-  CALL shadowscreen.copy_to_buf
-  EI
+  ;DI
+  ;ld hl, SCREEN_ADDR
+  ;ld de, #4000
+  ;CALL shadowscreen.copy_to_buf
+  ;EI
 
   call input.get_sinclair_key
   ;JP move_map;

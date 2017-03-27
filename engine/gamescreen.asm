@@ -28,11 +28,11 @@ show:
   call show_tile
 ; получаем код ячейки под курсором
   call getCursorCell
-  DI
-  ld hl, SCREEN_ADDR
-  ld de, #4000
-  CALL shadowscreen.copy_to_buf
-  EI
+  ;DI
+  ;ld hl, SCREEN_ADDR
+  ;ld de, #4000
+  ;CALL shadowscreen.copy_to_buf
+  ;EI
 ; и печатаем его
   ;LD C, A
   ;LD B, 0
