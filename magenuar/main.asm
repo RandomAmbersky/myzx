@@ -1,12 +1,13 @@
 DEVICE zxspectrum128
 org #7000;
 
+  include "magenuar/defines.asm"
+
 prg_start:
   call game.init
   call game.start
   RET
 
-  include "magenuar/defines.asm"
   include "engine/game.asm"
 
 end_code

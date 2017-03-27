@@ -1,7 +1,5 @@
   MODULE Gamescreen
 
-include "engine/sys/screen.asm"
-
 ; это уже подсчеты...
 scrWidth equ 32/tileSize ; 32 знакоместа по горизонтали
 scrHeight equ 24/tileSize; 24 знакоместа по вертикали
@@ -14,7 +12,9 @@ curPos Point 0,0
 mapCurPos Point 0,0
 
 init:
-  initSpriteArray mapTiles
+  LD HL, datablock.mapTiles
+  LD (screen.sprArray), HL
+
   LD HL, #0000
   LD (mapPos), HL
   LD HL, #0303
@@ -22,14 +22,17 @@ init:
   RET
 
 show:
-  ;LD A,0
-  ;call lookAtHero
   call lookAtMap_def;
   LD DE, (curPos)
   LD A, #09
   call show_tile
 ; получаем код ячейки под курсором
   call getCursorCell
+  DI
+  ld hl, SCREEN_ADDR
+  ld de, #4000
+  CALL shadowscreen.copy_to_buf
+  EI
 ; и печатаем его
   ;LD C, A
   ;LD B, 0
@@ -178,7 +181,5 @@ cur_right:
   JP NC, scr_right
   LD (curPos.x),A
   RET
-
-mapTiles include tileFile
 
   ENDMODULE

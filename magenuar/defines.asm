@@ -1,4 +1,9 @@
 
+; OUR SHADOWSCREEN :)
+SCREEN_ADDR_H EQU #C0
+SCREEN_ADDR EQU #C000
+ATTR_ADDR EQU SCREEN_ADDR+#1800
+
 ; MAP ZONE
 mapSize=32;100; размер карты; а в RebelStar2 - 50x80
 DEFINE mapFile "magenuar/mage_map.asm"

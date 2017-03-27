@@ -1,5 +1,5 @@
 DEVICE zxspectrum128
-org #7000;
+org #6000;
 
 prg_start:
   call game.init

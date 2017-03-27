@@ -1,7 +1,7 @@
   MODULE game
 
 init
-  call Sound.rnd
+  ;call Sound.rnd
   call Map.init
   call MazeGenerator.init
   call MazeGenerator.fast_init_maze
@@ -10,7 +10,7 @@ init
   RET
 
 start:
-  call Sound.skrebok
+  ;call Sound.skrebok
   ;ret
 
 cursor_loop:
@@ -24,6 +24,12 @@ cursor_loop:
   ;CP 1
   ;RET Z;
   call Gamescreen.show
+  DI
+  ld hl, SCREEN_ADDR
+  ld de, #4000
+  CALL shadowscreen.copy_to_buf
+  EI
+
   call input.get_sinclair_key
   ;JP move_map;
   JP move_cursor;
@@ -88,7 +94,6 @@ MAP_DOWN
 MAP_SELECT
     RET
 
-
 hero_loop:
 
     RET
@@ -98,7 +103,11 @@ hero_loop:
   include "engine/defines_engine.asm"
   include "engine/gamescreen.asm"
   include "engine/personages.asm"
-  include "engine/sys/input.asm"
-  include "engine/sys/sound.asm"
   include "engine/map.asm"
   include "engine/maze_generator.asm"
+  include "engine/sys/screen.asm"
+  include "engine/sys/shadowscreen.asm"
+  include "engine/sys/input.asm"
+  include "engine/sys/sound.asm"
+
+  include "engine/datas.asm"

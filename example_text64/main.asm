@@ -3,6 +3,10 @@ DEVICE zxspectrum48
 ORG #8000
 prg_start: JP Start
 
+SCREEN_ADDR_H EQU #40
+SCREEN_ADDR EQU #4000
+ATTR_ADDR EQU SCREEN_ADDR+#1800
+
   include "engine/sys/screen.asm"
   include "engine/sys/text.asm"
   include "example_text64/lang_ru.asm"

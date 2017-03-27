@@ -6,7 +6,7 @@ init
 
 ; тестовая функция заполняет спрайтами карту по очереди от 0 до 256 и далее опять 0...
 init_map:
-  LD HL, mapArray
+  LD HL, datablock.mapArray
   LD BC, mapSize * mapSize; ширина x высота
   LD E, #00
 init_map_loop:
@@ -37,11 +37,9 @@ no_mul
   LD D,0
   LD E,C
   ADD HL,DE; в HL у нас
-  LD DE, mapArray
+  LD DE, datablock.mapArray
   ADD HL, DE
   RET
 
-mapArray include mapFile
-  ;DEFS mapSize*mapSize
 
   ENDMODULE
