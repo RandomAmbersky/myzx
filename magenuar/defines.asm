@@ -12,5 +12,8 @@ DEFINE tileFile "magenuar/mage_sprite.asm"
 DEFINE tileSize 4; сколько знакомест в одном спрайте
 DEFINE show_tile screen.show_tile_4x4
 
+;GUI SPRITES
+DEFINE guiFile "magenuar/mage_nuar.asm"
+
 ; CHARACTERS ZONE
 DEFINE persFile "magenuar/character_list.asm"

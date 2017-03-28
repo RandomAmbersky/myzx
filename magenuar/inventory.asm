@@ -4,7 +4,7 @@ show:
 show_inv_map:
   LD HL, (screen.sprArray)
   PUSH HL
-  LD HL, mage_nuar_spr
+  LD HL, datablock.guiTiles
   LD (screen.sprArray), HL
   call show_inv_spr
   call shadowscreen.show

@@ -3,12 +3,13 @@
 datablock_begin:
 mapTiles include tileFile
 mapArray include mapFile
+guiTiles include guiFile
+datablock_end:
 
 SCREEN_SEGMENT_SIZE EQU 2048
 SCREEN_SEGMENT_LINES EQU 64
 SCREEN_ATTRIBUTES_SIZE EQU 768
 SCREEN_TOTAL_SIZE EQU 3*SCREEN_SEGMENT_SIZE + SCREEN_ATTRIBUTES_SIZE
-end_datablock:
 
 ORG #C000
 shadowscreen_begin:
