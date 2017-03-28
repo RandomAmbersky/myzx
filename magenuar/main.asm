@@ -1,22 +1,23 @@
-DEVICE zxspectrum128
+DEVICE zxspectrum48
 org #7000;
+
+prg_start:
 
   include "magenuar/defines.asm"
 
-prg_start:
-  call datablock.int_init
+  ;call datablock.int_init
   call game.init
-  call inventory.show
+  ;call inventory.show
+  ;call input.get_sinclair_key
   call game.start
   RET
 
   include "engine/game.asm"
-  include "magenuar/inventory.asm"
+  ;include "magenuar/inventory.asm"
+  ;DISPLAY "--- program end: ",$
 
-  ORG datablock.end_datablock
-mage_nuar_spr:
-  include "magenuar/mage_nuar.asm"
-  DISPLAY "--- datablock2 end: ",$
+  ;ORG datablock.end_datablock+1
+  ;DISPLAY "--- datablock2 end: ",$
 
 end_code
 

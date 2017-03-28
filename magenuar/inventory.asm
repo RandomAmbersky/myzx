@@ -2,8 +2,14 @@
 show:
   LD DE, #0000
 show_inv_map:
+  LD HL, (screen.sprArray)
+  PUSH HL
+  LD HL, mage_nuar_spr
+  LD (screen.sprArray), HL
   call show_inv_spr
   call shadowscreen.show
+  POP HL
+  LD (screen.sprArray), HL
   RET
 
 show_inv_spr:
@@ -11,6 +17,7 @@ show_inv_spr:
   LD ( Gamescreen.add_map_size + 1 ), A
   LD HL,inv_map
   LD BC, 8*256+6;scrWidth*256 + scrHeight ;
+  LD DE, #0000 ; current pos draw variable
   call Gamescreen.loop2
   RET
 
@@ -22,4 +29,8 @@ inv_map:
   defb 32,01,34,35,36,37,01,01;
   defb 40,01,42,43,44,45,01,01;
   defb 48,01,50,51,52,53,01,01;
+
+mage_nuar_spr:
+    include "magenuar/mage_nuar.asm"
+
   ENDMODULE
