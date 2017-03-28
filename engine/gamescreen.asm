@@ -91,6 +91,8 @@ lookAtHero_set_x:
 ; функция показа карты
 ; в HL - указатель на позицию в mapArray
 showMap:
+  LD HL, datablock.mapTiles
+  LD (screen.sprArray), HL
   LD A, mapSize
   LD (add_map_size+1), A
   LD BC, scrWidth*256 + scrHeight ;#100C ; width and height screen - 16 x 12

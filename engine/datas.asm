@@ -4,9 +4,9 @@
 ;tiles_start equ $
   DISPLAY "--- datablock begin: ",$
 mapTiles include tileFile
-  DISPLAY "tileFile end ",$
+  ;DISPLAY "tileFile end ",$
 mapArray include mapFile
-  DISPLAY "mapFile end ",$
+  ;DISPLAY "mapFile end ",$
 ;persArray include persFile
 
 SCREEN_SEGMENT_SIZE EQU 2048
@@ -15,7 +15,7 @@ SCREEN_ATTRIBUTES_SIZE EQU 768
 SCREEN_TOTAL_SIZE EQU 3*SCREEN_SEGMENT_SIZE + SCREEN_ATTRIBUTES_SIZE
 end_datablock:
     DISPLAY "--- datablock end: ",$
-    
+
 ORG #C000
 DISPLAY "--- shadowscreen begin: ",$
 SHADOW_SCREEN_ADDR:
