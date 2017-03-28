@@ -7,9 +7,7 @@ prg_start:
   call datablock.int_init
   call game.init
   call inventory.show
-  ;call game.start
-  DI
-  HALT
+  call game.start
   RET
 
   include "engine/game.asm"
