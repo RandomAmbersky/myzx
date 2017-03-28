@@ -5,19 +5,18 @@ prg_start:
 
   include "magenuar/defines.asm"
 
-  ;call datablock.int_init
+  call datablock.int_init
   call game.init
-  ;call inventory.show
-  ;call input.get_sinclair_key
+  call inventory.show
   call game.start
   RET
 
   include "engine/game.asm"
-  ;include "magenuar/inventory.asm"
+  include "magenuar/inventory.asm"
   ;DISPLAY "--- program end: ",$
 
-  ;ORG datablock.end_datablock+1
-  ;DISPLAY "--- datablock2 end: ",$
+  ORG datablock.end_datablock+1
+  DISPLAY "--- datablock2 end: ",$
 
 end_code
 
