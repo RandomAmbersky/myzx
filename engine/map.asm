@@ -11,7 +11,7 @@ scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция 
 
 mapPos Point 0,0
 curPos Point 0,0
-curMode db #09
+curMode db #ff
 mapArray dw 00
 
   MACRO map.set map_p
