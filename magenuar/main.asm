@@ -16,17 +16,15 @@ end_code
 
   include "engine/interrupt.asm"
 
-DISPLAY "datablock begin: ",datablock.datablock_begin
-DISPLAY "datablock end: ",datablock.datablock_end
+DISPLAY "datablock: ",datablock.datablock_begin,"-",datablock.datablock_end
+DISPLAY "shadowscreen: ",datablock.shadowscreen_begin,"-",datablock.shadowscreen_end
+DISPLAY "interrupt: ",interrupt.interrupt_begin,"-",interrupt.interrupt_end
+DISPLAY "font: ",datablock.font_begin,"-",datablock.font_end
 
-DISPLAY "shadowscreen begin: ",datablock.shadowscreen_begin
-DISPLAY "shadowscreen end: ",datablock.shadowscreen_end
-
-DISPLAY "interrupt begin: ",interrupt.interrupt_begin
-DISPLAY "interrupt end: ",interrupt.interrupt_end
-
-DISPLAY /D, datablock.shadowscreen_begin-datablock.datablock_end, " free1"
-DISPLAY /D, interrupt.interrupt_begin-datablock.shadowscreen_end, " free2"
+DISPLAY /D, datablock.shadowscreen_begin-datablock.datablock_end, " free0"
+DISPLAY /D, interrupt.interrupt_begin-datablock.shadowscreen_end, " free1"
+DISPLAY /D, datablock.font_begin-interrupt.interrupt_end, " free2"
+DISPLAY /D, 0x10000-datablock.font_end, " free3"
 
   ;display /D, end_code-prg_start, " size, ", /D, datablock.shadowscreen_begin-end_code, " free"
 

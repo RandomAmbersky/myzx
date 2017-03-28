@@ -1,11 +1,11 @@
   MODULE shadowscreen
 
 show:
-  ld hl, datablock.SHADOW_SCREEN_ADDR
+  ld hl, SHADOW_SCREEN_ADDR
   ld de, REAL_SCREEN_ADDR
 
 copy_to_buf:
-  ld bc, datablock.SCREEN_TOTAL_SIZE
+  ld bc, SCREEN_TOTAL_SIZE
 copy_to_buf_loop:
   DUP 64
   ldi

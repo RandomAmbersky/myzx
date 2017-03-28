@@ -103,12 +103,13 @@ hero_loop:
 
   include "engine/defines_engine.asm"
   include "engine/gamescreen.asm"
-  include "engine/personages.asm"
+;  include "engine/personages.asm"
   include "engine/map.asm"
   include "engine/maze_generator.asm"
   include "engine/sys/screen.asm"
   include "engine/sys/shadowscreen.asm"
   include "engine/sys/input.asm"
+  include "engine/sys/text.asm"
   include "engine/sys/sound.asm"
   include "magenuar/inventory.asm"
 

@@ -2,16 +2,48 @@
 show:
   LD DE, #0000
 show_inv_map:
-  LD HL, (screen.sprArray)
-  PUSH HL
-  LD HL, datablock.guiTiles
-  LD (screen.sprArray), HL
-  call show_inv_spr
+  LD A, FONT_64H
+  CALL Text.setFont64; init font_64
+  ;LD HL, (screen.sprArray)
+  ;PUSH HL
+  ;LD HL, datablock.guiTiles
+  ;LD (screen.sprArray), HL
+  ;call show_inv_spr
+  Text.print64 1, datablock.tHat
+  Text.printNext datablock.tDb
+
+  Text.print64 2, datablock.tMedalion
+  Text.printNext datablock.tDb
+
+  Text.print64 3, datablock.tRobe
+  Text.printNext datablock.tDb
+
+  Text.print64 4, datablock.tCloak
+  Text.printNext datablock.tDb
+
+  Text.print64 5, datablock.tShoes
+  Text.printNext datablock.tDb
+
+  Text.print64 6, datablock.tGloves
+  Text.printNext datablock.tDb
+
+  Text.print64 7, datablock.tRing
+  Text.printNext datablock.tDb
+
+  Text.print64 8, datablock.tWand
+  Text.printNext datablock.tDb
+
   call shadowscreen.show
   call input.get_sinclair_key
-  POP HL
-  LD (screen.sprArray), HL
+  ;POP HL
+  ;LD (screen.sprArray), HL
   RET
+
+;RusNet_HELLO
+    ;DEFB "          ..--=( ~~~~ MAGE NUAR ~~~~ )=--..          ",0
+
+show_inventory_text:
+
 
 show_inv_spr:
   LD A, 8

@@ -18,6 +18,7 @@ interrupt_routine:
   push hl
   push de
   push ix
+  defb 00,00,00
 return_routine:
   pop ix              ; restore registers.
   pop de
