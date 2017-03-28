@@ -6,10 +6,19 @@ org #7000;
 prg_start:
   call datablock.int_init
   call game.init
-  call game.start
+  call inventory.show
+  ;call game.start
+  DI
+  HALT
   RET
 
   include "engine/game.asm"
+  include "magenuar/inventory.asm"
+
+  ORG datablock.end_datablock
+mage_nuar_spr:
+  include "magenuar/mage_nuar.asm"
+  DISPLAY "--- datablock2 end: ",$
 
 end_code
 
