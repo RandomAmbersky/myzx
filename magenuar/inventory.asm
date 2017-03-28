@@ -1,25 +1,17 @@
   MODULE inventory
 show:
-  LD HL, mage_nuar_spr
-  LD (screen.sprArray), HL
   LD DE, #0000
 show_inv_map:
-  ;LD BC,
   call show_inv_spr
   call shadowscreen.show
   RET
 
 show_inv_spr:
-  ;LD HL, mage_nuar_spr
-  ;LD DE, datablock.SHADOW_SCREEN_ADDR
-  ;LD A, 32
-  ;call screen.spr_loop_4x4
   LD A, 8
   LD ( Gamescreen.add_map_size + 1 ), A
   LD HL,inv_map
-  LD BC, 8*256+6;scrWidth*256 + scrHeight ;#
+  LD BC, 8*256+6;scrWidth*256 + scrHeight ;
   call Gamescreen.loop2
-
   RET
 
 inv_map:
