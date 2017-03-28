@@ -3,13 +3,9 @@
 datablock_begin:
 mapTiles include tileFile
 mapArray include mapFile
-guiTiles include guiFile
+;guiTiles include guiFile
+textData include langFile
 datablock_end:
-
-SCREEN_SEGMENT_SIZE EQU 2048
-SCREEN_SEGMENT_LINES EQU 64
-SCREEN_ATTRIBUTES_SIZE EQU 768
-SCREEN_TOTAL_SIZE EQU 3*SCREEN_SEGMENT_SIZE + SCREEN_ATTRIBUTES_SIZE
 
 ORG #C000
 shadowscreen_begin:
@@ -18,5 +14,10 @@ SHADOW_SCREEN_ADDR:
 SHADOW_ATTR_ADDR:
  DS SCREEN_ATTRIBUTES_SIZE, %00111000
 shadowscreen_end:
+
+ORG FONT_64
+font_begin:
+incbin "p8_font.bin"
+font_end:
 
   ENDMODULE
