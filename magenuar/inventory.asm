@@ -31,7 +31,4 @@ inv_map:
   defb 40,01,42,43,44,45,01,01;
   defb 48,01,50,51,52,53,01,01;
 
-mage_nuar_spr:
-    include "magenuar/mage_nuar.asm"
-
   ENDMODULE
