@@ -9,9 +9,10 @@
 
 sprArray defw 0; указатель на массив спрайтов
 
-;initSpriteArray:
-  ;LD (screen.sprArray), HL
-  ;RET
+  MACRO screen.selectSprSet spr
+      LD HL, spr
+      LD (screen.sprArray), HL
+    ENDM
 
 ; вычисляем позицию адрес по позиции знакоместа
 ; DE - D-x, E-y
