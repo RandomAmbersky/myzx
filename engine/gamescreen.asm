@@ -91,6 +91,8 @@ lookAtHero_set_x:
 ; функция показа карты
 ; в HL - указатель на позицию в mapArray
 showMap:
+  LD A, mapSize
+  LD (add_map_size+1), A
   LD BC, scrWidth*256 + scrHeight ;#100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
 loop2:
@@ -112,6 +114,7 @@ loop:
   INC E
   POP HL; //origin map pointer
   LD B, 0
+add_map_size:
   LD A, mapSize
   LD C, A
   ADD HL, BC; увеличиваем смещение указателя карты на ее ширину
