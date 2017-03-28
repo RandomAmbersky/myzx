@@ -46,8 +46,8 @@ ret_enc:
 ; Вход: DE - позиция на карте, D-x, E-y
 ; Выход - A=1, в currPersonage указатель на персонажа
 ;         A=0 если персонаж не найден
-  MACRO encounter.find_at
 
+  MACRO encounter.find_encounter
   LD IX, (encArray); указатель на массив персонажей
   LD B, EncountersNum; число персонажей
  ;  проверяем совпадают ли координаты c персонажем
