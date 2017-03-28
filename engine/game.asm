@@ -73,9 +73,10 @@ CUR_DOWN
     call Gamescreen.cur_down
     JR cursor_loop
 CUR_SELECT
-    LD A,1
-    call Gamescreen.lookAtHero
+    ;LD A,1
+    ;call Gamescreen.lookAtHero
     ;call Sound.hiss
+    call inventory.show
     JR cursor_loop
     ;RET
 

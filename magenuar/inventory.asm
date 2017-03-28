@@ -8,6 +8,7 @@ show_inv_map:
   LD (screen.sprArray), HL
   call show_inv_spr
   call shadowscreen.show
+  call input.get_sinclair_key
   POP HL
   LD (screen.sprArray), HL
   RET
