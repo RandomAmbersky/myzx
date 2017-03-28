@@ -110,5 +110,6 @@ hero_loop:
   include "engine/sys/shadowscreen.asm"
   include "engine/sys/input.asm"
   include "engine/sys/sound.asm"
+  include "magenuar/inventory.asm"
 
   include "engine/datas.asm"

@@ -11,17 +11,13 @@ prg_start:
   call game.start
   RET
 
-  include "magenuar/inventory.asm"
   include "engine/game.asm"
-ORG datablock.end_datablock
-DISPLAY "--- datablock2 begin: ",$
-mage_nuar_spr:
-      include "magenuar/mage_nuar.asm"
-  DISPLAY "--- datablock2 end: ",$
-
 end_code
 
-include "engine/interrupt.asm"
+  include "engine/interrupt.asm"
+
+DISPLAY "datablock begin: ",datablock.datablock_begin
+DISPLAY "datablock end: ",datablock.datablock_end
 
 DISPLAY "shadowscreen begin: ",datablock.shadowscreen_begin
 DISPLAY "shadowscreen end: ",datablock.shadowscreen_end
@@ -29,6 +25,9 @@ DISPLAY "shadowscreen end: ",datablock.shadowscreen_end
 DISPLAY "interrupt begin: ",interrupt.interrupt_begin
 DISPLAY "interrupt end: ",interrupt.interrupt_end
 
-  display /D, $-prg_start, " size, ", /D, 0x10000-$, " free"
+DISPLAY /D, datablock.shadowscreen_begin-datablock.datablock_end, " free1"
+DISPLAY /D, interrupt.interrupt_begin-datablock.shadowscreen_end, " free2"
+
+  ;display /D, end_code-prg_start, " size, ", /D, datablock.shadowscreen_begin-end_code, " free"
 
   SAVESNA "myzx.sna",prg_start
