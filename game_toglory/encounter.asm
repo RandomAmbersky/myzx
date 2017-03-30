@@ -4,6 +4,13 @@
   DEFINE bit_opened    %00000010
   DEFINE bit_character %00000100; это персонаж (?) мы вроде и так сначала проверяем на "персонажесть
 
+; типы воздействий
+; - полевое
+; - ментоконтроль
+; - кинетическое
+; - плазма
+; - кварки
+
 STRUCT encounter_str
 bitset1 db 00; // type
 name dw 00; pointer to name

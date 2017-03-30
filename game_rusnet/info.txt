@@ -1,0 +1,95 @@
+параметры:
+
+- русы
+- имперцы
+- коммунисты
+- еврокорп
+- чинакорп
+
+ Амплуа:
+ HP:
+ Интеллект:
+ Хакинг:
+
+ else if (tp=='dec')window.document.attrib.Decr.value = smax('dec',vl);
+ else if (tp=='int')window.document.attrib.Intr.value = smax('int',vl);
+ else if (tp=='st')window.document.attrib.St.value = smax('st',vl);
+ else if (tp=='pr')window.document.attrib.Prot.value = smax('pr',vl);
+ else if (tp=='as')window.document.attrib.Asy.value = smax('as',vl);
+ else if (tp=='aic')window.document.attrib.AICE.value = smax('aic',vl);
+ else if (tp=='app')window.document.attrib.APers.value = smax('app',vl);
+ else if (tp=='det')window.document.attrib.Det.value = smax('det',vl);
+
+типы ячеек:
+// cg - codegate
+// w - data wall
+// st - stealth
+// dec - decrypt
+// int - intrus
+// pr - Protection
+//as - Anti-System
+//aic - Anti-ICE
+//app - Anti-Personnel
+//det - Detection Programm
+//c - cpu
+
+
+//Datawall Erase
+hac = hac + Intr;
+adm= adm+parseInt(tp);
+
+// CodeGate erase
+hac=hac+Decr;
+adm=+parseInt(tp);
+
+// CPU fault
+hac=hac+Asy;
+adm=adm+parseInt(fnd('w'));
+
+// Data erase
+hac=hac+AICE;
+adm=adm+parseInt(tp)
+
+// CPU AttacK
+hac=Int+Hack+Prot+dice(3,6);
+adm=pow+sec+max=fnd('app')+dice(3,6);dm=adm-hac;
+
+
+
+-----
+
+2) Decryption vs. Codegate
+ Decryption Program Str + 1d10 vs. Codegate Str+1d10
+
+ falut decryption:
+    3) Intrusion vs. Datawall
+    Intrustion Program Str+1d10 vs. Datawall Str+1d10
+      success intrusion: -> 4)
+      fault intrusion: unnoticed->3), noticed -> combat
+
+  success decryption:
+    4) Stealth vs. Detection
+    Detection Str+1d10 vs. Stealth Str+1d10
+
+    success stealth:
+      Locate CPU and either run a Menu Command or operate a remote using the approprate utility.
+
+    fault stealth - combat
+
+
+Initiative:
+
+Human Intelligence + Deck Speed + 1D10
+Computer Intelligence (CPUx3) + 1d10
+
+Intruder attacks ICE
+Anti-ICE Program Str + Intelligence + Interface vs. Program Str + Computer Intelligence (CPUx3).
+
+Intruder attacks SysAdmin or SysAdmin attacks Intruder
+Anti-Personnell Program Str + Intelligence + Interface vs. Protection Program Str + Intelligence + Interface
+
+Defending CPU attacks Intruder
+Anti-Personnell Program Str + Computer Intelligence (CPUx3) vs. Protection Program Str + Intelligence + Interface
+
+Defending CPU attacks Intruder's Cyberdeck
+Anti-System Program Str + Computer Intelligence (CPUx3) vs. Cyberdeck's Datawall Str + Protection Program Str + 1d10
