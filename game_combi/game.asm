@@ -1,6 +1,7 @@
   MODULE game
 
 init:
+  call map.init_map
   LD HL, #0000
   LD (map.mapPos), HL
   LD HL, #0303
@@ -11,7 +12,6 @@ start_loop:
   call cursor_mode
   jp start_loop
   RET
-
 
 cursor_mode: ;обозреваем карту
   call map.lookAtPos

@@ -9,7 +9,7 @@
 
 sprArray defw 0; указатель на массив спрайтов
 
-  MACRO screen.selectSprSet spr
+  MACRO screen.selectSpriteSet spr
       LD HL, spr
       LD (screen.sprArray), HL
     ENDM

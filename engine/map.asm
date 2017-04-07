@@ -80,6 +80,14 @@ add_map_size:
     JR NZ, loop2
     RET
 
+; взять код в ячейке карты
+; Вход: DE - pos,  D - x, E - y
+; Выход: HL - адрес ячейки, A - содержимое её
+get_cell:
+  call pos_to_addr
+  LD A, (HL)
+  ret
+
 ; переводим pos в указатель на ячейку в массиве карты
 ; Вход: DE - pos,  D - x, E - y
 ; Выход: HL - указатель

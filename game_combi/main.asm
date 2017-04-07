@@ -10,14 +10,13 @@ org #7000;
   include "engine/sys/input.asm"
   include "engine/sys/text.asm"
   include "engine/sys/shadowscreen.asm"
-  include "engine/sys/math.asm"
   include "engine/map.asm"
 
-  ;include "game_toglory/encounter.asm"
   include "game_combi/game.asm"
+  include "game_combi/encounters.asm"
 
 prg_start:
-  screen.selectSprSet spriteData  ; init sprites
+  screen.selectSpriteSet spriteData  ; init sprites
   map.set mapData                 ; init map data
 
   call game.init
