@@ -1,7 +1,8 @@
   MODULE game
 
 init:
-  call map.init_map
+  ;call map.init_map
+  call heroes.init
   LD HL, #0000
   LD (map.mapPos), HL
   LD HL, #0303

@@ -14,10 +14,12 @@ org #7000;
 
   include "game_combi/game.asm"
   include "game_combi/encounters.asm"
+  include "game_combi/heroes.asm"
 
 prg_start:
   screen.selectSpriteSet spriteData  ; init sprites
-  map.set mapData                 ; init map data
+  map.set mapData                    ; init map data
+  heroes.set heroData
 
   call game.init
   call game.start_loop
@@ -29,8 +31,14 @@ mapData:
 spriteData:
   include "game_combi/rebelstar.asm"
 
+soldierRed:
+  include "game_combi/soldier_red.asm"
+
 ;encounterData:
   ;include "game_toglory/encounter_data.asm"
+
+heroData:
+    include "game_combi/personages.asm"
 
 textData:
     include "game_combi/lang_ru.asm"
