@@ -6,9 +6,9 @@ act_look  EQU 0x02
 act_take  EQU 0x03
 act_use   EQU 0x04
 
-  MACRO set_action act, ptr
-    defb act;
-    defw ptr
+  MACRO set_action action,action_ptr
+    defb action
+    defw action_ptr
   ENDM
 
 ; ячейка карты cell

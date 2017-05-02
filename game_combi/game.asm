@@ -16,10 +16,10 @@ start_loop:
 
 cursor_mode: ;обозреваем карту
   call map.lookAtPos
-  LD DE, #0000
-  LD B,0
-  LD C, encounters.act_stand
-  call encounters.process_cell_action
+  ;LD DE, #0000
+  ;LD B,0
+  ;LD C, encounters.act_stand
+  ;call encounters.process_cell_action
   ;call map.showCursor
   call shadowscreen.show
   call input.get_sinclair_key
