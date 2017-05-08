@@ -24,14 +24,14 @@ act_use   EQU 0x04
 ; C - действие
 process_cell_action:
   PUSH BC
-  call map.get_cell; в HL - указатель на ячейку, A - содержимое ячейки
+  call map.get_cell; на выходе в HL - указатель на ячейку, A - содержимое ячейки
   LD L,A
   LD H,0
   ADD HL, HL; массив у нас dw - умножаем на два..
   LD BC, cells_types_spr
   ADD HL, BC
   LD DE,(HL); в DE адрес процедуры обработки действия
-  POP BC; b - vector, c - action
+  POP BC; b - направление движения, c - action
 process_cell_loop:
   LD A,(DE)
   CP 0
@@ -64,6 +64,7 @@ cGreenBush:
 
 move_on_cell:
   RET
+
 ; предметы item
 ; look
 ; take

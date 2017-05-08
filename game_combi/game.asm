@@ -15,7 +15,14 @@ start_loop:
   RET
 
 cursor_mode: ;обозреваем карту
+  EI
+  HALT
+  LD A,7
+  OUT (#FE),A
   call map.lookAtPos
+  LD A,1
+  OUT (#FE),A
+  JP cursor_mode
   ;LD DE, #0000
   ;LD B,0
   ;LD C, encounters.act_stand
@@ -33,6 +40,8 @@ cursor_mode: ;обозреваем карту
   JR Z,map_up
   CP input.FIRE
   JR Z,map_select
+  LD A,1
+  OUT (#FE),A
   JP cursor_mode
   RET
 
