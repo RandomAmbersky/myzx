@@ -17,8 +17,8 @@
 
 
 DEVICE zxspectrum48
-org #7000;
-prg_start:
+//org #7000;
+//prg_start:
 
 /*
 MACRO	_wait	time
@@ -131,13 +131,17 @@ en_pop		inc hl
 en_pop_ex	ret
 */
 
-ORG	#8000	;старт программы ровно по центру памяти 48К
-START
-		DI		;запрет прерываний на всякий случай
+	ORG	#8000	;старт программы ровно по центру памяти 48К
+prg_start:
 
-		XOR A
-		OUT(#FE),A
-		CALL RAND_INIT
+	LD HL,snd_start
+        CALL vt_start+3
+
+	DI		;запрет прерываний на всякий случай
+
+	XOR A
+	OUT(#FE),A
+	CALL RAND_INIT
 
 	LD   HL,POPOV
        	LD   DE,#4000
@@ -147,6 +151,7 @@ START
 dt equ 32*4
 
 LOOP0
+	DI
 	CALL RND255
 	LD (LOOP2+1), A
 	AND %01111000
@@ -159,18 +164,14 @@ LOOP2
 	LD D,A
 	LD E,A
 
-    	DUP 192*2
+    	DUP 192*2-dt/2
     	PUSH DE
     	EDUP
 
-    	LD B,#ff
-.lp1    DEC B
-    	JR NZ, .lp1
-
-	;DEC	C	;уменьшаем счетчик ширины на единицу
-	;JR	NZ,LOOP2;пока C не достигло нуля, прыгаем на LOOP2, иначе идем дальше
+	EI
+	HALT
+	CALL vt_start+5
 	JP LOOP0
-
 
 RAND_INIT
 	LD HL, (23670)
@@ -194,11 +195,26 @@ RND255 	LD    HL,0x0000
                          ; старшего байта счетчика
 	RET                         
 
+prg_end
+data_start
+
 POPOV: 
 	incbin "popov.scr"
+
+snd_start:
+	incbin "Jubbles_.pt3"
+
+data_end
+
+ORG #C000	
+vt_start:
+	include "PTSPLAY.ASM"
+vt_end
+
+display "prog: ", prg_start, " ", prg_end
+display "data: ", data_start, " ", data_end
+display "player: ", vt_start, " ", vt_end
 
 display /D, $-prg_start, " size, ", /D, 0x10000-$, " free"
 
 SAVESNA "myzx.sna",prg_start
-SAVETAP "7may.tap",prg_start
-
