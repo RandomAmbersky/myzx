@@ -1,26 +1,30 @@
 DEVICE zxspectrum48
 ORG #8000
 ; ------------- prog begin ---------------
-_prog_start:
+_prog_start: jp main
 
 	include "rpglang/defines.asm"
+	include "rpglang/rpglang.asm"
+	include "rpglang/input_system.asm"
+	include "rpglang/script_system.asm"
+	include "rpglang/graphic_system.asm"
+	include "rpglang/sound_system.asm"
 
-	call rpglang.init
-	LD HL, script_begin
+main:
+	rpglang.init script_begin
 	call rpglang.process
 	ret
-
-	include "rpglang/rpglang.asm"
 
 _prog_end
 ; ------------- prog end ---------------
 ; ------------- data begin ---------------
 _data_start
 
-	include "rpglang/globaldata.asm"
+	;include "rpglang/globaldata.asm"
 
 script_begin:
-	_endByte;
+	rAnyKeyWait;
+	defb _endByte;
 
 _data_end;
 ; ------------- data end ---------------
