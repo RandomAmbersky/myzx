@@ -9,7 +9,6 @@ MACRO rpglang.init ptr
 	rpglang.saveScriptAddr
 ENDM
 
-
 ; на входе в HL - адрес скриптов
 process:
 	LD HL, 0x0000
@@ -26,6 +25,8 @@ process_lp:
 	jr z, input_system.enter
 	dec a; sound system
 	jr z, sound_system.enter
+	dec a; gfx system
+	jr z, gfx_system.enter
 	jr process_lp
 
 	ENDMODULE

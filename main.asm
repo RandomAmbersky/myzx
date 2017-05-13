@@ -9,6 +9,7 @@ _prog_start: jp main
 	include "rpglang/script_system.asm"
 	include "rpglang/graphic_system.asm"
 	include "rpglang/sound_system.asm"
+	include "rpglang/gfx_system.asm"
 
 main:
 	rpglang.init script_begin
@@ -23,8 +24,10 @@ _data_start
 	;include "rpglang/globaldata.asm"
 
 script_begin:
+	;HALT
 	rRandomScreen
-	rKeyAnyWait
+	;rKeyAnyWait
+	rJP script_begin
 	defb _endByte
 
 _data_end;

@@ -1,9 +1,7 @@
 	MODULE input_system
-
-sysnum	equ 0x2; номер подсистемы
 	
 	MACRO rKeyAnyWait
-	defb input_system.sysnum
+	defb input_system_num
 	defb 0
 	ENDM
 
