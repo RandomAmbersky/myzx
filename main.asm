@@ -12,7 +12,7 @@ _prog_start: jp main
 
 main:
 	rpglang.init script_begin
-	call rpglang.process
+	jp rpglang.process
 	ret
 
 _prog_end
@@ -23,8 +23,9 @@ _data_start
 	;include "rpglang/globaldata.asm"
 
 script_begin:
-	rAnyKeyWait;
-	defb _endByte;
+	rRandomScreen
+	rKeyAnyWait
+	defb _endByte
 
 _data_end;
 ; ------------- data end ---------------

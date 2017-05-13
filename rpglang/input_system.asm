@@ -2,10 +2,10 @@
 
 sysnum	equ 0x2; номер подсистемы
 	
-	MACRO rAnyKeyWait
+	MACRO rKeyAnyWait
 	defb input_system.sysnum
 	defb 0
-	ENDM	
+	ENDM
 
 ; на входе HL - указатель на текущий адрес,
 ; a - номер системы
