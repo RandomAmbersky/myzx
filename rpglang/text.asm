@@ -28,7 +28,7 @@ print_64at
   PUSH DE
   PUSH HL
   POP DE
-  CALL math.calc_pos_to_addr_DE
+  CALL math.pos_scr
   PUSH DE
   POP HL
   POP DE
@@ -37,7 +37,7 @@ print_64at
 
 print_64
     PUSH DE
-    CALL math.calc_str_begin_to_addr
+    CALL math.str_scr
     PUSH DE
     POP HL
     POP DE

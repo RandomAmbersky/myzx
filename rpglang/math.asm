@@ -22,7 +22,7 @@ _div_byte_2
 
 ; вычисляем позицию адрес по позиции знакоместа
 ; DE - D-x, E-y
-calc_pos_to_addr_DE:
+pos_scr:
     	LD A,E
     	AND  7
     	RRCA
@@ -40,7 +40,7 @@ calc_pos_to_addr_DE:
 ; вычисляем адресацию экрана по номеру строчки
 ; Вход: A - номер строчки
 ; Выход - DE - адрес экрана
-calc_str_begin_to_addr: //E-y
+str_scr: //E-y
     	PUSH AF
     	AND #18
     	OR high SCREEN_ADDR

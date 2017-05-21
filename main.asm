@@ -16,11 +16,9 @@ _prog_start: jp main
 	include "rpglang/rpg_system.asm"
 
 main:
-	LD HL, p84_font
-	LD A, H
-	;LD A, (high p84_font)
+	LD A, high p84_font
 	call Text.setFont64
-	Text.print64 12, MY_HELLO
+	Text.print64at 30, 0, MY_HELLO
 	;rpglang.init script_begin
 	;jp rpglang.process
 	;ret
@@ -37,7 +35,7 @@ _prog_end
 
 _data_start
 
-MY_HELLO: defb "HELLO hello ПРИВЕТ привет",0
+MY_HELLO: defb "fps",0
 
 script_begin:
 	rFpsMeasureStart
