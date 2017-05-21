@@ -20,4 +20,38 @@ _div_byte_2
 	LD B,D
 	RET
 
+; вычисляем позицию адрес по позиции знакоместа
+; DE - D-x, E-y
+calc_pos_to_addr_DE:
+    	LD A,E
+    	AND  7
+    	RRCA
+    	RRCA
+    	RRCA
+    	ADD  A,D
+    	LD   D,E
+    	LD   E,A
+    	LD   A,D
+    	AND  #18
+    	OR   SCREEN_ADDR_H
+    	LD   D,A
+    	RET
+
+; вычисляем адресацию экрана по номеру строчки
+; Вход: A - номер строчки
+; Выход - DE - адрес экрана
+calc_str_begin_to_addr: //E-y
+    	PUSH AF
+    	AND #18
+    	OR SCREEN_ADDR_H
+    	LD D,A
+    	POP AF
+    	AND 7
+    	RRCA
+    	RRCA
+    	RRCA
+    	LD E,A
+    	RET
+
+
 	ENDMODULE
