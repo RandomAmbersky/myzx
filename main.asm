@@ -5,7 +5,6 @@ _prog_start: jp main
 
 	include "rpglang/defines.asm"
 	include "rpglang/math.asm"
-	include "rpglang/text.asm"
 	include "rpglang/global_data.asm"
 	include "rpglang/rpglang.asm"
 	include "rpglang/input_system.asm"
@@ -17,11 +16,10 @@ _prog_start: jp main
 
 main:
 	LD A, high p84_font
-	call Text.setFont64
-	Text.print64at 30, 0, MY_HELLO
-	;rpglang.init script_begin
-	;jp rpglang.process
-	;ret
+	call graphic_system.init_font
+	rpglang.init script_begin
+	jp rpglang.process
+	ret
 	DI
 	HALT
 
@@ -39,9 +37,10 @@ MY_HELLO: defb "fps",0
 
 script_begin:
 	rFpsMeasureStart
-	;rRandomScreen
-	rKeyAnyWait
-	;rFpsMeasureEnd
+	rRandomScreen
+	rPrintAT 0,30, MY_HELLO
+	;rKeyAnyWait
+	rFpsMeasureEnd
 	rJP script_begin
 	defb _endByte
 

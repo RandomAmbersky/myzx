@@ -20,13 +20,13 @@ process_lp:
 	OR a; script system
 	jp z, script_system.enter
 	dec a; graphic system
-	jr z, graphic_system.enter
+	jp z, graphic_system.enter
 	dec a; input system
 	jr z, input_system.enter
 	dec a; sound system
-	jr z, sound_system.enter
+	jp z, sound_system.enter
 	dec a; gfx system
-	jr z, gfx_system.enter
+	jp z, gfx_system.enter
 	dec a; gfx system
 	JP z, rpg_system.enter
 	jr process_lp

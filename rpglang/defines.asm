@@ -22,3 +22,15 @@ SCREEN_ADDR equ #4000
 		INC HL
 		OR A
 	ENDM
+
+	MACRO rLDE
+		LD DE, (HL)
+		INC HL
+		INC HL
+	ENDM
+
+	MACRO rLBC
+		LD BC, (HL)
+		INC HL
+		INC HL
+	ENDM
