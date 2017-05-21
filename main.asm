@@ -20,7 +20,7 @@ main:
 	LD A, H
 	;LD A, (high p84_font)
 	call Text.setFont64
-	Text.print64 1, MY_HELLO
+	Text.print64 12, MY_HELLO
 	;rpglang.init script_begin
 	;jp rpglang.process
 	;ret
@@ -37,7 +37,7 @@ _prog_end
 
 _data_start
 
-MY_HELLO: defb "asdasd",0
+MY_HELLO: defb "HELLO hello ПРИВЕТ привет",0
 
 script_begin:
 	rFpsMeasureStart

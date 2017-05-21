@@ -15,7 +15,7 @@ sound_system_num equ 3
 gfx_system_num equ 4
 rpg_system_num equ 5
 
-SCREEN_ADDR_H equ #4000
+SCREEN_ADDR equ #4000
 
 	MACRO rLDAor
 		LD A, (HL)

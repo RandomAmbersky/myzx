@@ -33,7 +33,7 @@ calc_pos_to_addr_DE:
     	LD   E,A
     	LD   A,D
     	AND  #18
-    	OR   SCREEN_ADDR_H
+    	OR   high SCREEN_ADDR
     	LD   D,A
     	RET
 
@@ -43,7 +43,7 @@ calc_pos_to_addr_DE:
 calc_str_begin_to_addr: //E-y
     	PUSH AF
     	AND #18
-    	OR SCREEN_ADDR_H
+    	OR high SCREEN_ADDR
     	LD D,A
     	POP AF
     	AND 7
