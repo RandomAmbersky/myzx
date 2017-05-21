@@ -4,12 +4,15 @@ ORG #8000
 _prog_start: jp main
 
 	include "rpglang/defines.asm"
+	include "rpglang/math.asm"
+	include "rpglang/global_data.asm"
 	include "rpglang/rpglang.asm"
 	include "rpglang/input_system.asm"
 	include "rpglang/script_system.asm"
 	include "rpglang/graphic_system.asm"
 	include "rpglang/sound_system.asm"
 	include "rpglang/gfx_system.asm"
+	include "rpglang/rpg_system.asm"
 
 main:
 	rpglang.init script_begin
@@ -21,12 +24,11 @@ _prog_end
 ; ------------- data begin ---------------
 _data_start
 
-	;include "rpglang/globaldata.asm"
-
 script_begin:
-	;HALT
+	rFpsMeasureStart
 	rRandomScreen
 	;rKeyAnyWait
+	rFpsMeasureEnd
 	rJP script_begin
 	defb _endByte
 

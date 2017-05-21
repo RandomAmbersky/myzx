@@ -27,6 +27,8 @@ process_lp:
 	jr z, sound_system.enter
 	dec a; gfx system
 	jr z, gfx_system.enter
+	dec a; gfx system
+	JP z, rpg_system.enter
 	jr process_lp
 
 	ENDMODULE

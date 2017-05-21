@@ -1,15 +1,39 @@
 	MODULE script_system
 	
-	MACRO rJP  addr; jJP <addr>
+	; безусловный переход на адрес
+	MACRO rJP addr; jJP <addr>
 	defb script_system_num
 	defb 0
 	defw addr
+	ENDM
+
+	; задержка 1/50 секунды * tms
+	;MACRO rWait tms; <tms> 1/50 sec
+	;defb script_system_num
+	;defb 1
+	;defw tms
+	;ENDM
+
+	; начало очередного шага цикла (для замера FPS)
+	MACRO rFpsMeasureStart; 
+	defb script_system_num
+	defb 2
+	ENDM
+
+	; конец очередного шага цикла (для замера FPS)
+	MACRO rFpsMeasureEnd
+	defb script_system_num
+	defb 3
 	ENDM
 
 enter: rLDAor
 	JR Z, cmd_0
 	DEC A
 	JR Z, cmd_1
+	DEC A
+	JR Z, cmd_2
+	DEC A
+	JR Z, cmd_3
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rJP
@@ -18,7 +42,26 @@ cmd_0: ; ================ rJP
 	POP HL
 	JP rpglang.process_lp
 
-cmd_1:
+
+cmd_1: ; ================ rWait
+	JP rpglang.process_lp
+
+
+cmd_2: ; ================ rFpsMeasureStart
+	XOR A
+	LD (globaldata.frame_counter), A; обнуляем счетчик фреймов
+	JP rpglang.process_lp
+
+
+cmd_3: ; ================ rFpsMeasureEnd
+	PUSH HL
+	LD A, (globaldata.frame_current)
+	LD L,A
+	LD H,50
+	CALL math.div_byte
+	LD A, (globaldata.frame_counter)
+	LD (globaldata.frame_current), A
+	POP HL
 	JP rpglang.process_lp
 
 /*
