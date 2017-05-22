@@ -41,7 +41,7 @@ enter:	rLDAor
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rRandomScreen
-	;HALT
+	HALT
 	PUSH HL
 	;LD (old_hl+1), HL
 	LD (old_sp+1), SP
@@ -55,7 +55,7 @@ LOOP2:
 	RND_ELITE
         LD H,A
         ;LD L,A
-        RND_ELITE
+        ;RND_ELITE
         LD L,A
         PUSH HL
 

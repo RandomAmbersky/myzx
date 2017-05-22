@@ -8,11 +8,11 @@
 	ENDM
 
 	; задержка 1/50 секунды * tms
-	;MACRO rWait tms; <tms> 1/50 sec
-	;defb script_system_num
-	;defb 1
-	;defw tms
-	;ENDM
+	MACRO rWait tms; <tms> 1/50 sec
+	defb script_system_num
+	defb 1
+	defb tms
+	ENDM
 
 	; начало очередного шага цикла (для замера FPS)
 	MACRO rFpsMeasureStart; 
@@ -44,6 +44,11 @@ cmd_0: ; ================ rJP
 
 
 cmd_1: ; ================ rWait
+	LD B, (HL)
+	INC HL
+_cmd1_loop
+	HALT
+	DJNZ _cmd1_loop
 	JP rpglang.process_lp
 
 
@@ -55,14 +60,29 @@ cmd_2: ; ================ rFpsMeasureStart
 
 cmd_3: ; ================ rFpsMeasureEnd
 	PUSH HL
-	LD A, (globaldata.frame_current)
+	LD A, (globaldata.frame_current); frame_current показываем
 	LD L,A
 	LD H,50
 	CALL math.div_byte
-	LD A, (globaldata.frame_counter)
+	LD A,B
+	CALL math.decbcd
+	LD A,B
+	ADD A,'0'
+	LD (str_fps+0),A
+	LD A,C
+	ADD A,'0'
+	LD (str_fps+1),A
+	LD A,D
+	ADD A,'0'
+	LD (str_fps+2),A
+	Text.print64at 0,0,str_fps
+
+	LD A, (globaldata.frame_counter); frame_counter запоминаем  в будущей frame_current
 	LD (globaldata.frame_current), A
 	POP HL
 	JP rpglang.process_lp
+
+str_fps: defb "000 fps",0
 
 /*
  ; ================ rRandomScreen

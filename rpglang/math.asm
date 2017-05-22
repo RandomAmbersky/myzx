@@ -1,5 +1,27 @@
 	MODULE math
 	
+;   процедура перевода числа из А в десятичное представление в регистрах BCD
+;   често стырена из сорцов демки SancheZ Survivesection
+;   убрано последующее умножение на 8
+decbcd
+    LD BC,0
+_decbcd_1
+    SUB 100
+    JR C, _decbcd_2
+    INC B
+    JR _decbcd_1
+_decbcd_2
+    ADD A,100
+_decbcd_3
+    SUB 10
+    JR C, _decbcd_4
+    INC C
+    JR _decbcd_3
+_decbcd_4
+    ADD A,10
+    LD D,A
+    RET
+
 ;	процедура деления H/L = B ( C - остаток)
 ;	често стырена из сорцов демки SancheZ Survivesection
 div_byte 

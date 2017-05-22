@@ -1,7 +1,7 @@
 ORG  #E000
   MODULE interrupt
 interrupt_begin:
-DEFS 257,#E1 ; РІ ALASMe Р·Р°РїРѕР»РЅСЏРµС‚ 257 Р±Р°Р№С‚ РєРѕРґРѕРј #81
+DEFS 257,#E1 ; в ALASMe заполняет 257 байт кодом #81
 int_init:
   DI
   LD   A,#E0
@@ -9,7 +9,6 @@ int_init:
   IM   2
   EI
   RET
-;frame_counter: defb 00
 ORG  #E1E1
 interrupt_routine:
   DI
@@ -18,7 +17,8 @@ interrupt_routine:
   push hl
   push de
   push ix
-  ;defb 00,00,00
+  LD HL, globaldata.frame_counter
+  INC (HL)
 return_routine:
   pop ix              ; restore registers.
   pop de
@@ -29,5 +29,3 @@ return_routine:
   ret
 interrupt_end
   ENDMODULE
-
-;DISPLAY "--- interrupt end: ",$

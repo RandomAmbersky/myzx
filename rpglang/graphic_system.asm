@@ -1,7 +1,5 @@
 	MODULE graphic_system
 
-	include "rpglang/text.asm"
-
 	; печать надписи по экранным координатам Х и Y
 	MACRO rPrintAT y,x,text_ptr; rPrintAT <Y>, <X>, <addr>
 	defb graphic_system_num
