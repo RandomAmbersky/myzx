@@ -31,23 +31,23 @@ main:
 
 _prog_end
 ; ------------- prog end ---------------
-; ------------- data begin ---------------
-
+; ------------- data begin -------------
 _data_start
 
-MY_HELLO: defb "000 fps",0
+MY_HELLO: defb "HELLO!",0
 
 script_begin:
 	rFpsMeasureStart
+	;rWait 1
+	rRandomScreen
 	rWait 1
-	;rRandomScreen
 	;rKeyAnyWait
-	;rPrintAT 0,0, MY_HELLO
+	;rPrintAT 10,10, MY_HELLO
 	rFpsMeasureEnd
 	rJP script_begin
 	defb _endByte
 
-	ORG (high $+1)*256 // так делается выравнивание по старшему адресу :))
+	ORG (high $+1)*256 // пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ :))
 p84_font:
 	incbin "p8_font.bin"
 

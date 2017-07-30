@@ -17,7 +17,7 @@
       "cwd": "{projectPath}",
       "inputDialogs": [],
       "env": {},
-      "keystroke": "cmd-r",
+      "keystroke": "cmd-shift-r",
       "stream": true,
       "outputTarget": "panel",
       "outputBufferSize": 80000,
@@ -34,10 +34,15 @@
       "successOutput": "{stdout}",
       "errorOutput": "{stdout}\n{stderr}",
       "fatalOutput": "Failed to execute : {fullCommand}\n{stdout}\n{stderr}",
+      "startMessage": null,
       "successMessage": "Executed : {fullCommand}",
       "errorMessage": "Executed : {fullCommand}\nReturned with code {exitStatus}\n{stderr}",
       "fatalMessage": "Failed to execute : {fullCommand}\n{stdout}\n{stderr}",
-      "menus": []
+      "menus": [],
+      "notifyOnStart": false,
+      "notifyOnSuccess": true,
+      "notifyOnError": true,
+      "input": null
     }
   ]
 }
