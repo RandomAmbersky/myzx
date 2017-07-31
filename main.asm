@@ -19,8 +19,7 @@ main:
 	LD A, high p84_font
 	call graphic_system.init_font
 	call interrupt.int_init
-	rpglang.init script_begin
-	jp rpglang.process
+	rpglang.start script_begin
 	ret
 	/*DI
 	HALT
@@ -36,12 +35,12 @@ _data_start
 MY_HELLO: defb "HELLO!",0
 
 script_begin:
-	rRandomScreen
-	;WAIT_ANY_KEY
-	PRINT_AT 10,10, MY_HELLO
-	WAIT 1
-	FPS_CALC
-	GOTO script_begin
+	;rRandomScreen
+	;PRINT_AT 10,10, MY_HELLO
+	;FPS_CALC
+	;WAIT 1
+	WAIT_ANY_KEY
+	;GOTO script_begin
 	defb _endByte
 
 	ORG (high $+1)*256 // ��� �������� ������������ �� �������� ������ :))

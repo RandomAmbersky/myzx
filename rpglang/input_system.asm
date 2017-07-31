@@ -8,19 +8,22 @@
 ; �� ����� HL - ��������� �� ������� �����,
 ; a - ����� �������
 enter:
-	LD A, (HL)
-	INC HL
-	XOR A
+	rLDAor
+;	LD A, (HL)
+;	INC HL
+;	XOR A
 	JR Z, cmd_0
-	DEC A
+;	DEC A
 	jp rpglang.process_lp
 
+SYS_LAST_KEY equ 23560
 
-cmd_0: ;rAnyKeyWait
+cmd_0: ;WAIT_ANY_KEY
 	PUSH HL
-	ld hl,23560         ; LAST K system variable.
+	ld hl,SYS_LAST_KEY  ; LAST K system variable.
 	ld (hl),0           ; put null value there.
-lp:	ld a,(hl)           ; new value of LAST K.
+lp:
+	ld a,(hl)         	; new value of LAST K.
 	cp 0                ; is it still zero?
 	jr z,lp             ; yes, so no key pressed.
 	POP HL

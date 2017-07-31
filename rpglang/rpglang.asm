@@ -4,9 +4,10 @@ MACRO rpglang.saveScriptAddr
 	LD (rpglang.process+1), HL
 ENDM
 
-MACRO rpglang.init ptr
+MACRO rpglang.start ptr
 	LD HL, ptr
 	rpglang.saveScriptAddr
+	jp rpglang.process
 ENDM
 
 ; на входе в HL - адрес скриптов
