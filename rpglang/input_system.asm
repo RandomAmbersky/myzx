@@ -23,6 +23,7 @@ cmd_0: ;WAIT_ANY_KEY
 	ld hl,SYS_LAST_KEY  ; LAST K system variable.
 	ld (hl),0           ; put null value there.
 lp:
+	HALT
 	ld a,(hl)         	; new value of LAST K.
 	cp 0                ; is it still zero?
 	jr z,lp             ; yes, so no key pressed.

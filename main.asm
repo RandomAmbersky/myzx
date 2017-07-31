@@ -21,6 +21,19 @@ main:
 	call interrupt.int_init
 	rpglang.start script_begin
 	ret
+LAST_KEY equ 23560
+
+wait_key: ;WAIT_ANY_KEY
+		PUSH HL
+		ld hl,LAST_KEY  ; LAST K system variable.
+		ld (hl),0           ; put null value there.
+lp_key:
+		ld a,(hl)         	; new value of LAST K.
+		cp 0                ; is it still zero?
+		jr z,lp_key             ; yes, so no key pressed.
+		POP HL
+
+	ret
 	/*DI
 	HALT
 	DUP 10
@@ -35,12 +48,12 @@ _data_start
 MY_HELLO: defb "HELLO!",0
 
 script_begin:
-	;rRandomScreen
+	rRandomScreen
 	;PRINT_AT 10,10, MY_HELLO
 	;FPS_CALC
 	;WAIT 1
 	WAIT_ANY_KEY
-	;GOTO script_begin
+	GOTO script_begin
 	defb _endByte
 
 	ORG (high $+1)*256 // ��� �������� ������������ �� �������� ������ :))
@@ -53,12 +66,12 @@ _data_end;
 
 ; ------------- data end ---------------
 
-display "prog: ", _prog_start, " ", _prog_end
-display "data: ", _data_start, " ", _data_end
+display "prog: ", _prog_start, " ", _prog_end, " ", /D, _prog_end - _prog_start
+display "data: ", _data_start, " ", _data_end, " ", /D, _data_end - _data_start
 display "font addr: ", p84_font
 display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interrupt_end
-display "globaldata.frame_current ", globaldata.frame_current
-//display "MY_HELLO ", script_system.cmd_3
+//display "globaldata.frame_current ", globaldata.frame_current
+display "MY_HELLO ", script_system.cmd_2
 
 display /D, _data_end-_prog_start, " size, ", /D, 0x10000-_data_end, " free"
 
