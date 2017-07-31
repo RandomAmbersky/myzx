@@ -14,15 +14,17 @@ interrupt_routine:
   DI
   push af             ; preserve registers.
   push bc
-  push hl
   push de
+  push hl
   push ix
+  push iy
   LD HL, globaldata.frame_counter
   INC (HL)
 return_routine:
-  pop ix              ; restore registers.
-  pop de
+  pop iy
+  pop ix             ; restore registers.
   pop hl
+  pop de
   pop bc
   pop af
   EI

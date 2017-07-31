@@ -21,19 +21,6 @@ main:
 	call interrupt.int_init
 	rpglang.start script_begin
 	ret
-LAST_KEY equ 23560
-
-wait_key: ;WAIT_ANY_KEY
-		PUSH HL
-		ld hl,LAST_KEY  ; LAST K system variable.
-		ld (hl),0           ; put null value there.
-lp_key:
-		ld a,(hl)         	; new value of LAST K.
-		cp 0                ; is it still zero?
-		jr z,lp_key             ; yes, so no key pressed.
-		POP HL
-
-	ret
 	/*DI
 	HALT
 	DUP 10
@@ -50,7 +37,7 @@ MY_HELLO: defb "HELLO!",0
 script_begin:
 	rRandomScreen
 	;PRINT_AT 10,10, MY_HELLO
-	;FPS_CALC
+	FPS_CALC
 	;WAIT 1
 	WAIT_ANY_KEY
 	GOTO script_begin
