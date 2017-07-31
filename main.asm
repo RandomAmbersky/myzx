@@ -22,12 +22,11 @@ main:
 	rpglang.init script_begin
 	jp rpglang.process
 	ret
-	DI
+	/*DI
 	HALT
-
 	DUP 10
 	NOP
-	EDUP
+	EDUP*/
 
 _prog_end
 ; ------------- prog end ---------------
@@ -37,13 +36,13 @@ _data_start
 MY_HELLO: defb "HELLO!",0
 
 script_begin:
-	rFpsMeasureStart
+	//rFpsMeasureStart
 	;rWait 1
 	rRandomScreen
-	rWait 1
+	//rWait 1
 	;rKeyAnyWait
-	;rPrintAT 10,10, MY_HELLO
-	rFpsMeasureEnd
+	rPrintAT 10,10, MY_HELLO
+	FPS_CALC
 	rJP script_begin
 	defb _endByte
 
@@ -62,7 +61,7 @@ display "data: ", _data_start, " ", _data_end
 display "font addr: ", p84_font
 display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interrupt_end
 display "globaldata.frame_current ", globaldata.frame_current
-display "MY_HELLO ", script_system.cmd_3
+//display "MY_HELLO ", script_system.cmd_3
 
 display /D, _data_end-_prog_start, " size, ", /D, 0x10000-_data_end, " free"
 

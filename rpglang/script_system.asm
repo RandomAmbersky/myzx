@@ -1,5 +1,5 @@
 	MODULE script_system
-	
+
 	; безусловный переход на адрес
 	MACRO rJP addr; jJP <addr>
 	defb script_system_num
@@ -14,17 +14,17 @@
 	defb tms
 	ENDM
 
-	; начало очередного шага цикла (для замера FPS)
-	MACRO rFpsMeasureStart; 
+	; меряем FPS между кадрами
+	MACRO FPS_CALC;
 	defb script_system_num
 	defb 2
 	ENDM
 
-	; конец очередного шага цикла (для замера FPS)
-	MACRO rFpsMeasureEnd
+	; очищаем счетчик FPS
+	/*MACRO FPS_CLEAR
 	defb script_system_num
 	defb 3
-	ENDM
+	ENDM*/
 
 enter: rLDAor
 	JR Z, cmd_0
@@ -32,8 +32,8 @@ enter: rLDAor
 	JR Z, cmd_1
 	DEC A
 	JR Z, cmd_2
-	DEC A
-	JR Z, cmd_3
+	/*DEC A
+	JR Z, cmd_3*/
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rJP
@@ -51,14 +51,7 @@ _cmd1_loop
 	DJNZ _cmd1_loop
 	JP rpglang.process_lp
 
-
-cmd_2: ; ================ rFpsMeasureStart
-	XOR A
-	LD (globaldata.frame_counter), A; обнуляем счетчик фреймов
-	JP rpglang.process_lp
-
-
-cmd_3: ; ================ rFpsMeasureEnd
+cmd_2: ; ================ FPS_CALC
 	PUSH HL
 	LD A, (globaldata.frame_current); frame_current показываем
 	LD L,A
@@ -79,8 +72,15 @@ cmd_3: ; ================ rFpsMeasureEnd
 
 	LD A, (globaldata.frame_counter); frame_counter запоминаем  в будущей frame_current
 	LD (globaldata.frame_current), A
+	XOR A
+	LD (globaldata.frame_counter), A; обнуляем счетчик фреймов
 	POP HL
 	JP rpglang.process_lp
+
+/*cmd_3: ; ================ FPS_CLEAR
+	XOR A
+	LD (globaldata.frame_counter), A; обнуляем счетчик фреймов
+	JP rpglang.process_lp*/
 
 str_fps: defb "000 fps",0
 
