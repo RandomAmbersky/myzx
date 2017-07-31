@@ -1,7 +1,7 @@
 ORG  #E000
   MODULE interrupt
 interrupt_begin:
-DEFS 257,#E1 ; в ALASMe заполняет 257 байт кодом #81
+DEFS 257,#E1 ; пїЅ ALASMe пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 257 пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ #81
 int_init:
   DI
   LD   A,#E0

@@ -1,14 +1,14 @@
 	MODULE script_system
 
 	; безусловный переход на адрес
-	MACRO rJP addr; jJP <addr>
+	MACRO GOTO addr; jJP <addr>
 	defb script_system_num
 	defb 0
 	defw addr
 	ENDM
 
 	; задержка 1/50 секунды * tms
-	MACRO rWait tms; <tms> 1/50 sec
+	MACRO WAIT tms; <tms> 1/50 sec
 	defb script_system_num
 	defb 1
 	defb tms

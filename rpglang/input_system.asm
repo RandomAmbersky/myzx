@@ -1,12 +1,12 @@
 	MODULE input_system
-	
-	MACRO rKeyAnyWait
+
+	MACRO WAIT_ANY_KEY
 	defb input_system_num
 	defb 0
 	ENDM
 
-; на входе HL - указатель на текущий адрес,
-; a - номер системы
+; пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ HL - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ,
+; a - пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 enter:
 	LD A, (HL)
 	INC HL

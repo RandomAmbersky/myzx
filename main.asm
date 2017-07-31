@@ -36,14 +36,12 @@ _data_start
 MY_HELLO: defb "HELLO!",0
 
 script_begin:
-	//rFpsMeasureStart
-	;rWait 1
 	rRandomScreen
-	//rWait 1
-	;rKeyAnyWait
-	rPrintAT 10,10, MY_HELLO
+	;WAIT_ANY_KEY
+	PRINT_AT 10,10, MY_HELLO
+	WAIT 1
 	FPS_CALC
-	rJP script_begin
+	GOTO script_begin
 	defb _endByte
 
 	ORG (high $+1)*256 // ��� �������� ������������ �� �������� ������ :))

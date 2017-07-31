@@ -78,8 +78,8 @@ enter:	rLDAor
 
 cmd_0: ; ================ rRandomScreen
 	//HALT
+	DI
 	PUSH HL
-	//DI
 	;LD (old_hl+1), HL
 	LD (old_sp+1), SP
 LOOP0:
@@ -108,7 +108,7 @@ old_sp:
 ;old_hl
 	;LD HL, #0000
 	POP HL
-	//EI
+	EI
 	JP rpglang.process_lp
 
 	ENDMODULE
