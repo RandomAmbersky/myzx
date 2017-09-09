@@ -4,8 +4,7 @@ ORG #8000
 _prog_start: jp main
 
 	include "rpglang/defines.asm"
-	include "rpglang/core/math.asm"
-	include "rpglang/core/tiles16.asm"
+	include "rpglang/math.asm"
 	include "rpglang/global_data.asm"
 	include "rpglang/rpglang.asm"
 	include "rpglang/input_system.asm"
@@ -15,17 +14,12 @@ _prog_start: jp main
 	include "rpglang/gfx_system.asm"
 	include "rpglang/rpg_system.asm"
 	include "rpglang/script_system.asm"
-main:
-	;LD A, high p84_font
-	;call graphic_system.init_font
-	;call interrupt.int_init
-	;rpglang.start script_begin
-	LD HL, TILE_SET
-	LD ( Tiles16.sprArray), HL
 
-	LD DE, #0505
-	LD A, #1
-	call Tiles16.show_tile
+main:
+	LD A, high p84_font
+	call graphic_system.init_font
+	call interrupt.int_init
+	rpglang.start script_begin
 	ret
 	/*DI
 	HALT
@@ -38,9 +32,6 @@ _prog_end
 ; ------------- data begin -------------
 _data_start
 
-TILE_SET:
-	include "rpglang/data/rebelstar.asm"
-
 MY_HELLO: defb "HELLO!",0
 
 script_begin:
@@ -52,7 +43,7 @@ script_begin:
 	GOTO script_begin
 	defb _endByte
 
-	ORG (high $+1)*256
+	ORG (high $+1)*256 // ��� �������� ������������ �� �������� ������ :))
 p84_font:
 	incbin "p8_font.bin"
 

@@ -16,6 +16,7 @@ gfx_system_num equ 4
 rpg_system_num equ 5
 
 SCREEN_ADDR equ #4000
+ATTR_ADDR EQU SCREEN_ADDR+#1800
 
 	MACRO rLDAor
 		LD A, (HL)

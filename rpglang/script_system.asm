@@ -1,26 +1,26 @@
 	MODULE script_system
 
-	; безусловный переход на адрес
+	; пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	MACRO GOTO addr; jJP <addr>
 	defb script_system_num
 	defb 0
 	defw addr
 	ENDM
 
-	; задержка 1/50 секунды * tms
+	; пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1/50 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ * tms
 	MACRO WAIT tms; <tms> 1/50 sec
 	defb script_system_num
 	defb 1
 	defb tms
 	ENDM
 
-	; меряем FPS между кадрами
+	; пїЅпїЅпїЅпїЅпїЅпїЅ FPS пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	MACRO FPS_CALC;
 	defb script_system_num
 	defb 2
 	ENDM
 
-	; очищаем счетчик FPS
+	; пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ FPS
 	/*MACRO FPS_CLEAR
 	defb script_system_num
 	defb 3
@@ -53,7 +53,7 @@ _cmd1_loop
 
 cmd_2: ; ================ FPS_CALC
 	PUSH HL
-	LD A, (globaldata.frame_current); frame_current показываем
+	LD A, (globaldata.frame_current); frame_current пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	LD L,A
 	LD H,50
 	CALL math.div_byte
@@ -70,16 +70,16 @@ cmd_2: ; ================ FPS_CALC
 	LD (str_fps+2),A
 	Text.print64at 0,0,str_fps
 
-	LD A, (globaldata.frame_counter); frame_counter запоминаем  в будущей frame_current
+	LD A, (globaldata.frame_counter); frame_counter пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ  пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ frame_current
 	LD (globaldata.frame_current), A
 	XOR A
-	LD (globaldata.frame_counter), A; обнуляем счетчик фреймов
+	LD (globaldata.frame_counter), A; пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	POP HL
 	JP rpglang.process_lp
 
 /*cmd_3: ; ================ FPS_CLEAR
 	XOR A
-	LD (globaldata.frame_counter), A; обнуляем счетчик фреймов
+	LD (globaldata.frame_counter), A; пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	JP rpglang.process_lp*/
 
 str_fps: defb "000 fps",0
