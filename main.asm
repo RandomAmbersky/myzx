@@ -17,7 +17,7 @@ _prog_start: jp main
 	include "rpglang/gfx_system.asm"
 	include "rpglang/rpg_system.asm"
 	include "rpglang/script_system.asm"
-	
+
 main:
 	;LD A, high p84_font
 	;call graphic_system.init_font
@@ -29,7 +29,7 @@ main:
 
 	/*LD DE, #0505
 	LD A, #1*/
-	LD HL, #0505
+	LD HL, #0000
 	Tiles16.showTile HL, #1
 	ret
 	/*DI
