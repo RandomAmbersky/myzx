@@ -28,12 +28,14 @@ main:
 	;LD HL, TILE_SET
 	;LD ( Tiles16.sprArray), HL
 	Tiles16.setTiles TILE_SET
+	Map.setMap MAP_SET
 
 	/*LD DE, #0505
 	LD A, #1*/
 	LD HL, #0000
 	/*/Tiles16.showTile HL, #1*/
-	call map.showMap
+	call Map.pos_to_addr
+	call Map.showMap
 	di
 	halt
 	ret
@@ -49,7 +51,9 @@ _prog_end
 _data_start
 
 TILE_SET:
-	include "rpglang/data/rebelstar.asm"
+	include "rpglang/data/rebelstar_spr.asm"
+MAP_SET:
+		include "rpglang/data/dummy_map.asm"
 
 MY_HELLO: defb "HELLO!",0
 
