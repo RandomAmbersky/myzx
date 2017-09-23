@@ -32,7 +32,7 @@ main:
 
 	/*LD DE, #0505
 	LD A, #1*/
-	LD HL, #0000
+	LD DE, #0000
 	/*/Tiles16.showTile HL, #1*/
 	call Map.pos_to_addr
 	call Map.showMap

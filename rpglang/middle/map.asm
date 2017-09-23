@@ -21,7 +21,8 @@ pos_to_addr:
   CP 00
   JR Z, no_mul; если ноль по Y то не будем прибавлять ничего
   LD B,E; кидаем posY в B - по B будет автодекрементный цикл
-  LD DE, (mapSize);
+  LD D,0
+  LD E, mapSize
 mul_loop
   ADD HL,DE
   DJNZ mul_loop
