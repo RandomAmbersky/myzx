@@ -4,8 +4,10 @@ ORG #8000
 _prog_start: jp main
 
 	include "rpglang/defines.asm"
+
 	include "rpglang/core/math.asm"
 	include "rpglang/core/tiles16.asm"
+
 	include "rpglang/global_data.asm"
 	include "rpglang/rpglang.asm"
 	include "rpglang/input_system.asm"
@@ -15,17 +17,20 @@ _prog_start: jp main
 	include "rpglang/gfx_system.asm"
 	include "rpglang/rpg_system.asm"
 	include "rpglang/script_system.asm"
+	
 main:
 	;LD A, high p84_font
 	;call graphic_system.init_font
 	;call interrupt.int_init
 	;rpglang.start script_begin
-	LD HL, TILE_SET
-	LD ( Tiles16.sprArray), HL
+	;LD HL, TILE_SET
+	;LD ( Tiles16.sprArray), HL
+	Tiles16.setTiles TILE_SET
 
-	LD DE, #0505
-	LD A, #1
-	call Tiles16.show_tile
+	/*LD DE, #0505
+	LD A, #1*/
+	LD HL, #0505
+	Tiles16.showTile HL, #1
 	ret
 	/*DI
 	HALT

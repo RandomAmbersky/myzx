@@ -2,6 +2,17 @@
 ; для работы надо установить sprArray - указатель на массив тайлов
   MODULE Tiles16
 
+  MACRO Tiles16.setTiles spr
+      LD HL, spr
+      LD (Tiles16.sprArray), HL
+    ENDM
+
+  MACRO Tiles16.showTile xy, spr
+      LD DE, xy
+      LD A, spr
+      CALL Tiles16.show_tile
+    ENDM
+
 ; программа показывает один тайл на экране
 ; Вход: DE - координаты тайла в позициях тайлов
 ; A - номер спрайта
