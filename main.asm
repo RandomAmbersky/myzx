@@ -8,6 +8,8 @@ _prog_start: jp main
 	include "rpglang/core/math.asm"
 	include "rpglang/core/tiles16.asm"
 
+	include "rpglang/middle/map.asm"
+
 	include "rpglang/global_data.asm"
 	include "rpglang/rpglang.asm"
 	include "rpglang/input_system.asm"
@@ -30,7 +32,10 @@ main:
 	/*LD DE, #0505
 	LD A, #1*/
 	LD HL, #0000
-	Tiles16.showTile HL, #1
+	/*/Tiles16.showTile HL, #1*/
+	call map.showMap
+	di
+	halt
 	ret
 	/*DI
 	HALT

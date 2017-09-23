@@ -18,6 +18,13 @@ rpg_system_num equ 5
 SCREEN_ADDR equ #4000
 ATTR_ADDR EQU SCREEN_ADDR+#1800
 
+scrWidth equ 16
+scrHeight equ 12
+
+	MACRO MAP_SHOW_TILE
+		call Tiles16.show_tile
+	ENDM
+
 	MACRO rLDAor
 		LD A, (HL)
 		INC HL
