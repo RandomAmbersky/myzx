@@ -20,11 +20,17 @@
 	defb 2
 	ENDM
 
-	; ������� ������� FPS
-	/*MACRO FPS_CLEAR
+	MACRO rScanKeys table_ptr; rScanKeys <table>
 	defb script_system_num
 	defb 3
-	ENDM*/
+	defw table_ptr
+	ENDM
+
+	MACRO rCALL script_ptr
+	defb script_system_num
+	defb 4
+	defw script_ptr
+	ENDM
 
 enter: rLDAor
 	JR Z, cmd_0
@@ -32,8 +38,10 @@ enter: rLDAor
 	JR Z, cmd_1
 	DEC A
 	JR Z, cmd_2
-	/*DEC A
-	JR Z, cmd_3*/
+	DEC A
+	JR Z, cmd_3
+	DEC A
+	JR Z, cmd_4
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rJP
@@ -41,7 +49,6 @@ cmd_0: ; ================ rJP
 	PUSH DE
 	POP HL
 	JP rpglang.process_lp
-
 
 cmd_1: ; ================ rWait
 	LD B, (HL)
@@ -76,6 +83,41 @@ cmd_2: ; ================ FPS_CALC
 	LD (globaldata.frame_counter), A; �������� ������� �������
 	POP HL
 	JP rpglang.process_lp
+
+cmd_3: ; ================ scan keys
+	rLDE
+	PUSH HL
+	EX HL,DE
+	call scanKeys
+	JR Z, cmd_3_ret
+cmd_3_ret:
+	POP HL
+	JP rpglang.process_lp
+
+cmd_4: ; ================ rCALL
+	rLDE
+	PUSH HL
+	EX HL,DE
+	call rpglang.process_lp
+	POP HL
+	JP rpglang.process_lp
+
+scanKeys:
+	ld a,(HL) ;//  загружаем первый байт
+	and a // проверяем на 0
+	ret z // возвращаем если 0
+	inc hl // увеличиваем HL
+	in a,(0xfe) // читаем значение
+	and (hl) // сравниваем со вторым байтом
+	inc hl   // увеличиваем указатель
+	ld e,(hl)
+	inc hl
+	ld d,(hl) // запоминаем в DE указатель на процедуру
+	inc hl    // увеличиваем HL
+	jr nz,scanKeys
+	ex de,hl
+	or 2
+	ret
 
 /*cmd_3: ; ================ FPS_CLEAR
 	XOR A

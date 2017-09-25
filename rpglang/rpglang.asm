@@ -1,35 +1,41 @@
-	MODULE rpglang
+  MODULE rpglang
 
-MACRO rpglang.saveScriptAddr
-	LD (rpglang.process+1), HL
-ENDM
+  MACRO rpglang.saveScriptAddr
+    LD (rpglang.process+1), HL
+  ENDM
 
-MACRO rpglang.start ptr
-	LD HL, ptr
-	rpglang.saveScriptAddr
-	jp rpglang.process
-ENDM
+  MACRO rpglang.start ptr
+    LD HL, ptr
+    rpglang.saveScriptAddr
+    jp rpglang.process
+  ENDM
 
-; на входе в HL - адрес скриптов
+; РЅР° РІС…РѕРґРµ РІ DE - Р°РґСЂРµСЃ СЃРєСЂРёРїС‚РѕРІ
+/*call_script:
+  PUSH HL
+  POP HL
+  jr rpglang.process*/
+
+; РЅР° РІС…РѕРґРµ РІ HL - Р°РґСЂРµСЃ СЃРєСЂРёРїС‚РѕРІ
 process:
-	LD HL, 0x0000
+  LD HL, 0x0000
 process_lp:
-	LD a, (HL)
-	INC HL
-	cp _endByte; это можно будет потом отключить :)
-	RET Z;
-	OR a; script system
-	jp z, script_system.enter
-	dec a; graphic system
-	jp z, graphic_system.enter
-	dec a; input system
-	jr z, input_system.enter
-	dec a; sound system
-	jp z, sound_system.enter
-	dec a; gfx system
-	jp z, gfx_system.enter
-	dec a; gfx system
-	JP z, rpg_system.enter
-	jr process_lp
+  LD a, (HL)
+  INC HL
+  cp _endByte; СЌС‚Рѕ РјРѕР¶РЅРѕ Р±СѓРґРµС‚ РїРѕС‚РѕРј РѕС‚РєР»СЋС‡РёС‚СЊ :)
+  RET Z;
+  OR a; script system
+  jp z, script_system.enter
+  dec a; graphic system
+  jp z, graphic_system.enter
+  dec a; input system
+  jr z, input_system.enter
+  dec a; sound system
+  jp z, sound_system.enter
+  dec a; gfx system
+  jp z, gfx_system.enter
+  dec a; gfx system
+  JP z, rpg_system.enter
+  jr process_lp
 
-	ENDMODULE
+ENDMODULE
