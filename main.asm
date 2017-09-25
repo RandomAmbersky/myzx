@@ -7,6 +7,7 @@ _prog_start: jp main
 
 	include "rpglang/core/math.asm"
 	include "rpglang/core/tiles16.asm"
+	include "rpglang/core/input.asm"
 
 	include "rpglang/middle/map.asm"
 
@@ -21,23 +22,23 @@ _prog_start: jp main
 	include "rpglang/script_system.asm"
 
 main:
-	;LD A, high p84_font
-	;call graphic_system.init_font
-	;call interrupt.int_init
-	;rpglang.start script_begin
+	LD A, high p84_font
+	call graphic_system.init_font
+	call interrupt.int_init
+	rpglang.start script_begin
 	;LD HL, TILE_SET
 	;LD ( Tiles16.sprArray), HL
-	Tiles16.setTiles TILE_SET
-	Map.setMap MAP_SET
+	;Tiles16.setTiles TILE_SET
+	;Map.setMap MAP_SET
 
 	/*LD DE, #0505
 	LD A, #1*/
-	LD DE, #0000
+	;LD DE, #0000
 	/*/Tiles16.showTile HL, #1*/
-	call Map.pos_to_addr
-	call Map.showMap
-	di
-	halt
+	;call Map.pos_to_addr
+	;call Map.showMap
+	;di
+	;halt
 	ret
 	/*DI
 	HALT
@@ -58,11 +59,14 @@ MAP_SET:
 MY_HELLO: defb "HELLO!",0
 
 script_begin:
-	rRandomScreen
-	PRINT_AT 10,10, MY_HELLO
+	rInitTiles TILE_SET
+	rInitMap MAP_SET
+	;rRandomScreen
+	;PRINT_AT 10,10, MY_HELLO
+	rShowMapAt #0000
 	FPS_CALC
 	;WAIT 1
-	WAIT_ANY_KEY
+	;WAIT_ANY_KEY
 	GOTO script_begin
 	defb _endByte
 

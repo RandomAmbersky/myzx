@@ -14,7 +14,7 @@ scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция 
 ; переводим pos в указатель на ячейку в массиве карты
 ; Вход: DE - pos,  D - x, E - y
 ; Выход: HL - указатель
-pos_to_addr:
+look_at:
   LD HL, #0000
   LD C,D; запоминаем posX в C
   LD A,E
