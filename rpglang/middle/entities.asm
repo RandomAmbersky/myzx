@@ -15,15 +15,21 @@ act_fire  EQU 0x05
 ; use X  - применить предмет X
 ; over  - метнуть предмет X через предмет
 
+activePersonage_ptr dw #0000; // указатель на текущего персонажа
+
 STRUCT Hero
 pos Point 0,0 ; позиция на карте
 sprite db 00; спрайт
 ground db 00; на чем стоит
+flags db 00; признаки-флаги
 name_p dw #0000
 ENDS
 
 ; в HL - указатель на массив персонажей
 initChars:
+  LD (persArray), HL
+persArray_ptr:
+  LD HL, #0000
   LD B, PersonagesNum
   ;LD HL, persArray
 init_loop; пробегаемся по всем персонажам и размещаем их на карте
@@ -51,5 +57,7 @@ init_personage;
   LD A,(IX+Hero.sprite)
   LD (HL),A ; ставим спрайт персонажа на карту
   RET
+
+persArray equ persArray_ptr+1 // указатель на массив карты
 
   ENDMODULE
