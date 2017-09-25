@@ -7,7 +7,7 @@ _prog_start: jp main
 
 	include "rpglang/core/math.asm"
 	include "rpglang/core/tiles16.asm"
-	include "rpglang/core/input.asm"
+	include "rpglang/core/scankeys.asm"
 
 	include "rpglang/middle/map.asm"
 
@@ -54,7 +54,7 @@ _data_start
 TILE_SET:
 	include "rpglang/data/rebelstar_spr.asm"
 MAP_SET:
-		include "rpglang/data/dummy_map.asm"
+	include "rpglang/data/dummy_map.asm"
 
 MY_HELLO: defb "HELLO!",0
 

@@ -125,7 +125,7 @@ key_press_fire:
   ; JR Z,a_PRESSED
   ; ...
 
-  DEFINE KEY_Q dw 0x01fb
+  /*DEFINE KEY_Q dw 0x01fb
   DEFINE KEY_A dw 0x01fd
   DEFINE KEY_O dw 0x02df
   DEFINE KEY_P dw 0x01df
@@ -146,6 +146,6 @@ key_press_fire:
   DEFINE KEY_7 dw 0x08ef
   DEFINE KEY_9 dw 0x04ef
   DEFINE KEY_8 dw 0x02ef
-  DEFINE KEY_0 dw 0x01ef
+  DEFINE KEY_0 dw 0x01ef*/
 
   ENDMODULE
