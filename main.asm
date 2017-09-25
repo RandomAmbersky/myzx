@@ -61,22 +61,23 @@ MY_HELLO: defb "HELLO!",0
 script_begin:
 	rInitTiles TILE_SET
 	rInitMap MAP_SET
+script_loop:
 	;PRINT_AT 10,10, MY_HELLO
 	;rShowMapAt #0000
 	;rRandomScreen
-	rCALL showScreen
-	rCALL showMap
-	;rScanKeys scanTable
+	;rCALL showScreen
+	;rCALL showMap
+	rScanKeys scanTable
 	;FPS_CALC
 	;WAIT 1
 	;WAIT_ANY_KEY
-	GOTO script_begin
+	GOTO script_loop
 	defb _endByte
 
 showMap:
 	rShowMapAt #0000
 	defb _endByte
-	
+
 showScreen:
 	rRandomScreen
 	FPS_CALC
@@ -87,11 +88,10 @@ p84_font:
 	incbin "p8_font.bin"
 
 scanTable:
-	dw 0x01fb,gsUp ; Q
+	dw 0x01fb,showScreen ; Q
+	dw 0x01fd,showMap; A
 	defb _endByte
 
-gsUp:
-	defb _endByte
 
 _data_end;
 ; ------------- data end ---------------

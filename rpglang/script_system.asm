@@ -87,17 +87,17 @@ cmd_2: ; ================ FPS_CALC
 cmd_3: ; ================ scan keys
 	rLDE
 	PUSH HL
-	EX HL,DE
-	call scanKeys
-	JR Z, cmd_3_ret
-cmd_3_ret:
+	LD HL,DE
+	call scanKeys; возвратились из scankeys, в DE - указатель на процедуру
+	JR NZ, cmd_4_call; если флаг не 0 то клавиша есть
 	POP HL
 	JP rpglang.process_lp
 
 cmd_4: ; ================ rCALL
 	rLDE
 	PUSH HL
-	EX HL,DE
+cmd_4_call:
+	LD DE, HL
 	call rpglang.process_lp
 	POP HL
 	JP rpglang.process_lp
