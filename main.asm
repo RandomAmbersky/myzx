@@ -88,10 +88,9 @@ p84_font:
 	incbin "p8_font.bin"
 
 scanTable:
-	dw 0x01fb,showScreen ; Q
-	dw 0x01fd,showMap; A
+	KEY_Q, showScreen
+	KEY_A, showMap
 	defb _endByte
-
 
 _data_end;
 ; ------------- data end ---------------

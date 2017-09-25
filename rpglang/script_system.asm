@@ -102,6 +102,7 @@ cmd_4_call:
 	POP HL
 	JP rpglang.process_lp
 
+// честно стырено из движка Wanderers
 scanKeys:
 	ld a,(HL) ;//  загружаем первый байт
 	and a // проверяем на 0

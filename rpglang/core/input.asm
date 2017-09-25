@@ -58,13 +58,14 @@ port_keys_t_r_e_w_q equ #FB
 port_keys_g_f_d_s_a equ #FD
 port_keys_v_c_x_z_cs equ #FE
 
-  ; универсальные коды :)
+  /*; универсальные коды :)
 FIRE equ  %11111111
 UP equ    %00000001
 DOWN equ  %00000010
 RIGHT equ %00000100
-LEFT equ  %00001000
+LEFT equ  %00001000*/
 
+/*
   ; ожидание ввода одной из клавиш синклер-джойстика
   ; после нажатия возвращаем код PRESS_X в A
 get_sinclair_key:
@@ -96,6 +97,7 @@ key_press_up:
 key_press_fire:
     LD A, FIRE
     RET
+*/
 
   ; How to read the keyboard:
   ;
@@ -122,5 +124,28 @@ key_press_fire:
   ; BIT KEY_M_BIT, A
   ; JR Z,a_PRESSED
   ; ...
+
+  DEFINE KEY_Q dw 0x01fb
+  DEFINE KEY_A dw 0x01fd
+  DEFINE KEY_O dw 0x02df
+  DEFINE KEY_P dw 0x01df
+
+  DEFINE KEY_SPACE dw 0x017f
+
+  DEFINE KEY_Z dw 0x02fe
+  DEFINE KEY_X dw 0x04fe
+  DEFINE KEY_C dw 0x08fe
+  DEFINE KEY_E dw 0x04fb
+
+  DEFINE KEY_W dw 0x02fb
+  DEFINE KEY_S dw 0x02fd
+  DEFINE KEY_D dw 0x04fd
+  DEFINE KEY_I dw 0x04df
+
+  DEFINE KEY_6 dw 0x10ef
+  DEFINE KEY_7 dw 0x08ef
+  DEFINE KEY_9 dw 0x04ef
+  DEFINE KEY_8 dw 0x02ef
+  DEFINE KEY_0 dw 0x01ef
 
   ENDMODULE
