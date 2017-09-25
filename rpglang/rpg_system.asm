@@ -50,11 +50,12 @@ cmd_1: ; ================ rInitTiles
 	LD (Tiles16.sprArray), DE
 	JP rpglang.process_lp
 
-cmd_2:
+cmd_2: ; =============== rShowMapAt
 	rLDE
 	PUSH HL
-	CALL Map.look_at
+	CALL Map.look_at_map
 	CALL Map.showMap
+	;CALL Map.look_at_map
 	POP HL
 cmd_3:
 	JP rpglang.process_lp

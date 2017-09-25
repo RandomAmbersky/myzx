@@ -61,6 +61,7 @@ MY_HELLO: defb "HELLO!",0
 script_begin:
 	rInitTiles TILE_SET
 	rInitMap MAP_SET
+	rShowMapAt #0000
 script_loop:
 	;PRINT_AT 10,10, MY_HELLO
 	;rShowMapAt #0000
@@ -88,8 +89,30 @@ p84_font:
 	incbin "p8_font.bin"
 
 scanTable:
-	KEY_Q, showScreen
-	KEY_A, showMap
+	KEY_Q, keyUp
+	KEY_A, keyDown
+	KEY_O, keyLeft
+	KEY_P, keyRight
+	defb _endByte
+
+keyRight
+	rExec Map.scr_right
+	rShowMapAt #0000
+	defb _endByte
+
+keyLeft:
+	rExec Map.scr_left
+	rShowMapAt #0000
+	defb _endByte
+
+keyDown:
+	rExec Map.scr_down
+	rShowMapAt #0000
+	defb _endByte
+
+keyUp:
+	rExec Map.scr_up
+	rShowMapAt #0000
 	defb _endByte
 
 _data_end;

@@ -26,10 +26,16 @@
 	defw table_ptr
 	ENDM
 
-	MACRO rCALL script_ptr
+	MACRO rCALL script_ptr; вызов процедуры скрипта
 	defb script_system_num
 	defb 4
 	defw script_ptr
+	ENDM
+
+	MACRO rExec code_ptr; вызов процедуры в кодах
+	defb script_system_num
+	defb 5
+	defw code_ptr
 	ENDM
 
 enter: rLDAor
@@ -42,6 +48,8 @@ enter: rLDAor
 	JR Z, cmd_3
 	DEC A
 	JR Z, cmd_4
+	DEC A
+	JR Z, cmd_5
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rJP
@@ -101,6 +109,16 @@ cmd_4_call:
 	call rpglang.process_lp
 	POP HL
 	JP rpglang.process_lp
+
+cmd_5: ; ================ rExec
+	rLDE
+	PUSH HL
+	LD HL,DE
+	CALL callHL
+	POP HL
+	JP rpglang.process_lp
+
+callHL	jp (hl)
 
 // честно стырено из движка Wanderers
 scanKeys:

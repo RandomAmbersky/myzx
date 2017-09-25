@@ -11,6 +11,8 @@ scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция 
     LD (Map.mapArray), HL
   ENDM
 
+look_at_map:
+  LD DE, (mapPos)
 ; переводим pos в указатель на ячейку в массиве карты
 ; Вход: DE - pos,  D - x, E - y
 ; Выход: HL - указатель
