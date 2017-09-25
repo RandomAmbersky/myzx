@@ -10,6 +10,7 @@ _prog_start: jp main
 	include "rpglang/core/scankeys.asm"
 
 	include "rpglang/middle/map.asm"
+	include "rpglang/middle/entities.asm"
 
 	include "rpglang/global_data.asm"
 	include "rpglang/rpglang.asm"
@@ -25,7 +26,7 @@ main:
 	LD A, high p84_font
 	call graphic_system.init_font
 	call interrupt.int_init
-	rpglang.start script_begin
+	rpglang.start SCRIPT_SET
 	;LD HL, TILE_SET
 	;LD ( Tiles16.sprArray), HL
 	;Tiles16.setTiles TILE_SET
@@ -51,75 +52,28 @@ _prog_end
 ; ------------- data begin -------------
 _data_start
 
+LANG_SET:
+	include "rpglang/data/lang_ru.asm"
 TILE_SET:
 	include "rpglang/data/rebelstar_spr.asm"
 MAP_SET:
-	include "rpglang/data/dummy_map.asm"
+	include "rpglang/data/mage_map.asm"
+ENCOUNTER_SET:
+	include "rpglang/data/rebelstar_enc.asm"
+SCRIPT_SET:
+	include "rpglang/data/script.asm"
+
 
 MY_HELLO: defb "HELLO!",0
-
-script_begin:
-	rInitTiles TILE_SET
-	rInitMap MAP_SET
-	rShowMapAt #0000
-script_loop:
-	;PRINT_AT 10,10, MY_HELLO
-	;rShowMapAt #0000
-	;rRandomScreen
-	;rCALL showScreen
-	;rCALL showMap
-	rScanKeys scanTable
-	;FPS_CALC
-	;WAIT 1
-	;WAIT_ANY_KEY
-	GOTO script_loop
-	defb _endByte
-
-showMap:
-	rShowMapAt #0000
-	defb _endByte
-
-showScreen:
-	rRandomScreen
-	FPS_CALC
-	defb _endByte
 
 	ORG (high $+1)*256
 p84_font:
 	incbin "p8_font.bin"
 
-scanTable:
-	KEY_Q, keyUp
-	KEY_A, keyDown
-	KEY_O, keyLeft
-	KEY_P, keyRight
-	defb _endByte
-
-keyRight
-	rExec Map.scr_right
-	rShowMapAt #0000
-	defb _endByte
-
-keyLeft:
-	rExec Map.scr_left
-	rShowMapAt #0000
-	defb _endByte
-
-keyDown:
-	rExec Map.scr_down
-	rShowMapAt #0000
-	defb _endByte
-
-keyUp:
-	rExec Map.scr_up
-	rShowMapAt #0000
-	defb _endByte
-
 _data_end;
 ; ------------- data end ---------------
 
 	include "rpglang/interrupt.asm"
-
 
 display "prog: ", _prog_start, " ", _prog_end, " ", /D, _prog_end - _prog_start
 display "data: ", _data_start, " ", _data_end, " ", /D, _data_end - _data_start

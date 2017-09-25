@@ -12,22 +12,22 @@
 	defw addr
 	ENDM
 
-	/*MACRO rInitEncounters addr
+	MACRO rShowMapAt xy
 	defb rpg_system_num
 	defb 2
+	defw xy
+	ENDM
+
+	MACRO rInitEntities addr
+	defb rpg_system_num
+	defb 3
 	defw addr
 	ENDM
 
 	MACRO rInitChars addr
 	defb rpg_system_num
-	defb 3
+	defb 4
 	defw addr
-	ENDM*/
-
-	MACRO rShowMapAt xy
-	defb rpg_system_num
-	defb 2
-	defw xy
 	ENDM
 
 enter: rLDAor
@@ -38,6 +38,8 @@ enter: rLDAor
 	JR Z, cmd_2
 	DEC A
 	JR Z, cmd_3
+	DEC A
+	JR Z, cmd_4
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rInitMap
@@ -55,9 +57,22 @@ cmd_2: ; =============== rShowMapAt
 	PUSH HL
 	CALL Map.look_at_map
 	CALL Map.showMap
-	;CALL Map.look_at_map
 	POP HL
+	JP rpglang.process_lp
+
 cmd_3:
+	rLDE
+	PUSH HL
+	;CALL Entities.init
+	POP HL
+	JP rpglang.process_lp
+
+cmd_4:
+	rLDE
+	PUSH HL
+	LD HL, DE
+	CALL Entities.initChars
+	POP HL
 	JP rpglang.process_lp
 
 	ENDMODULE

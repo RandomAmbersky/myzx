@@ -11,6 +11,21 @@ scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция 
     LD (Map.mapArray), HL
   ENDM
 
+; тестовая функция заполняет спрайтами карту по очереди от 0 до 256 и далее опять 0...
+init_map:
+  LD HL, (Map.mapArray)
+  LD BC, mapSize * mapSize; ширина x высота
+  LD E, #00
+init_map_loop:
+  LD (HL),E
+  INC HL
+  INC E
+  DEC BC
+  LD A,B
+  OR C
+  JR NZ,init_map_loop;
+  RET
+
 look_at_map:
   LD DE, (mapPos)
 ; переводим pos в указатель на ячейку в массиве карты
@@ -35,7 +50,8 @@ no_mul
 mapArray_ptr:
   LD DE, #0000
   ADD HL, DE
-  RET
+  RET; нельзя отказаться от RET здесь!! - эта процедура используется еще для добавления спрайтов на карту!!!
+
 
 ; функция показа карты
 ; в HL - указатель на стартовую ячейку в массиве тайлов
