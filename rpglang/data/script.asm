@@ -11,6 +11,7 @@ script_loop:
 	;rCALL showScreen
 	;rCALL showMap
 	rScanKeys scanTable
+	rExec Entities.charLoops
 	;FPS_CALC
 	;WAIT 1
 	;WAIT_ANY_KEY

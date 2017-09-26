@@ -16,6 +16,7 @@ act_fire  EQU 0x05
 ; over  - метнуть предмет X через предмет
 
 activePersonage_ptr dw #0000; // указатель на текущего персонажа
+RevertPersonageNum db #00; инверсный номер персонажа ( от PersonagesNum до 0!!!)
 
 STRUCT Hero
 pos Point 0,0 ; позиция на карте
@@ -25,11 +26,38 @@ flags db 00; признаки-флаги
 name_p dw #0000
 ENDS
 
+firstChar:
+  LD DE, (persArray)
+  ld (activePersonage_ptr), DE
+  LD A, PersonagesNum
+  LD (RevertPersonageNum), A
+  RET
+
+nextChar: ; если у нас признак Z в 1 значит достилги конца массива
+  LD A, (RevertPersonageNum)
+  DEC A
+  RET Z; если у нас обнулился счетчик - возвращаемся
+  LD (RevertPersonageNum), A
+  LD DE, (activePersonage_ptr)
+  LD HL, Hero
+  ADD HL, DE
+  LD (activePersonage_ptr), HL
+  OR 2
+  RET
+
+charLoops:
+  call firstChar;
+char_loop:
+  call nextChar
+  JR NZ, char_loop
+  RET
+
 ; в HL - указатель на массив персонажей
 initChars:
   LD (persArray), HL
 persArray_ptr:
   LD HL, #0000
+PersonagesNum_ptr:
   LD B, PersonagesNum
   ;LD HL, persArray
 init_loop; пробегаемся по всем персонажам и размещаем их на карте
@@ -47,7 +75,6 @@ init_loop; пробегаемся по всем персонажам и разм
 
 ; инициализация и размещение персонажа на карте
 ; в HL - указатель на персонажа
-; в A - номер его спрайта
 init_personage;
   LD IX,HL
   LD DE, (IX+Hero.pos)
@@ -59,5 +86,4 @@ init_personage;
   RET
 
 persArray equ persArray_ptr+1 // указатель на массив карты
-
   ENDMODULE
