@@ -75,6 +75,7 @@ _data_end;
 
 	include "rpglang/interrupt.asm"
 
+display "center_at_map", Map.center_at_map
 display "prog: ", _prog_start, " ", _prog_end, " ", /D, _prog_end - _prog_start
 display "data: ", _data_start, " ", _data_end, " ", /D, _data_end - _data_start
 display "font addr: ", p84_font

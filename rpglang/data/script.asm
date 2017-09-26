@@ -11,7 +11,7 @@ script_loop:
 	;rCALL showScreen
 	;rCALL showMap
 	rScanKeys scanTable
-	rExec Entities.charLoops
+	;rExec Entities.charLoops
 	;FPS_CALC
 	;WAIT 1
 	;WAIT_ANY_KEY
@@ -28,7 +28,12 @@ scanTable:
   KEY_A, keyDown
   KEY_O, keyLeft
   KEY_P, keyRight
+	KEY_Z, keyLook
   defb _endByte
+
+keyLook:
+	rExec Entities.lookChar
+	defb _endByte
 
 keyRight:
   rExec Map.scr_right

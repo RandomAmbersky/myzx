@@ -45,12 +45,20 @@ nextChar: ; если у нас признак Z в 1 значит достилг
   OR 2
   RET
 
-charLoops:
+lookChar; смотрим на текущего персонажа
+  LD IX, (activePersonage_ptr)
+  LD DE, (IX+Hero.pos)
+  CALL Map.center_at_map
+  CALL Map.showMap
+  RET
+
+/*charLoops:
   call firstChar;
 char_loop:
+  call lookChar
   call nextChar
   JR NZ, char_loop
-  RET
+  RET*/
 
 ; в HL - указатель на массив персонажей
 initChars:
@@ -71,6 +79,7 @@ init_loop; пробегаемся по всем персонажам и разм
   POP BC
   ADD HL, DE
   DJNZ init_loop
+  CALL firstChar
   RET
 
 ; инициализация и размещение персонажа на карте
@@ -78,7 +87,7 @@ init_loop; пробегаемся по всем персонажам и разм
 init_personage;
   LD IX,HL
   LD DE, (IX+Hero.pos)
-  call Map.look_at
+  call Map.calc_pos
   LD A,(HL)
   LD (IX+Hero.ground),A; ячейку карты ставим на пол персонажа
   LD A,(IX+Hero.sprite)

@@ -5,6 +5,8 @@ curPos Point 0,0
 
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
+scrWidthHalf equ scrWidth/2;  8
+scrHeightHalf equ scrHeight/2; 6
 
   MACRO Map.setMap map_ptr
     LD HL, map_ptr
@@ -26,12 +28,44 @@ init_map_loop:
   JR NZ,init_map_loop;
   RET
 
+; Вход: DE - pos,  D - x, E - y
+; Показываем ячейку с адресами xy в центре карты
+center_at_map:
+centr_X:
+  LD A,D; проверяем X на минимальность
+  SUB scrWidthHalf; вычитаем из A половину ширины экрана
+  JR NC, centr_X_max
+  LD D, #00; обнуляем X
+  JR centr_Y
+centr_X_max:
+  CP scrWindowMaxX
+  JR C,set_x
+  LD D, scrWindowMaxX-1
+  JR centr_Y
+set_x:
+  LD D, A
+  ;JR centr_Y
+centr_Y:
+  LD A, E; проверяем X на минимальность
+  SUB scrHeightHalf
+  JR NC, centr_Y_max
+  LD E, #00; обнуляем X
+  JP calc_pos
+centr_Y_max:
+  CP scrWindowMaxY
+  JR C,set_y
+  LD E, scrWindowMaxY-1
+  JP calc_pos
+set_y:
+  LD E, A
+  JP calc_pos
+
 look_at_map:
   LD DE, (mapPos)
 ; переводим pos в указатель на ячейку в массиве карты
 ; Вход: DE - pos,  D - x, E - y
 ; Выход: HL - указатель
-look_at:
+calc_pos:
   LD HL, #0000
   LD C,D; запоминаем posX в C
   LD A,E
