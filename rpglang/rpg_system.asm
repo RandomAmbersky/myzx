@@ -70,7 +70,7 @@ cmd_2: ; =============== rShowMapAt
 cmd_3: ; =============== rShowMap
 		;rLDE
 		PUSH HL
-		CALL Map.calc_pos
+		CALL Map.look_at_map
 		CALL Map.showMap
 		POP HL
 		JP rpglang.process_lp

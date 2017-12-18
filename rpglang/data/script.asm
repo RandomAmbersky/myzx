@@ -3,17 +3,18 @@ script_begin:
 	rpg.InitMap MAP_SET
 	rpg.InitChars CHARS_SET
 	;rExec Map.init_map
-	rShowMapAt #0000
+	rShowMap
 	;rExec Map.calc_pos
 	;rExec Map.showMap
 script_loop:
-	rBorder PEN_WHITE
+	rBorder PEN_BLACK
 	;rExec Map.calc_pos
 	;rExec Map.showMap
 	;PRINT_AT 10,10, MY_HELLO
 	;rBorder PEN_BLUE
-	rShowMapAt #0000
+	;rExec Map.look_at_map
 	;rBorder PEN_RED
+	;rExec Map.showMap
 	;rRandomScreen
 	;rBorder PEN_YELLOW
 	;rCALL showScreen
@@ -66,20 +67,20 @@ keyLook:
 
 keyRight:
   rExec Map.scr_right
-  rShowMapAt #0000
+  rShowMap
   defb _endByte
 
 keyLeft:
   rExec Map.scr_left
-  rShowMapAt #0000
+  rShowMap
   defb _endByte
 
 keyDown:
   rExec Map.scr_down
-  rShowMapAt #0000
+  rShowMap
   defb _endByte
 
 keyUp:
   rExec Map.scr_up
-  rShowMapAt #0000
+  rShowMap
   defb _endByte
