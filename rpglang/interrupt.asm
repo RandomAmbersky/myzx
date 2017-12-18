@@ -18,8 +18,12 @@ interrupt_routine:
   push hl
   push ix
   push iy
+  ;LD A,00
+  ;OUT(#FE),A
   LD HL, globaldata.frame_counter
   INC (HL)
+  ;LD A,03
+  ;OUT(#FE),A
 return_routine:
   pop iy
   pop ix             ; restore registers.

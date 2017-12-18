@@ -27,6 +27,15 @@ y db 0
 x db 0
 ENDS
 
+PEN_BLACK equ 0
+PEN_BLUE equ 1
+PEN_RED equ 2
+PEN_PURPLE equ 3
+PEN_GREEN equ 4
+PEN_CYAN equ 5
+PEN_YELLOW equ 6
+PEN_WHITE equ 7
+
 	MACRO MAP_SHOW_TILE
 		call Tiles16.show_tile
 	ENDM

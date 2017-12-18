@@ -5,6 +5,12 @@
 	defb 0
 	ENDM
 
+	MACRO rBorder border; rBorder PEN_CYAN
+	defb gfx_system_num
+	defb 1
+	defb border
+	ENDM
+
 	MACRO FaceBik
 
 .xrnd ld hl,1       ; seed must not be 0
@@ -74,6 +80,8 @@ RSEED defb 0, 0, 255
 
 enter:	rLDAor
 	JR Z, cmd_0;
+	DEC A
+	JR Z, cmd_1
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rRandomScreen
@@ -111,4 +119,9 @@ old_sp:
 	//EI
 	JP rpglang.process_lp
 
+cmd_1: ; ================ rBorder
+	LD A, (HL)
+	OUT (#FE), A
+	INC HL
+	JP rpglang.process_lp
 	ENDMODULE
