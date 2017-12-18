@@ -18,6 +18,16 @@ act_fire  EQU 0x05
 activePersonage_ptr dw #0000; // указатель на текущего персонажа
 RevertPersonageNum db #00; инверсный номер персонажа ( от PersonagesNum до 0!!!)
 
+STRUCT Item
+pos Point 0,0 ; позиция на карте
+type_i db 00; тип предмета
+sprite db 00; спрайт
+ground db 00; на чем стоит
+flags db 00; признаки-флаги
+charge db 00; заряд
+name_p dw #0000
+ENDS
+
 STRUCT Hero
 pos Point 0,0 ; позиция на карте
 sprite db 00; спрайт

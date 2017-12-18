@@ -1,12 +1,12 @@
 	MODULE rpg_system
 
-	MACRO rInitMap addr
+	MACRO rpg.InitMap addr
 	defb rpg_system_num
 	defb 0
 	defw addr
 	ENDM
 
-	MACRO rInitTiles addr
+	MACRO rpg.InitTiles addr
 	defb rpg_system_num
 	defb 1
 	defw addr
@@ -18,15 +18,20 @@
 	defw xy
 	ENDM
 
-	MACRO rInitEntities addr
+	MACRO rShowMap
 	defb rpg_system_num
 	defb 3
+	ENDM
+
+	MACRO rpg.InitEntities addr
+	defb rpg_system_num
+	defb 4
 	defw addr
 	ENDM
 
-	MACRO rInitChars addr
+	MACRO rpg.InitChars addr
 	defb rpg_system_num
-	defb 4
+	defb 5
 	defw addr
 	ENDM
 
@@ -40,6 +45,8 @@ enter: rLDAor
 	JR Z, cmd_3
 	DEC A
 	JR Z, cmd_4
+	DEC A
+	JR Z, cmd_5
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rInitMap
@@ -55,19 +62,27 @@ cmd_1: ; ================ rInitTiles
 cmd_2: ; =============== rShowMapAt
 	rLDE
 	PUSH HL
-	CALL Map.look_at_map
+	CALL Map.calc_pos
 	CALL Map.showMap
 	POP HL
 	JP rpglang.process_lp
 
-cmd_3:
+cmd_3: ; =============== rShowMap
+		;rLDE
+		PUSH HL
+		CALL Map.calc_pos
+		CALL Map.showMap
+		POP HL
+		JP rpglang.process_lp
+
+cmd_4:
 	rLDE
 	PUSH HL
 	;CALL Entities.init
 	POP HL
 	JP rpglang.process_lp
 
-cmd_4:
+cmd_5:
 	rLDE
 	PUSH HL
 	LD HL, DE
