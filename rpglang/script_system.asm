@@ -95,7 +95,9 @@ cmd_2: ; ================ FPS_CALC
 cmd_3: ; ================ scan keys
 	rLDE
 	PUSH HL
-	LD HL,DE
+	/* LD HL,DE */
+	PUSH DE
+	POP HL
 	call scanKeys; возвратились из scankeys, в DE - указатель на процедуру
 	JR NZ, cmd_4_call; если флаг не 0 то клавиша есть
 	POP HL
