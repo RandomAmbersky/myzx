@@ -1,4 +1,5 @@
-_endByte equ #ff
+_endByte equ #00; и низя никакой другой ибо используется в keyscan таблицах
+;_endTable equ #00
 
 ;system
 ;0 - script system

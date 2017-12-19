@@ -1,11 +1,12 @@
 script_begin:
-	rpg.InitTiles TILE_SET
-	rpg.InitMap MAP_SET
-	rpg.InitChars CHARS_SET
+	;rpg.InitTiles TILE_SET
+	;rpg.InitMap MAP_SET
+	;rpg.InitChars CHARS_SET
 	;rExec Map.fill_map
-	rBorder PEN_BLACK
+	;rBorder PEN_BLACK
 	;rShowMap
 script_loop:
+	rBorder PEN_BLACK
 	;rExec Map.calc_pos
 	;rExec Map.showMap
 	;PRINT_AT 10,10, MY_HELLO
@@ -23,15 +24,12 @@ script_loop:
 	;rScanKeys scanTable
 	;rExec Entities.charLoops
 	;FPS_CALC
-	rBorder PEN_RED
+	;rBorder PEN_RED
 	rScanKeys scanMainLoopTable
-	;rScanKeys scanCharKeysTable
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 	;WAIT 1
 	;WAIT_ANY_KEY
-	;rCALL startLoop
-	;rCALL startLoop
 	;rCALL startLoop
 	;rBorder PEN_BLACK
 	;rExec Entities.loopNextChar
@@ -43,22 +41,23 @@ script_loop:
 
 scanMainLoopTable:
 	KEY_P, keyEndTurn
-	KEY_O, keyEndTurn
+	;KEY_O, keyEndTurn
 	defb _endByte
 
 keyEndTurn:
-	rExec Entities.loopNextChar
-	rExec Entities.lookChar
+	;rExec Entities.loopNextChar
+	;rExec Entities.lookChar
+	rBorder PEN_RED
 	defb _endByte
 
-;startLoop: // выбран и может ходить
+startLoop: // выбран и может ходить
 	;rpg.NextChar
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 ;startLoop2:
 	;rBorder PEN_RED
 	;rScanKeys scanCharKeysTable
-	;rBorder PEN_YELLOW
+	rBorder PEN_YELLOW
 	;GOTO startLoop
 	defb _endByte
 
@@ -73,8 +72,8 @@ scanCharKeysTable:
 keyCharEnd:
 	;rpg.NextChar
 	rBorder PEN_RED
-	rExec Entities.loopNextChar
-	rExec Entities.lookChar
+	;rExec Entities.loopNextChar
+	;rExec Entities.lookChar
 	defb _endByte
 
 keyCharUp:
@@ -97,7 +96,7 @@ keyCharRight:
 	rExec Entities.lookChar
 	defb _endByte
 
-/*
+
 scanTableTest:
   KEY_Q, keyUp
   KEY_A, keyDown
@@ -128,4 +127,4 @@ keyDown:
 keyUp:
   rExec Map.scr_up
   rShowMap
-  defb _endByte */
+  defb _endByte

@@ -21,8 +21,8 @@ process:
   LD HL, 0x0000
 process_lp:
   LD a, (HL)
-  cp _endByte
-  ;AND A; _endByte -> 00 - end
+  ;cp _endByte
+  AND A; _endByte -> end
 	ret z
   INC HL
   dec a; script system
