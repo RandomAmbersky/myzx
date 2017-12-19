@@ -21,10 +21,12 @@ process:
   LD HL, 0x0000
 process_lp:
   LD a, (HL)
+  AND A; _endByte -> 00 - end
+	ret z
   INC HL
-  cp _endByte; это можно будет потом отключить :)
-  RET Z;
-  OR a; script system
+  /* cp _endByte; это можно будет потом отключить :)
+  RET Z; */
+  dec a; script system
   jp z, script_system.enter
   dec a; graphic system
   jp z, graphic_system.enter

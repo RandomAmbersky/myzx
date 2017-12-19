@@ -35,6 +35,11 @@
 	defw addr
 	ENDM
 
+	MACRO rpg.NextChar
+	defb rpg_system_num
+	defb 6
+	ENDM
+
 enter: rLDAor
 	JR Z, cmd_0
 	DEC A
@@ -47,6 +52,8 @@ enter: rLDAor
 	JR Z, cmd_4
 	DEC A
 	JR Z, cmd_5
+	DEC A
+	JR Z, cmd_6
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rInitMap
@@ -75,7 +82,7 @@ cmd_3: ; =============== rShowMap
 		POP HL
 		JP rpglang.process_lp
 
-cmd_4:
+cmd_4: ; =============== InitEntities (?)
 	rLDE
 	PUSH HL
 	;CALL Entities.init
@@ -89,5 +96,15 @@ cmd_5:
 	CALL Entities.initChars
 	POP HL
 	JP rpglang.process_lp
+
+cmd_6: ; =============== rpg.NextChar - нафига? ведь все делается через rCALL прекрасно :)
+		PUSH HL
+		CALL Entities.nextChar
+		JR NZ, next_char_exit
+		CALL Entities.firstChar
+next_char_exit:
+		CALL Entities.lookChar
+		POP HL
+		JP rpglang.process_lp
 
 	ENDMODULE

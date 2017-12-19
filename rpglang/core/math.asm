@@ -107,4 +107,18 @@ down_line:
     LD D,A
     RET
 
+; стырено из Wanderers SamStyle
+; в a - rnd
+getRnd	push hl
+radr	ld hl,0
+		inc hl
+		ld a,h
+		and 0x3f
+		ld h,a
+		ld (radr+1),hl
+		ld a,r
+		xor (hl)
+		pop hl
+		ret
+
 ENDMODULE

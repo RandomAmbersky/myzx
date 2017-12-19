@@ -8,12 +8,12 @@ _endByte equ #ff
 ;4 - gfx system
 ;5 - rpg system
 
-script_system_num equ 0
-graphic_system_num equ 1
-input_system_num equ 2
-sound_system_num equ 3
-gfx_system_num equ 4
-rpg_system_num equ 5
+script_system_num equ 1
+graphic_system_num equ 2
+input_system_num equ 3
+sound_system_num equ 4
+gfx_system_num equ 5
+rpg_system_num equ 6
 
 SCREEN_ADDR equ #4000
 ATTR_ADDR EQU SCREEN_ADDR+#1800

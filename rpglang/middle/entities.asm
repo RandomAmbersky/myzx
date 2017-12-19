@@ -5,7 +5,7 @@ act_stand EQU 0x01
 act_look  EQU 0x02
 act_take  EQU 0x03
 act_use   EQU 0x04
-act_fire  EQU 0x05
+;act_fire  EQU 0x05
 
 ; ячейка карты cell
 ; действия :
@@ -17,6 +17,17 @@ act_fire  EQU 0x05
 
 activePersonage_ptr dw #0000; // указатель на текущего персонажа
 RevertPersonageNum db #00; инверсный номер персонажа ( от PersonagesNum до 0!!!)
+
+STRUCT CellType
+prot db 00; проницаемость для предметов
+force_destr db 00; сила для уничтожения
+ENDS
+
+STRUCT Cell
+type_c db 00; супертип ячейки
+sprite db 00; спрайт
+
+ENDS
 
 STRUCT Item
 pos Point 0,0 ; позиция на карте
@@ -36,6 +47,10 @@ flags db 00; признаки-флаги
 name_p dw #0000
 ENDS
 
+; перебираем по кругу персонажей от стартового до последнего и опять на первый
+loopNextChar:
+  CALL nextChar
+  RET NZ
 firstChar:
   LD DE, (persArray)
   ld (activePersonage_ptr), DE
@@ -55,7 +70,7 @@ nextChar: ; если у нас признак Z в 1 значит достилг
   OR 2
   RET
 
-lookChar; смотрим на текущего персонажа
+lookChar:; смотрим на текущего персонажа
   LD IX, (activePersonage_ptr)
   LD DE, (IX+Hero.pos)
   CALL Map.center_at_map
@@ -102,6 +117,18 @@ init_personage;
   LD (IX+Hero.ground),A; ячейку карты ставим на пол персонажа
   LD A,(IX+Hero.sprite)
   LD (HL),A ; ставим спрайт персонажа на карту
+  RET
+
+charUp:
+  RET
+
+charDown:
+  RET
+
+charLeft:
+  RET
+
+charRight:
   RET
 
 persArray equ persArray_ptr+1 // указатель на массив карты
