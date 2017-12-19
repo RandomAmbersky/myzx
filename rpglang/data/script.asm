@@ -3,7 +3,7 @@ script_begin:
 	rpg.InitMap MAP_SET
 	rpg.InitChars CHARS_SET
 	;rExec Map.fill_map
-	rBorder PEN_BLACK
+	;rBorder PEN_BLACK
 	;rShowMap
 	;rExec Map.calc_pos
 	;rExec Map.showMap
@@ -11,7 +11,7 @@ script_loop:
 	;rExec Map.calc_pos
 	;rExec Map.showMap
 	;PRINT_AT 10,10, MY_HELLO
-	;rBorder PEN_BLUE
+	rBorder PEN_BLUE
 	;rExec Map.look_at_map
 	;rBorder PEN_RED
 	;rExec Map.showMap
@@ -31,6 +31,9 @@ script_loop:
 	;WAIT 1
 	;WAIT_ANY_KEY
 	rCALL startLoop
+	;rCALL startLoop
+	;rCALL startLoop
+	;rBorder PEN_BLACK
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 ;script_loop2:
@@ -49,11 +52,13 @@ script_loop:
 	defb _endByte */
 
 startLoop: // выбран и может ходить
+	;rpg.NextChar
 	rExec Entities.loopNextChar
 	rExec Entities.lookChar
 startLoop2:
 	;rScanKeys scanCharKeysTable
-	GOTO startLoop
+	GOTO startLoop2
+	;rBorder PEN_RED
 	defb _endByte
 
 scanCharKeysTable:

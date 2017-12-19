@@ -46,14 +46,16 @@ PEN_WHITE equ 7
 		OR A
 	ENDM
 
-	MACRO rLDE
-		LD DE, (HL)
+	MACRO rLDE ;LD DE, (HL)
+		LD E, (HL)
 		INC HL
+		LD D, (HL)
 		INC HL
 	ENDM
 
-	MACRO rLBC
-		LD BC, (HL)
+	MACRO rLBC ;LD BC, (HL)
+		LD C, (HL)
 		INC HL
+		LD B, (HL)
 		INC HL
 	ENDM

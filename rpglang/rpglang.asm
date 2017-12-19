@@ -21,11 +21,10 @@ process:
   LD HL, 0x0000
 process_lp:
   LD a, (HL)
-  AND A; _endByte -> 00 - end
+  cp _endByte
+  ;AND A; _endByte -> 00 - end
 	ret z
   INC HL
-  /* cp _endByte; это можно будет потом отключить :)
-  RET Z; */
   dec a; script system
   jp z, script_system.enter
   dec a; graphic system
@@ -38,6 +37,8 @@ process_lp:
   jp z, gfx_system.enter
   dec a; gfx system
   JP z, rpg_system.enter
-  jr process_lp
+  ; иначе непонятный оператор - выходим!
+  ret
+  ;jr process_lp
 
 ENDMODULE

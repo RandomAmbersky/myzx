@@ -105,7 +105,10 @@ cmd_4: ; ================ rCALL
 	rLDE
 	PUSH HL
 cmd_4_call:
-	LD DE, HL
+	PUSH DE
+	POP HL
+	;;LD DE, HL
+	;LD HL, DE
 	call rpglang.process_lp
 	POP HL
 	JP rpglang.process_lp
