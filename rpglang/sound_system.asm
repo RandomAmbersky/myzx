@@ -39,24 +39,32 @@ enter: rLDAor
 	jp rpglang.process_lp
 
 cmd_0:
+	LD A, (HL)
+	INC HL
 	PUSH HL
 	CALL explos
 	POP HL
 	JP rpglang.process_lp
 
 cmd_1:
+	LD A, (HL)
+	INC HL
 	PUSH HL
 	CALL tweet
 	POP HL
 	JP rpglang.process_lp
 
 cmd_2:
+	LD A, (HL)
+	INC HL
 	PUSH HL
 	CALL vibr
 	POP HL
 	JP rpglang.process_lp
 
 cmd_3:
+	LD A, (HL)
+	INC HL
 	PUSH HL
 	CALL laser
 	POP HL

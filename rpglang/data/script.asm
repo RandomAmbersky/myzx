@@ -87,29 +87,29 @@ keyEndTurn:
 	defb _endByte */
 
 keyCharUp:
-	;rBorder PEN_RED
-	;rPlayFX 1
+	rBorder PEN_RED
+	rPlayFX 1
 	rExec Entities.charUp
 	rExec Entities.lookChar
 	defb _endByte
 
 keyCharDown:
-	;rBorder PEN_CYAN
-	;rPlayTweet 1
+	rBorder PEN_CYAN
+	rPlayTweet 1
 	rExec Entities.charDown
 	rExec Entities.lookChar
 	defb _endByte
 
 keyCharLeft:
-	;rBorder PEN_YELLOW
-	;rPlayVibr 1
+	rBorder PEN_YELLOW
+	rPlayVibr 1
 	rExec Entities.charLeft
 	rExec Entities.lookChar
 	defb _endByte
 
 keyCharRight:
-	;rBorder PEN_GREEN
-	;rPlayLaser 1
+	rBorder PEN_GREEN
+	rPlayLaser 1
 	rExec Entities.charRight
 	rExec Entities.lookChar
 	defb _endByte
