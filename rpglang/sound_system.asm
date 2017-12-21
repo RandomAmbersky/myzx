@@ -95,7 +95,7 @@ tweet:
   ;RRA
   ;RRA
   ;RRA
-  LD A,7
+  ;LD A,7
   DI
 TWEET1 XOR 16          ;переключение 4-го бита
        OUT (254),A
@@ -138,18 +138,19 @@ VIBR3  DEC   A           ;цикл задержки
         RET
 
 laser:
-  LD    B,5
+  LD   B,1
        LD    C,200
        LD    H,50
-       LD    A,(23624)
-       AND   #38
-       RRA
-       RRA
-       RRA
+       ;LD    A,(23624)
+       ;AND   #38
+       ;RRA
+       ;RRA
+       ;RRA
        DI
 LASER1 PUSH  BC
        LD    L,H
-LASER2 XOR   16
+LASER2
+			 XOR   16
        OUT   (254),A
        LD    B,H
        DJNZ  $
