@@ -1,10 +1,12 @@
 script_begin:
-	;rpg.InitTiles TILE_SET
-	;rpg.InitMap MAP_SET
-	;rpg.InitChars CHARS_SET
+	rpg.InitTiles TILE_SET
+	rpg.InitMap MAP_SET
+	rpg.InitChars CHARS_SET
 	;rExec Map.fill_map
 	;rBorder PEN_BLACK
 	;rShowMap
+	rExec Entities.loopNextChar
+	rExec Entities.lookChar
 script_loop:
 	rBorder PEN_BLACK
 	;rExec Map.calc_pos
@@ -27,6 +29,7 @@ script_loop:
 	;rBorder PEN_RED
 	rScanKeys scanMainLoopTable
 	;rExec Entities.loopNextChar
+	;rBorder PEN_WHITE
 	;rExec Entities.lookChar
 	;WAIT 1
 	;WAIT_ANY_KEY
@@ -40,17 +43,24 @@ script_loop:
 	defb _endByte
 
 scanMainLoopTable:
-	KEY_P, keyEndTurn
-	;KEY_O, keyEndTurn
+	KEY_N, keyNextChar
+	;KEY_0, keyEndTurn
+	KEY_Q, keyCharUp
+	KEY_A, keyCharDown
+	KEY_O, keyCharLeft
+	KEY_P, keyCharRight
+	defb _endByte
+
+keyNextChar:
+	rExec Entities.loopNextChar
+	rExec Entities.lookChar
 	defb _endByte
 
 keyEndTurn:
-	;rExec Entities.loopNextChar
-	;rExec Entities.lookChar
 	rBorder PEN_RED
 	defb _endByte
 
-startLoop: // выбран и может ходить
+/* startLoop: // выбран и может ходить
 	;rpg.NextChar
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
@@ -59,44 +69,52 @@ startLoop: // выбран и может ходить
 	;rScanKeys scanCharKeysTable
 	rBorder PEN_YELLOW
 	;GOTO startLoop
-	defb _endByte
+	defb _endByte */
 
-scanCharKeysTable:
+/* scanCharKeysTable:
 	KEY_P, keyCharEnd
 	;KEY_Q, keyCharUp
   ;KEY_A, keyCharDown
   ;KEY_O, keyCharLeft
   ;KEY_P, keyCharRight
-	defb _endByte
+	defb _endByte */
 
-keyCharEnd:
+/* keyCharEnd:
 	;rpg.NextChar
 	rBorder PEN_RED
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
-	defb _endByte
+	defb _endByte */
 
 keyCharUp:
+	;rBorder PEN_RED
+	;rPlayFX 1
 	rExec Entities.charUp
 	rExec Entities.lookChar
 	defb _endByte
 
 keyCharDown:
+	;rBorder PEN_CYAN
+	;rPlayTweet 1
 	rExec Entities.charDown
 	rExec Entities.lookChar
 	defb _endByte
 
 keyCharLeft:
+	;rBorder PEN_YELLOW
+	;rPlayVibr 1
 	rExec Entities.charLeft
 	rExec Entities.lookChar
 	defb _endByte
 
 keyCharRight:
+	;rBorder PEN_GREEN
+	;rPlayLaser 1
 	rExec Entities.charRight
 	rExec Entities.lookChar
 	defb _endByte
 
-
+/*
 scanTableTest:
   KEY_Q, keyUp
   KEY_A, keyDown
@@ -128,3 +146,4 @@ keyUp:
   rExec Map.scr_up
   rShowMap
   defb _endByte
+*/

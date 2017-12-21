@@ -119,16 +119,42 @@ init_personage;
   LD (HL),A ; ставим спрайт персонажа на карту
   RET
 
-charUp:
+; передвижение персонажа
+; фактически - только изменение его координат в массиве!
+; карту в этих процедурах вообще не трогаем
+; указатель на текущего персонажа - IX
+charUp
+  LD IX, (activePersonage_ptr)
+  LD A, (IX+Hero.pos.y)
+  DEC A
+  RET M
+  LD (IX+Hero.pos.y),A
   RET
 
-charDown:
+charLeft
+  LD IX, (activePersonage_ptr)
+  LD A, (IX+Hero.pos.x)
+  DEC A
+  RET M
+  LD (IX+Hero.pos.x),A
   RET
 
-charLeft:
+charRight
+  LD IX, (activePersonage_ptr)
+  LD A, (IX+Hero.pos.x)
+  INC A
+  CP mapSize
+  RET NC
+  LD (IX+Hero.pos.x),A
   RET
 
-charRight:
+charDown
+  LD IX, (activePersonage_ptr)
+  LD A, (IX+Hero.pos.y)
+  INC A
+  CP mapSize
+  RET NC
+  LD (IX+Hero.pos.y),A
   RET
 
 persArray equ persArray_ptr+1 // указатель на массив карты
