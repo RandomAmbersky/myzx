@@ -98,7 +98,8 @@ init_loop; пробегаемся по всем персонажам и разм
   PUSH BC
   PUSH DE
   PUSH HL
-  call init_personage
+  LD IX,HL
+  call ground_to_pers_floor
   POP HL
   POP DE
   POP BC
@@ -108,9 +109,8 @@ init_loop; пробегаемся по всем персонажам и разм
   RET
 
 ; инициализация и размещение персонажа на карте
-; в HL - указатель на персонажа
-init_personage;
-  LD IX,HL
+; в IX - указатель на персонажа
+ground_to_pers_floor;
   LD DE, (IX+Hero.pos)
   call Map.calc_pos
   LD A,(HL)
@@ -119,43 +119,64 @@ init_personage;
   LD (HL),A ; ставим спрайт персонажа на карту
   RET
 
+; возвращаем "пол" на котором стоял персонаж обратно на карту
+; IX - указатель на текущего персонажа
+pesr_floor_to_ground:
+  LD DE, (IX+Hero.pos)
+  call Map.calc_pos
+  LD A,(IX+Hero.ground)
+  LD (HL),A
+  RET
+
 ; передвижение персонажа
 ; фактически - только изменение его координат в массиве!
 ; карту в этих процедурах вообще не трогаем
 ; указатель на текущего персонажа - IX
 charUp
   LD IX, (activePersonage_ptr)
+  call pesr_floor_to_ground
   LD A, (IX+Hero.pos.y)
   DEC A
-  RET M
+  JP M, char_to_map
   LD (IX+Hero.pos.y),A
+char_to_map:
+  call ground_to_pers_floor
   RET
 
 charLeft
   LD IX, (activePersonage_ptr)
+  call pesr_floor_to_ground
   LD A, (IX+Hero.pos.x)
   DEC A
-  RET M
+  JP M, char_to_map
   LD (IX+Hero.pos.x),A
-  RET
+  JP char_to_map
+  /* call ground_to_pers_floor
+  RET */
 
 charRight
   LD IX, (activePersonage_ptr)
+  call pesr_floor_to_ground
   LD A, (IX+Hero.pos.x)
   INC A
   CP mapSize
-  RET NC
+  JP NC, char_to_map
   LD (IX+Hero.pos.x),A
-  RET
+  JP char_to_map
+  /* call ground_to_pers_floor
+  RET */
 
 charDown
   LD IX, (activePersonage_ptr)
+  call pesr_floor_to_ground
   LD A, (IX+Hero.pos.y)
   INC A
   CP mapSize
-  RET NC
+  JP NC, char_to_map
   LD (IX+Hero.pos.y),A
-  RET
+  JP char_to_map
+  /* call ground_to_pers_floor
+  RET */
 
 persArray equ persArray_ptr+1 // указатель на массив карты
   ENDMODULE
