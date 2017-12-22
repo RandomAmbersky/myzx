@@ -58,6 +58,7 @@ TILE_SET:
 	include "rpglang/data/rebelstar_spr.asm"
 MAP_SET:
 	include "rpglang/data/mage_map.asm"
+	;include "rpglang/data/laboratory.asm"
 ENCOUNTER_SET:
 	include "rpglang/data/rebelstar_enc.asm"
 SCRIPT_SET:
