@@ -22,6 +22,8 @@ ATTR_ADDR EQU SCREEN_ADDR+#1800
 mapSize equ 32
 scrWidth equ 16
 scrHeight equ 12
+;scrWidth equ 15
+;scrHeight equ 11
 
 STRUCT Point
 y db 0

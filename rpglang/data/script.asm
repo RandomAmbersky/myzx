@@ -3,7 +3,7 @@ script_begin:
 	rpg.InitMap MAP_SET
 	rpg.InitChars CHARS_SET
 	;rExec Map.fill_map
-	;rBorder PEN_BLACK
+	rBorder PEN_BLACK
 	;rShowMap
 	rExec Entities.loopNextChar
 	rExec Entities.lookChar
@@ -29,12 +29,12 @@ script_loop:
 	;rBorder PEN_RED
 	rScanKeys scanMainLoopTable
 	;rExec Entities.loopNextChar
-	;rBorder PEN_WHITE
-	;rExec Entities.lookChar
+	rBorder PEN_WHITE
+	rExec Entities.lookChar
 	;WAIT 1
 	;WAIT_ANY_KEY
 	;rCALL startLoop
-	;rBorder PEN_BLACK
+	rBorder PEN_RED
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 ;script_loop2:
@@ -45,10 +45,10 @@ script_loop:
 scanMainLoopTable:
 	KEY_N, keyNextChar
 	;KEY_0, keyEndTurn
-	KEY_Q, keyCharUp
-	KEY_A, keyCharDown
-	KEY_O, keyCharLeft
-	KEY_P, keyCharRight
+	KEY_W, keyCharUp
+	KEY_S, keyCharDown
+	KEY_A, keyCharLeft
+	KEY_D, keyCharRight
 	defb _endByte
 
 keyNextChar:
@@ -90,28 +90,28 @@ keyCharUp:
 	;rBorder PEN_RED
 	;rPlayFX 1
 	rExec Entities.charUp
-	rExec Entities.lookChar
+	;rExec Entities.lookChar
 	defb _endByte
 
 keyCharDown:
 	;rBorder PEN_CYAN
 	;rPlayTweet 1
 	rExec Entities.charDown
-	rExec Entities.lookChar
+	;rExec Entities.lookChar
 	defb _endByte
 
 keyCharLeft:
 	;rBorder PEN_YELLOW
 	;rPlayVibr 1
 	rExec Entities.charLeft
-	rExec Entities.lookChar
+	;rExec Entities.lookChar
 	defb _endByte
 
 keyCharRight:
 	;rBorder PEN_GREEN
 	;rPlayLaser 1
 	rExec Entities.charRight
-	rExec Entities.lookChar
+	;rExec Entities.lookChar
 	defb _endByte
 
 /*

@@ -13,6 +13,7 @@ _prog_start: jp main
 	include "rpglang/middle/entities.asm"
 
 	include "rpglang/global_data.asm"
+	include "rpglang/global_routines.asm"
 	include "rpglang/rpglang.asm"
 	include "rpglang/input_system.asm"
 	include "rpglang/text.asm"
@@ -23,6 +24,7 @@ _prog_start: jp main
 	include "rpglang/script_system.asm"
 
 main:
+	call routines.fill_scr_table
 	LD A, high p84_font
 	call graphic_system.init_font
 	call interrupt.int_init
@@ -55,9 +57,11 @@ _data_start
 LANG_SET:
 	include "rpglang/data/lang_ru.asm"
 TILE_SET:
-	include "rpglang/data/rebelstar_spr.asm"
+	;include "rpglang/data/rebelstar_spr.asm"
+	include "rpglang/data/new_tiles.asm"
 MAP_SET:
-	include "rpglang/data/mage_map.asm"
+	;include "rpglang/data/mage_map.asm"
+	include "rpglang/data/laboratory.asm"
 	;include "rpglang/data/laboratory.asm"
 ENCOUNTER_SET:
 	include "rpglang/data/rebelstar_enc.asm"
@@ -75,6 +79,7 @@ _data_end;
 ; ------------- data end ---------------
 
 	include "rpglang/interrupt.asm"
+_vt_end
 
 display "center_at_map", Map.center_at_map
 display "prog: ", _prog_start, " ", _prog_end, " ", /D, _prog_end - _prog_start
@@ -85,3 +90,14 @@ display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interr
 display /D, _data_end-_prog_start, " size, ", /D, 0x10000-_data_end, " free"
 
 SAVESNA "myzx.sna",_prog_start
+;SAVETAP "myzx.tap",_prog_start
+
+/*
+TRD NOT WORKED!!! )))
+emptytrd "murk3326.trd"
+savetrd "murk3326.trd", "DEMO.C", _prog_start, _vt_end-_prog_start
+org 25000
+inchob "demo.$B"
+endb:
+savetrd "murk3326.trd", "boot.B", 25000, endb-25000
+*/

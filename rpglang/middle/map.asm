@@ -90,6 +90,8 @@ mapArray_ptr:
 ; функция показа карты
 ; в HL - указатель на стартовую ячейку в массиве тайлов
 showMap:
+  CALL Tiles16.show_tile_map;
+  RET
   LD BC, scrWidth*256 + scrHeight ;#100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
 loop2:
