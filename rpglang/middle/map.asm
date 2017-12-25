@@ -86,10 +86,12 @@ mapArray_ptr:
   ADD HL, DE
   RET; нельзя отказаться от RET здесь!! - эта процедура используется еще для добавления спрайтов на карту!!!
 
-
 ; функция показа карты
 ; в HL - указатель на стартовую ячейку в массиве тайлов
 showMap:
+  CALL Tiles16.show_tile_map;
+  RET
+/*
   LD BC, scrWidth*256 + scrHeight ;#100C ; width and height screen - 16 x 12
   LD DE, #0000 ; current pos draw variable
 loop2:
@@ -101,7 +103,6 @@ loop:
   PUSH HL
   LD A,(HL)
   MAP_SHOW_TILE
-  /*call Tiles16.show_tile*/
   POP HL
   INC HL
   POP BC
@@ -119,7 +120,7 @@ loop:
   DEC C
   JR NZ, loop2
   RET
-
+*/
   ; двигаем экран
 scr_up:
   LD A, (mapPos.y)
