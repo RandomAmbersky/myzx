@@ -24,7 +24,7 @@ _prog_start: jp main
 	include "rpglang/script_system.asm"
 
 main:
-	call routines.fill_scr_table
+	;call routines.fill_scr_table
 	LD A, high p84_font
 	call graphic_system.init_font
 	call interrupt.int_init

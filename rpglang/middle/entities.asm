@@ -7,6 +7,18 @@ act_take  EQU 0x03
 act_use   EQU 0x04
 ;act_fire  EQU 0x05
 
+;указатели направления
+dir_up   EQU 0
+dir_down EQU 1
+dir_left  EQU 2
+dir_right  EQU 3
+
+; не используется но вдруг!!! ;)
+dir_up_left EQU 4
+dir_up_right EQU 5
+dir_down_left EQU 6
+dir_down_right EQU 7
+
 ; ячейка карты cell
 ; действия :
 ; stand  - встать на ячейку карты
@@ -18,6 +30,10 @@ act_use   EQU 0x04
 activePersonage_ptr dw #0000; // указатель на текущего персонажа
 RevertPersonageNum db #00; инверсный номер персонажа ( от PersonagesNum до 0!!!)
 
+MapCell_xy dw #0000;  // координаты на карте на которую воздействует персонаж ( заполняется в процедуре charCheckAction )
+MapCell_ptr dw #0000;  // указатель на ячейку карты на которую воздействует персонаж ( заполняется в процедуре charCheckAction )
+
+; тип ячейки на карте
 STRUCT CellType
 prot db 00; проницаемость для предметов
 force_destr db 00; сила для уничтожения
@@ -26,7 +42,6 @@ ENDS
 STRUCT Cell
 type_c db 00; супертип ячейки
 sprite db 00; спрайт
-
 ENDS
 
 STRUCT Item
@@ -128,21 +143,140 @@ pesr_floor_to_ground:
   LD (HL),A
   RET
 
+; двигаем персонажа вверх
+charMoveUp
+  LD B, act_stand; встаем на ячейку
+  LD A, dir_up
+  CALL charCheckAction
+  RET C; нельзя двигаться никак
+char_to_map_moved: ; двигаем персонажа на позицию MapCell_xy ( MapCell_ptr )
+  ;CALL pesr_floor_to_ground; вместо этого - процедура ниже
+  LD IX, (activePersonage_ptr);
+  LD DE, (IX+Hero.pos) ;
+  CALL Map.calc_pos    ; определяем координаты позиции персонажа в HL
+  LD A,(IX+Hero.ground);
+  LD (HL),A            ; и ставим на карту спрайт пола
+  LD DE, ( MapCell_xy )
+  LD (IX+Hero.pos), DE
+  ;call ground_to_pers_floor
+  LD HL,( MapCell_ptr )
+  LD A,(HL)
+  LD (IX+Hero.ground),A; ячейку карты ставим на пол персонажа
+  LD A,(IX+Hero.sprite)
+  LD (HL),A ; ставим спрайт персонажа на карту
+  RET
+
+; двигаем персонажа вниз
+charMoveDown
+  LD B, act_stand; встаем на ячейку
+  LD A, dir_down
+  CALL charCheckAction
+  RET C; нельзя двигаться никак
+  JR char_to_map_moved;
+
+;двигаем персонажа влево
+charMoveLeft
+  LD B, act_stand; встаем на ячейку
+  LD A, dir_left
+  CALL charCheckAction
+  RET C; нельзя двигаться никак
+  JR char_to_map_moved;
+
+charMoveRight
+  LD B, act_stand; встаем на ячейку
+  LD A, dir_right
+  CALL charCheckAction
+  RET C; нельзя двигаться никак
+  JR char_to_map_moved;
+
+; проверяем может ли текущий персонаж встать на ячейку
+; если установлен флаг переноса SCF то не может
+; в B - действие
+; в A - направление
+charCheckAction
+  LD IX, (activePersonage_ptr)
+  LD DE, (IX+Hero.pos);  D - x, E - y
+  OR A
+  JR Z, check_up
+  DEC A
+  JR Z, check_down
+  DEC A
+  JR Z, check_left
+  DEC A
+  JR Z, check_right
+  JR charCheck_no; фигня какая-то
+check_up:
+  LD A,E
+  DEC A
+  JP M, charCheck_no
+  LD E,A
+  JR check_action
+check_down:
+  LD A,E
+  INC A
+  CP mapSize
+  JP NC, charCheck_no
+  LD E,A
+  JR check_action
+check_left:
+  LD A,D
+  DEC A
+  JP M, charCheck_no
+  LD D,A
+  JR check_action
+check_right:
+  LD A,D
+  INC A
+  CP mapSize
+  JR NC, charCheck_no
+  LD D,A
+check_action:; в DE у нас координаты ячейки на которую воздействует персонаж
+  LD ( MapCell_xy ), DE
+  call Map.calc_pos
+  LD ( MapCell_ptr), HL
+charCheck_yes
+  SCF ; устанавливаем бит переноса и инвертируем его ))
+  CCF
+  RET
+charCheck_no
+  SCF
+  RET
+
+/* charCheckActionDown
+    LD IX, (activePersonage_ptr)
+    LD DE, (IX+Hero.pos);  D - x, E - y
+    LD A, E
+    DEC A
+    JP M, charCheckActionUP_no
+    LD E,A
+    call Map.calc_pos; в DE у нас координаты x, y-1
+  charCheckActionUP_yes
+    SCF ; устанавливаем бит переноса и инвертируем его ))
+    CCF
+    RET
+  charCheckActionUP_no
+    SCF
+    RET
+ */
+
 ; передвижение персонажа
 ; фактически - только изменение его координат в массиве!
 ; карту в этих процедурах вообще не трогаем
 ; указатель на текущего персонажа - IX
-charUp
+/* charUp
+  RET
   LD IX, (activePersonage_ptr)
   call pesr_floor_to_ground
   LD A, (IX+Hero.pos.y)
   DEC A
-  JP M, char_to_map
+  ;JP M, char_to_map
   LD (IX+Hero.pos.y),A
-char_to_map:
-  call ground_to_pers_floor
-  RET
+*/
+//char_to_map:
+  //;call ground_to_pers_floor
+  ;;RET
 
+/*
 charLeft
   LD IX, (activePersonage_ptr)
   call pesr_floor_to_ground
@@ -151,9 +285,10 @@ charLeft
   JP M, char_to_map
   LD (IX+Hero.pos.x),A
   JP char_to_map
-  /* call ground_to_pers_floor
+   call ground_to_pers_floor
   RET */
 
+/*
 charRight
   LD IX, (activePersonage_ptr)
   call pesr_floor_to_ground
@@ -163,10 +298,10 @@ charRight
   JP NC, char_to_map
   LD (IX+Hero.pos.x),A
   JP char_to_map
-  /* call ground_to_pers_floor
+  call ground_to_pers_floor
   RET */
 
-charDown
+/* charDown
   LD IX, (activePersonage_ptr)
   call pesr_floor_to_ground
   LD A, (IX+Hero.pos.y)
@@ -175,7 +310,7 @@ charDown
   JP NC, char_to_map
   LD (IX+Hero.pos.y),A
   JP char_to_map
-  /* call ground_to_pers_floor
+   call ground_to_pers_floor
   RET */
 
 persArray equ persArray_ptr+1 // указатель на массив карты

@@ -70,8 +70,8 @@ _my_spr_loop_2:
 
      PUSH HL
      call math.addr_to_attr
-     LDI // LD (DE),(HL)
-     LDI // LD (DE),(HL)
+     LDI
+     LDI
      POP HL
      LD A,E
      ADD A,30; нижний ряд ( 30 а не 32 так как 2 уже прибавили выше )
