@@ -1,7 +1,7 @@
 MODULE Map
 
 mapPos Point 0,0
-curPos Point 0,0
+//curPos Point 0,0
 
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
@@ -153,35 +153,35 @@ scr_right:
   RET
 
 ; двигаем курсор
-cur_up:
+/* cur_up:
   LD A, (curPos.y)
   DEC A
   JP M, scr_up
   LD (curPos.y),A
-  RET
+  RET */
 
-cur_left:
+/* cur_left:
   LD A, (curPos.x)
   DEC A
   JP M, scr_left
   LD (curPos.x),A
-  RET
+  RET */
 
-cur_down:
+/* cur_down:
   LD A, (curPos.y)
   INC A
   CP scrHeight
   JP NC, scr_down
   LD (curPos.y),A
-  RET
+  RET */
 
-cur_right:
+/* cur_right:
   LD A, (curPos.x)
   INC A
   CP scrWidth
   JP NC, scr_right
   LD (curPos.x),A
-  RET
+  RET */
 
 mapArray equ mapArray_ptr+1 // указатель на массив карты
 

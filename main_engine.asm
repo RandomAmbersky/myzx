@@ -7,6 +7,7 @@ _prog_start: jp main
 
 	include "rpglang/core/math.asm"
 	include "rpglang/core/tiles16.asm"
+	include "rpglang/core/screen_buf.asm"
 	include "rpglang/core/scankeys.asm"
 
 	include "rpglang/middle/map.asm"

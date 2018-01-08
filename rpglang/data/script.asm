@@ -29,12 +29,12 @@ script_loop:
 	;rBorder PEN_RED
 	rScanKeys scanMainLoopTable
 	;rExec Entities.loopNextChar
-	rBorder PEN_WHITE
+	;rBorder PEN_WHITE
 	rExec Entities.lookChar
 	;WAIT 1
 	;WAIT_ANY_KEY
 	;rCALL startLoop
-	rBorder PEN_RED
+	;rBorder PEN_RED
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 ;script_loop2:

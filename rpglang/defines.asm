@@ -1,6 +1,17 @@
 _endByte equ #00; и низя никакой другой ибо используется в keyscan таблицах
 ;_endTable equ #00
 
+;указатели направления
+dir_up   EQU 0
+dir_down EQU 1
+dir_left  EQU 2
+dir_right  EQU 3
+; не используется но вдруг!!! ;)
+dir_up_left EQU 4
+dir_up_right EQU 5
+dir_down_left EQU 6
+dir_down_right EQU 7
+
 ;system
 ;0 - script system
 ;1 - graphic system
@@ -20,10 +31,10 @@ SCREEN_ADDR equ #4000
 ATTR_ADDR EQU SCREEN_ADDR+#1800
 
 mapSize equ 32
-scrWidth equ 16
-scrHeight equ 12
-;scrWidth equ 15
-;scrHeight equ 11
+;scrWidth equ 16
+;scrHeight equ 12
+scrWidth equ 15
+scrHeight equ 11
 
 STRUCT Point
 y db 0

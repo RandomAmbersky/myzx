@@ -35,7 +35,7 @@
 ;показываем 1 тайл на карте
 ;HL - указатель на спрайт
 ;DE - экранный адрес
- MACRO show_tile_on_map
+show_tile_on_map:
    PUSH DE
  // thanks to Alone Coder!
    LD B,8
@@ -78,8 +78,7 @@ _my_spr_loop_2:
      LD E,A
      LDI
      LDI
-
- ENDM
+     RET
 
  ; по текущему адресу тайла на экране получаем адрес тайла справа от него
  ; в DE - адрес тайла на экране
@@ -123,7 +122,7 @@ show_tile_map_loop1: ; цикл по строкам
 
   LD A,(HL)
   spr_index_to_addr
-  show_tile_on_map
+  call show_tile_on_map
   POP DE; ---- снимаем все со стека
   next_tile_pos_right
   POP HL

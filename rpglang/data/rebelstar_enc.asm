@@ -1,3 +1,22 @@
+
+CELL_TYPES:
+Cell_Type_Empty:    Entities.CellType Empty_cell_name,    0000
+Cell_Type_Floor:    Entities.CellType Floor_cell_name,    0000
+Cell_Type_Computer: Entities.CellType Computer_cell_name, 0000
+Cell_Type_Door:     Entities.CellType Door_cell_name,     0000
+Cell_Type_Wall:     Entities.CellType Wall_cell_name,     0000
+Cell_Type_Ballon:   Entities.CellType Ballon_cell_name,   0000
+
+;CellType2: Entities.CellType 0,0,tHeroName1
+;CellType3: Entities.CellType 0,0,tHeroName1
+;CellType4: Entities.CellType 0,0,tHeroName1
+
+;CELL_TABLE:
+;Cell_Empty: Entities.Cell Cell_Type_Empty, 0,0
+/* Cell2: Entities.Cell 0,0
+Cell3: Entities.Cell 0,0
+Cell4: Entities.Cell 0,0 */
+
 ; массив соответствия кода спрайта на карте типу энкаунтера
 ;cells_types_spr:
   ;dw cGround, cWater, cGreenBush
