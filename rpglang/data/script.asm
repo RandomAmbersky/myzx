@@ -1,63 +1,105 @@
+; все согласно redux и Еntity-Component-Systems бугога!
+; конечный автомат конечно же это )
+
+; game mode
+gm_var equ 0; системная переменная номер 0
+gm_CHAR_MOVE equ 1; режим передвижения
+gm_CURSOR_MOVE equ 2; режим курсора
+
 script_begin:
 	rpg.InitTiles TILE_SET
 	rpg.InitMap MAP_SET
 	rpg.InitChars CHARS_SET
-	;rExec Map.fill_map
+	;rExec Map.fill_ma
 	rBorder PEN_BLACK
-	;rShowMap
 	rExec Entities.loopNextChar
 	rExec Entities.lookChar
+	rSetVar gm_var, gm_CHAR_MOVE
+
+; основной скрипт state-machine ;)
 script_loop:
-	rBorder PEN_BLACK
-	;rExec Map.calc_pos
-	;rExec Map.showMap
-	;PRINT_AT 10,10, MY_HELLO
-	;rBorder PEN_BLUE
-	;rExec Map.look_at_map
-	;rBorder PEN_RED
-	;rExec Map.showMap
-	;rRandomScreen
-	;rBorder PEN_YELLOW
-	;rCALL showScreen
-	;rCALL showMap
-	;rScanKeys scanTable
-	;rBorder PEN_CYAN
-	;rExec border_blue
-	;rScanKeys scanTable
-	;rExec Entities.charLoops
-	;FPS_CALC
-	;rBorder PEN_RED
-	rScanKeys scanMainLoopTable
-	;rExec Entities.loopNextChar
-	;rBorder PEN_WHITE
-	rExec Entities.lookChar
-	;WAIT 1
-	;WAIT_ANY_KEY
-	;rCALL startLoop
-	;rBorder PEN_RED
-	;rExec Entities.loopNextChar
-	;rExec Entities.lookChar
-;script_loop2:
-	;rScanKeys scanCharKeysTable
+	rIfVar gm_var, gm_CHAR_MOVE, charMode
+	rIfVar gm_var, gm_CURSOR_MOVE, cursorMode
 	GOTO script_loop
 	defb _endByte
 
-scanMainLoopTable:
-	KEY_N, keyNextChar
-	;KEY_0, keyEndTurn
+proc_setCursorMode:
+	WAIT_NO_KEY; ждем пока отпустит
+	rSetVar gm_var, gm_CURSOR_MOVE
+	defb _endByte
+
+proc_setCharMode
+	WAIT_NO_KEY; ждем пока отпустит 
+	rSetVar gm_var, gm_CHAR_MOVE
+	defb _endByte
+
+charMode:
+	rBorder PEN_RED
+	rScanKeys charScanKeysTable
+	rExec Entities.lookChar
+	GOTO script_loop
+
+cursorMode:
+	rBorder PEN_YELLOW
+	rScanKeys  cursorScanKeysTable
+	GOTO script_loop
+
+charScanKeysTable:
+	;KEY_N, keyNextChar
 	KEY_W, keyCharUp
 	KEY_S, keyCharDown
 	KEY_A, keyCharLeft
 	KEY_D, keyCharRight
+	KEY_SPACE, proc_setCursorMode
 	defb _endByte
 
-keyNextChar:
-	rExec Entities.loopNextChar
-	rExec Entities.lookChar
+;keyNextChar:
+	;rExec Entities.loopNextChar
+	;rExec Entities.lookChar
+	;defb _endByte
+
+;keyEndTurn:
+;	rBorder PEN_RED
+;	defb _endByte
+
+;keyCursorReturn:
+	;rBorder PEN_BLACK
+	;defb _endByte
+
+;keyStartCursorMode:
+	;rBorder PEN_YELLOW
+	;WAIT_NO_KEY
+;keyStartCursorModeLoop:
+	;rScanKeys scanCursorMoveTable
+	;GOTO keyStartCursorModeLoop
+	;defb _endByte
+
+cursorScanKeysTable:
+	KEY_W, keyCursorUp
+	KEY_S, keyCursorDown
+	KEY_A, keyCursorLeft
+	KEY_D, keyCursorRight
+	KEY_SPACE, proc_setCharMode
 	defb _endByte
 
-keyEndTurn:
+keyCursorUp
+	rBorder PEN_WHITE
+	WAIT_NO_KEY
+	defb _endByte
+
+keyCursorDown
 	rBorder PEN_RED
+	WAIT_NO_KEY
+	defb _endByte
+
+keyCursorLeft
+	rBorder PEN_BLUE
+	WAIT_NO_KEY
+	defb _endByte
+
+keyCursorRight
+	rBorder PEN_CYAN
+	WAIT_NO_KEY
 	defb _endByte
 
 /* startLoop: // выбран и может ходить

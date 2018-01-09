@@ -55,6 +55,8 @@ _prog_end
 ; ------------- data begin -------------
 _data_start
 
+	include "rpglang/system_data.asm"
+
 LANG_SET:
 	include "rpglang/data/lang_ru.asm"
 TILE_SET:
@@ -68,7 +70,6 @@ ENCOUNTER_SET:
 	include "rpglang/data/rebelstar_enc.asm"
 SCRIPT_SET:
 	include "rpglang/data/script.asm"
-
 
 MY_HELLO: defb "HELLO!",0
 

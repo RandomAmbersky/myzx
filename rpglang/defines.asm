@@ -54,6 +54,19 @@ PEN_WHITE equ 7
 		call Tiles16.show_tile
 	ENDM
 
+	MACRO ADDA hr,lr
+		add a,lr;  a = a + lr
+		ld lr,a ; lr = a + lr
+		adc a,hr ; a = a + lr + hr + (carry )
+		sub lr; a = a + hr
+		ld hr,a
+	ENDM
+
+	MACRO rLDA
+		LD A, (HL)
+		INC HL
+	ENDM
+
 	MACRO rLDAor
 		LD A, (HL)
 		INC HL

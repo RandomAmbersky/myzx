@@ -107,6 +107,29 @@ down_line:
     LD D,A
     RET
 
+/* ;взято из процедуры Wanderers
+; in: A = bit num
+; out: HL = bit adr, C = bit mask, A = bit state (0,1), Z/NZ = bit state
+bitAdr	ld hl,bitsTab
+badr0	ld c,a
+	rra
+	rra
+	rra
+	and 0x3f
+	ADDA h,l
+	ld a,c
+	and 7
+	ld c,0x01
+	jr z,badr2
+badr1	rlc c
+	dec a
+	jr nz,badr1
+badr2	ld a,(hl)
+	and c
+	ret z
+	inc a
+	ret */
+
 ; стырено из Wanderers SamStyle
 ; в a - rnd
 getRnd	push hl
