@@ -5,15 +5,20 @@
 	defb 0
 	ENDM
 
-	MACRO CURSOR_SCR_MOVE dir; CURSOR_SCR_MOVE dir_up ; только в пределах экрана
+	MACRO CURSOR_SCR_MOVE kuda; CURSOR_SCR_MOVE dir_up ; только в пределах экрана
 	defb input_system_num
 	defb 1
-	defb dir
+	defb kuda
 	ENDM
 
 	MACRO WAIT_NO_KEY; ждем пока все клавиши будут отжаты
 	defb input_system_num
 	defb 2
+	ENDM
+
+	MACRO CURSOR_SCR_INIT; показываем курсор первый раз - копируем содержимое под ним в буфер
+	defb input_system_num
+	defb 3
 	ENDM
 
 	;include "rpglang/keyboard.asm"
@@ -26,7 +31,9 @@ enter:
 	DEC A
 	JR Z, cmd_1
 	DEC A
-	JR Z, cmd_2
+	JP Z, cmd_2
+	DEC A
+	JP Z, cmd_3
 	;DEC A
 	jp rpglang.process_lp
 
@@ -38,10 +45,11 @@ cmd_0: ;// WAIT_ANY_KEY
 
 cmd_1: ;// CURSOR_SCR_MOVE
 	PUSH HL
-	LD DE, curPos
+	LD DE, (curPos)
 	CALL math.pos_scr; в DE - адрес на экране
-	EX HL, DE
-	ScreenBuf.scr_to_buf4; копируем прежнее место под курсором
+	PUSH DE
+	ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
+	POP DE; в DE - адрес на экране, он нам еще нужен
 	POP HL
 	rLDAor ;//dir_up
 	JR Z, cursor_up
@@ -55,17 +63,23 @@ cmd_1: ;// CURSOR_SCR_MOVE
 cursor_up:
   LD A, (curPos.y)
   DEC A
+	JP M, rpglang.process_lp
+	DEC A
   JP M, rpglang.process_lp
   LD (curPos.y),A
 	jp show_cursor
 cursor_down:
 	LD A, (curPos.y)
 	INC A
-	JP M, rpglang.process_lp
+	INC A
+  CP scrHeight*2
+	JP NC, rpglang.process_lp
 	LD (curPos.y),A
 	jp show_cursor
 cursor_left:
 	LD A, (curPos.x)
+	DEC A
+	JP M, rpglang.process_lp
 	DEC A
 	JP M, rpglang.process_lp
 	LD (curPos.x),A
@@ -73,21 +87,52 @@ cursor_left:
 cursor_right:
 	LD A, (curPos.x)
 	INC A
-	JP M, rpglang.process_lp
+	INC A
+	CP scrWidth*2
+	JP NC, rpglang.process_lp
 	LD (curPos.x),A
-	;jp rpglang.process
-show_cursor:
-	ScreenBuf.buf4_to_scr
+	/* DUP 300
+	jp rpglang.process
+	jp rpglang.process
+	jp rpglang.process
+	jp rpglang.process
+	jp rpglang.process
+	jp rpglang.process
+	jp rpglang.process
+	EDUP */
+show_cursor: ; в DE остался адрес на экране
+	PUSH HL
+
+	PUSH DE
+	EX DE, HL; в HL у нас адрес на экране
+	NOP
+	call ScreenBuf.scr_to_buf4
+	NOP
+	POP DE; DE - адрес на экране
+	/* PUSH HL
+	PUSH HL
+	PUSH HL */
+	;LD HL, GUI_SET
+	/* POP HL
+	POP HL
+	POP HL */
+	;call ScreenBuf.buf4_to_scr
+	;PUSH HL
+	;PUSH DE
+	;PUSH BC
+	;call Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес
+	;POP BC
+	;POP DE
+	;POP HL
+	;call Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес
+	POP HL
 	jp rpglang.process_lp
 
 cmd_2:
-	/* HALT
-	XOR A
-	IN A,(0xfe)
-	CPL
-	and 31
-	JR NZ, cmd_2 */
 	call noKey
+	jp rpglang.process_lp
+
+cmd_3:
 	jp rpglang.process_lp
 
 waitKey:
@@ -107,5 +152,5 @@ noKey
 	and 31
 	jr nz,noKey
 	ret
-
+input_system_end:
 	ENDMODULE

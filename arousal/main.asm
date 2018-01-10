@@ -18,7 +18,7 @@ _prog_start: jp main
 main:
 	LD A, high p84_font
 	call graphic_system.init_font
-	call interrupt.int_init
+	;call interrupt.int_init
 	rpglang.start script_begin
 	ret
 	/*DI
@@ -50,13 +50,13 @@ p84_font:
 _data_end;
 ; ------------- data end ---------------
 
-	include "rpglang/interrupt.asm"
+	;include "rpglang/interrupt.asm"
 
 
 display "prog: ", _prog_start, " ", _prog_end, " ", /D, _prog_end - _prog_start
 display "data: ", _data_start, " ", _data_end, " ", /D, _data_end - _data_start
 display "font addr: ", p84_font
-display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interrupt_end
+;display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interrupt_end
 
 display /D, _data_end-_prog_start, " size, ", /D, 0x10000-_data_end, " free"
 

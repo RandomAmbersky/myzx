@@ -10,7 +10,6 @@ script_begin:
 	rpg.InitTiles TILE_SET
 	rpg.InitMap MAP_SET
 	rpg.InitChars CHARS_SET
-	;rExec Map.fill_ma
 	rBorder PEN_BLACK
 	rExec Entities.loopNextChar
 	rExec Entities.lookChar
@@ -28,8 +27,8 @@ proc_setCursorMode:
 	rSetVar gm_var, gm_CURSOR_MOVE
 	defb _endByte
 
-proc_setCharMode
-	WAIT_NO_KEY; ждем пока отпустит 
+proc_setCharMode:
+	WAIT_NO_KEY; ждем пока отпустит
 	rSetVar gm_var, gm_CHAR_MOVE
 	defb _endByte
 
@@ -66,14 +65,6 @@ charScanKeysTable:
 	;rBorder PEN_BLACK
 	;defb _endByte
 
-;keyStartCursorMode:
-	;rBorder PEN_YELLOW
-	;WAIT_NO_KEY
-;keyStartCursorModeLoop:
-	;rScanKeys scanCursorMoveTable
-	;GOTO keyStartCursorModeLoop
-	;defb _endByte
-
 cursorScanKeysTable:
 	KEY_W, keyCursorUp
 	KEY_S, keyCursorDown
@@ -84,42 +75,27 @@ cursorScanKeysTable:
 
 keyCursorUp
 	rBorder PEN_WHITE
-	WAIT_NO_KEY
+	CURSOR_SCR_MOVE dir_up
+	WAIT 5
 	defb _endByte
 
 keyCursorDown
 	rBorder PEN_RED
-	WAIT_NO_KEY
+	CURSOR_SCR_MOVE dir_down
+	WAIT 5
 	defb _endByte
 
 keyCursorLeft
 	rBorder PEN_BLUE
-	WAIT_NO_KEY
+	CURSOR_SCR_MOVE dir_left
+	WAIT 5
 	defb _endByte
 
 keyCursorRight
 	rBorder PEN_CYAN
-	WAIT_NO_KEY
+	CURSOR_SCR_MOVE dir_right
+	WAIT 5
 	defb _endByte
-
-/* startLoop: // выбран и может ходить
-	;rpg.NextChar
-	;rExec Entities.loopNextChar
-	;rExec Entities.lookChar
-;startLoop2:
-	;rBorder PEN_RED
-	;rScanKeys scanCharKeysTable
-	rBorder PEN_YELLOW
-	;GOTO startLoop
-	defb _endByte */
-
-/* scanCharKeysTable:
-	KEY_P, keyCharEnd
-	;KEY_Q, keyCharUp
-  ;KEY_A, keyCharDown
-  ;KEY_O, keyCharLeft
-  ;KEY_P, keyCharRight
-	defb _endByte */
 
 /* keyCharEnd:
 	;rpg.NextChar

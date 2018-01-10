@@ -177,15 +177,7 @@ cmd_7: ; ================ rIfVar var,value,code_ptr
 	call getVar
 	cp (hl)
 	INC HL
-	JP Z, cmd_0
-;	JR NZ, cmd_7_no_goto
-;cmd_7_goto:
-;	rLDE
-;	inc hl
-;	scf
-;	ret z
-;	ccf
-;	ret
+	JP Z, cmd_0; переход по GOTO
 cmd_7_no_goto:
 	inc hl
 	inc hl

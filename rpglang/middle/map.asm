@@ -1,7 +1,6 @@
 MODULE Map
 
 mapPos Point 0,0
-//curPos Point 0,0
 
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
