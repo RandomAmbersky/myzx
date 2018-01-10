@@ -105,7 +105,7 @@ init_loop; пробегаемся по всем персонажам и разм
   PUSH DE
   PUSH HL
   LD IX,HL
-  ;call ground_to_pers_floor
+
   LD DE, (IX+Hero.pos)
   call Map.calc_pos
   LD A,(HL)

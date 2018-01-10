@@ -38,7 +38,8 @@
 show_tile_on_map:
    PUSH DE
  // thanks to Alone Coder!
-   LD B,8
+   LD BC,#0808
+   ;LD C,0 ; 0E 00
 _my_spr_loop_1:
    LDI // LD (DE),(HL)  DE+1, HL+1, BC-1
    LD A,(HL)
@@ -56,7 +57,7 @@ _my_spr_loop_1:
    ADD HL, BC
    EX HL, DE; DE = DE + 32
 
-   LD B, 8
+   LD BC,#0808
 _my_spr_loop_2:
      LDI // LD (DE),(HL)  DE+1, HL+1
      LD A,(HL)
@@ -163,7 +164,7 @@ show_tile:
   ADD HL,HL; x32
   POP BC; // снимаем со стека x4 - еще 4 байта цветности
   ADD HL, BC
-p_sprArray:
+;p_sprArray:
   LD BC, #0000;
   ADD HL, BC
   call math.pos_scr
@@ -232,6 +233,6 @@ no_down8:
   LDI
   RET
 
-sprArray EQU p_sprArray+1
+sprArray dw 00 ;EQU p_sprArray+1
 
   ENDMODULE

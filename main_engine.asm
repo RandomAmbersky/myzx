@@ -103,6 +103,7 @@ display "GUI_SET: ", GUI_SET
 display "MAP_SET: ", MAP_SET
 display "MAP_SET_END: ", MAP_SET_END
 
+display "calc_pos: ", Map.calc_pos
 display "show_tile_on_map: ", Tiles16.show_tile_on_map
 
 ;display "show_cursor: ", input_system.show_cursor

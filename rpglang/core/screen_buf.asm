@@ -4,9 +4,11 @@
 ; копируем 2x2 знакоместа из буфера на экран
 ; DE - адрес на экране
   MACRO ScreenBuf.buf4_to_scr:
+  DI
   LD HL, ScreenBuf.cursorBuf
   ;LD HL, GUI_SET+(8*4+4)*2
   call Tiles16.show_tile_on_map
+  EI
   ENDM
 
 ; копируем 2x2 знакоместа в буфер из экрана
@@ -18,7 +20,7 @@ scr_to_buf4:
   LD DE, ScreenBuf.cursorBuf
 
   PUSH HL
-  LD B,8
+  LD BC,#0808
 scr_to_buf4_loop_1:
   LDI ; LD (DE),(HL)
   LD A,(HL)
@@ -33,7 +35,7 @@ scr_to_buf4_loop_1:
   ADD HL, BC ; HL = HL + 32
 
   PUSH HL
-  LD B,8
+  LD BC,#0808
 scr_to_buf4_loop_2:
   LDI ; LD (DE),(HL)
   LD A,(HL)

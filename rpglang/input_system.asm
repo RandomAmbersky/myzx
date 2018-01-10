@@ -44,13 +44,6 @@ cmd_0: ;// WAIT_ANY_KEY
 	jp rpglang.process_lp
 
 cmd_1: ;// CURSOR_SCR_MOVE
-	;PUSH HL
-	;LD DE, (curPos)
-	;CALL math.pos_scr; в DE - адрес на экране
-	;PUSH DE
-	;ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
-	;POP DE; в DE - адрес на экране, он нам еще нужен
-	;POP HL
 	rLDAor ;//dir_up
 	JR Z, cursor_up
 	DEC A
@@ -63,6 +56,7 @@ cmd_1: ;// CURSOR_SCR_MOVE
 cursor_up:
   LD A, (curPos.y)
   DEC A
+	JP M, rpglang.process_lp
 	DEC A
   JP M, rpglang.process_lp
   LD (curPos.y),A
@@ -78,6 +72,7 @@ cursor_down:
 cursor_left:
 	LD A, (curPos.x)
 	DEC A
+	JP M, rpglang.process_lp
 	DEC A
 	JP M, rpglang.process_lp
 	LD (curPos.x),A
@@ -89,7 +84,7 @@ cursor_right:
 	CP scrWidth*2
 	JP NC, rpglang.process_lp
 	LD (curPos.x),A
-	jp show_cursor
+	;jp show_cursor
 	/* DUP 300
 	jp rpglang.process
 	jp rpglang.process
@@ -99,7 +94,7 @@ cursor_right:
 	jp rpglang.process
 	jp rpglang.process
 	EDUP */
-show_cursor: ; в DE остался адрес на экране
+show_cursor:
 	PUSH HL
 	CALL buf_and_show_cursor
 	POP HL
@@ -109,19 +104,26 @@ cmd_2:
 	call noKey
 	jp rpglang.process_lp
 
-cmd_3:
+cmd_3: ; ==== CURSOR_SCR_INIT
 	PUSH HL
-	CALL and_show_cursor
+	CALL cursor_scr_center
 	POP HL
 	jp rpglang.process_lp
+
+cursor_scr_center:
+	LD DE, #0e0a
+	LD (curPos), DE
+	LD (old_curPos), DE
+	CALL and_show_cursor
+	RET
 
 buf_and_show_cursor:
 	LD DE, (old_curPos); старая позиция
 	CALL math.pos_scr; в DE - адрес на экране
 	ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
-and_show_cursor:
 	LD DE, (curPos)
 	LD (old_curPos), DE
+and_show_cursor:
 	CALL math.pos_scr; в DE - адрес на экране
 	PUSH DE
 	EX DE, HL

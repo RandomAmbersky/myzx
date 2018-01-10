@@ -66,9 +66,10 @@ look_at_map:
 ; Выход: HL - указатель
 calc_pos:
   LD HL, #0000
-  LD C,D; запоминаем posX в C
+  PUSH DE
+  ;LD C,D; запоминаем posX в C
   LD A,E
-  CP 00
+  OR A
   JR Z, no_mul; если ноль по Y то не будем прибавлять ничего
   LD B,E; кидаем posY в B - по B будет автодекрементный цикл
   LD D,0
@@ -77,11 +78,12 @@ mul_loop
   ADD HL,DE
   DJNZ mul_loop
 no_mul
+  POP DE
+  LD E,D
   LD D,0
-  LD E,C
   ADD HL,DE; в HL у нас
-mapArray_ptr:
-  LD DE, #0000
+;mapArray_ptr:
+  LD DE, (Map.mapArray)
   ADD HL, DE
   RET; нельзя отказаться от RET здесь!! - эта процедура используется еще для добавления спрайтов на карту!!!
 
@@ -182,6 +184,6 @@ scr_right:
   LD (curPos.x),A
   RET */
 
-mapArray equ mapArray_ptr+1 // указатель на массив карты
+mapArray dw 00;equ mapArray_ptr+1 // указатель на массив карты
 
 ENDMODULE

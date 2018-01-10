@@ -16,7 +16,31 @@ script_pre_init_asm:
 	LD HL, CHARS_SET
 	CALL Entities.initChars
 	CALL Entities.loopNextChar
-	CALL Entities.lookChar
+;l1_
+	;CALL Entities.loopNextChar
+	;LD DE, #0505
+	;PUSH HL
+	;CALL Map.calc_pos
+	;PUSH BC
+	;LD A,C
+	;LD C,A
+	;POP BC
+	;LD C,A
+	;NOP
+	;POP HL
+	LD HL, MAP_SET
+	CALL Tiles16.show_tile_map;
+	;loopNextChar
+	;CALL Entities.lookChar
+	;LD DE, #0505
+	;CALL math.pos_scr; в DE - адрес на экране
+	;LD C,A
+	;LD HL, GUI_SET
+	;CALL Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес */
+;l1_
+	;CALL input_system.cursor_scr_center
+	;JP l1_
+	;CALL Entities.lookChar
 	;LD DE, #0000
 	;CALL Map.look_at_map
 	;LD HL, MAP_SET; показываем с 0x0
@@ -27,6 +51,13 @@ script_pre_init_asm:
 	RET;
 
 script_begin:
+	;CURSOR_SCR_INIT
+	;rExec Map.look_at_map
+	;rExec input_system.cursor_scr_center
+	;rExec Entities.loopNextChar
+	;rExec Entities.loopNextChar
+	;rExec Entities.lookChar
+	;GOTO script_begin
 	;rpg.InitTiles TILE_SET
 	;rpg.InitMap MAP_SET
 	;rpg.InitChars CHARS_SET
@@ -36,9 +67,8 @@ script_begin:
 	;rExec Map.look_at_map
 	;WAIT_ANY_KEY
 	;defb _endByte
-
 	rSetVar gm_var, gm_CHAR_MOVE
-
+	;CURSOR_SCR_INIT
 ; основной скрипт state-machine ;)
 script_loop:
 	rIfVar gm_var, gm_CHAR_MOVE, charMode
@@ -59,8 +89,8 @@ proc_setCharMode:
 
 charMode:
 	rBorder PEN_BLACK
-	rScanKeys charScanKeysTable
 	rExec Entities.lookChar
+	rScanKeys charScanKeysTable
 	GOTO script_loop
 
 cursorMode:
