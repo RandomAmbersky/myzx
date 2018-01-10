@@ -2,7 +2,7 @@
 ; для работы надо установить sprArray - указатель на массив тайлов
   MODULE Tiles16
 
-  MACRO Tiles16.setTiles spr_ptr
+  /* MACRO Tiles16.setTiles spr_ptr
     LD HL, spr_ptr
     LD (Tiles16.sprArray), HL
   ENDM
@@ -11,7 +11,7 @@
     LD DE, xy
     LD A, spr
     CALL Tiles16.show_tile
-  ENDM
+  ENDM */
 
 ; переводим индекс карты в указатель на начало данных спрайта
 ; A - номер спрайта
@@ -80,6 +80,8 @@ _my_spr_loop_2:
      LDI
      RET
 
+; LDI - ED
+
  ; по текущему адресу тайла на экране получаем адрес тайла справа от него
  ; в DE - адрес тайла на экране
  ; на выходе в DE адрес следующего справа тайла на экране
@@ -106,6 +108,7 @@ next_tile_pos_down_exit:
 ; программа показывает на экране карту тайлов
 ; в HL - адрес первого тайла на карте
 show_tile_map:
+  DI ; лишний раз не теребим стек
   LD DE, SCREEN_ADDR ; current pos draw variable
   LD B, scrHeight
 show_tile_map_loop2: ; цикл по столбцам
@@ -138,7 +141,7 @@ show_tile_map_loop1: ; цикл по строкам
   ADD HL, BC; прибавляем к указателю на начало тайлов ширину - сдвигаем указатель вниз на 1 тайл
   POP BC
   DJNZ show_tile_map_loop2
-
+  EI
   RET
 
 ; программа показывает один тайл на экране

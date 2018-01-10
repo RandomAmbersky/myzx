@@ -6,13 +6,37 @@ gm_var equ 0; системная переменная номер 0
 gm_CHAR_MOVE equ 1; режим передвижения
 gm_CURSOR_MOVE equ 2; режим курсора
 
+	GOTO script_begin
+
+script_pre_init_asm:
+	LD DE, TILE_SET
+	LD (Tiles16.sprArray), DE
+	LD DE, MAP_SET
+	LD (Map.mapArray), DE
+	LD HL, CHARS_SET
+	CALL Entities.initChars
+	CALL Entities.loopNextChar
+	CALL Entities.lookChar
+	;LD DE, #0000
+	;CALL Map.look_at_map
+	;LD HL, MAP_SET; показываем с 0x0
+	;CALL Tiles16.show_tile_map; одно и то же что CALL Map.showMap
+	;LD HL, TILE_SET
+	;LD DE, SCREEN_ADDR
+	;CALL Tiles16.show_tile_on_map
+	RET;
+
 script_begin:
-	rpg.InitTiles TILE_SET
-	rpg.InitMap MAP_SET
-	rpg.InitChars CHARS_SET
-	rBorder PEN_BLACK
-	rExec Entities.loopNextChar
-	rExec Entities.lookChar
+	;rpg.InitTiles TILE_SET
+	;rpg.InitMap MAP_SET
+	;rpg.InitChars CHARS_SET
+	;rBorder PEN_BLACK
+	;rExec Entities.loopNextChar
+	;rExec Entities.lookChar
+	;rExec Map.look_at_map
+	;WAIT_ANY_KEY
+	;defb _endByte
+
 	rSetVar gm_var, gm_CHAR_MOVE
 
 ; основной скрипт state-machine ;)
@@ -33,7 +57,7 @@ proc_setCharMode:
 	defb _endByte
 
 charMode:
-	rBorder PEN_RED
+	rBorder PEN_BLACK
 	rScanKeys charScanKeysTable
 	rExec Entities.lookChar
 	GOTO script_loop

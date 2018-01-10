@@ -91,7 +91,8 @@ cursor_right:
 	CP scrWidth*2
 	JP NC, rpglang.process_lp
 	LD (curPos.x),A
-	/* DUP 300
+	jp show_cursor
+	DUP 300
 	jp rpglang.process
 	jp rpglang.process
 	jp rpglang.process
@@ -99,31 +100,17 @@ cursor_right:
 	jp rpglang.process
 	jp rpglang.process
 	jp rpglang.process
-	EDUP */
+	EDUP
 show_cursor: ; в DE остался адрес на экране
 	PUSH HL
 
 	PUSH DE
 	EX DE, HL; в HL у нас адрес на экране
-	NOP
 	call ScreenBuf.scr_to_buf4
-	NOP
 	POP DE; DE - адрес на экране
-	/* PUSH HL
-	PUSH HL
-	PUSH HL */
-	;LD HL, GUI_SET
-	/* POP HL
-	POP HL
-	POP HL */
-	;call ScreenBuf.buf4_to_scr
-	;PUSH HL
-	;PUSH DE
-	;PUSH BC
-	;call Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес
-	;POP BC
-	;POP DE
-	;POP HL
+
+	LD HL, GUI_SET
+	ScreenBuf.buf4_to_scr
 	;call Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес
 	POP HL
 	jp rpglang.process_lp

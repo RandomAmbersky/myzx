@@ -9,9 +9,9 @@ frame_counter defb 00; считаем проходящие 1/50 тики
 system_flags defb 0;
 
 ;таблица экранных адресов
-/* SCREEN_ADDR_TABLE:
+SCREEN_ADDR_TABLE:
    DUP scrWidth * scrHeight;
    db 00, 00
-   EDUP */
+   EDUP
 
 ENDMODULE
