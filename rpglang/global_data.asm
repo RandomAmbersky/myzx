@@ -8,6 +8,10 @@ frame_counter defb 00; считаем проходящие 1/50 тики
 
 system_flags defb 0;
 
+STACK_BUFF
+  DUP 256
+  db 0
+  EDUP
 ;таблица экранных адресов
 SCREEN_ADDR_TABLE:
    DUP scrWidth * scrHeight;

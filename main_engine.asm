@@ -1,5 +1,5 @@
 DEVICE zxspectrum48
-ORG #6000
+ORG #8000
 ; ------------- prog begin ---------------
 _prog_start: jp main
 
@@ -66,15 +66,14 @@ LANG_SET:
 	include "rpglang/data/lang_ru.asm"
 GUI_SET:
 	include "rpglang/data/gui.asm"
-	;include "rpglang/data/new_tiles.asm"
 TILE_SET:
 	;include "rpglang/data/rebelstar_spr.asm"
 	include "rpglang/data/new_tiles.asm"
 TILE_SET_END
 MAP_SET:
-	include "rpglang/data/mage_map.asm"
+	;include "rpglang/data/mage_map.asm"
 MAP_SET_END
-	;include "rpglang/data/laboratory.asm"
+	include "rpglang/data/laboratory.asm"
 ENCOUNTER_SET:
 	include "rpglang/data/rebelstar_enc.asm"
 SCRIPT_SET:

@@ -48,6 +48,7 @@ script_loop:
 
 proc_setCursorMode:
 	WAIT_NO_KEY; ждем пока отпустит
+	CURSOR_SCR_INIT
 	rSetVar gm_var, gm_CURSOR_MOVE
 	defb _endByte
 
@@ -64,7 +65,8 @@ charMode:
 
 cursorMode:
 	rBorder PEN_YELLOW
-	rScanKeys  cursorScanKeysTable
+	;CURSOR_SHOW
+	rScanKeys cursorScanKeysTable
 	GOTO script_loop
 
 charScanKeysTable:

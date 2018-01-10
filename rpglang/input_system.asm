@@ -44,13 +44,13 @@ cmd_0: ;// WAIT_ANY_KEY
 	jp rpglang.process_lp
 
 cmd_1: ;// CURSOR_SCR_MOVE
-	PUSH HL
-	LD DE, (curPos)
-	CALL math.pos_scr; в DE - адрес на экране
-	PUSH DE
-	ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
-	POP DE; в DE - адрес на экране, он нам еще нужен
-	POP HL
+	;PUSH HL
+	;LD DE, (curPos)
+	;CALL math.pos_scr; в DE - адрес на экране
+	;PUSH DE
+	;ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
+	;POP DE; в DE - адрес на экране, он нам еще нужен
+	;POP HL
 	rLDAor ;//dir_up
 	JR Z, cursor_up
 	DEC A
@@ -63,7 +63,6 @@ cmd_1: ;// CURSOR_SCR_MOVE
 cursor_up:
   LD A, (curPos.y)
   DEC A
-	JP M, rpglang.process_lp
 	DEC A
   JP M, rpglang.process_lp
   LD (curPos.y),A
@@ -79,7 +78,6 @@ cursor_down:
 cursor_left:
 	LD A, (curPos.x)
 	DEC A
-	JP M, rpglang.process_lp
 	DEC A
 	JP M, rpglang.process_lp
 	LD (curPos.x),A
@@ -92,7 +90,7 @@ cursor_right:
 	JP NC, rpglang.process_lp
 	LD (curPos.x),A
 	jp show_cursor
-	DUP 300
+	/* DUP 300
 	jp rpglang.process
 	jp rpglang.process
 	jp rpglang.process
@@ -100,18 +98,10 @@ cursor_right:
 	jp rpglang.process
 	jp rpglang.process
 	jp rpglang.process
-	EDUP
+	EDUP */
 show_cursor: ; в DE остался адрес на экране
 	PUSH HL
-
-	PUSH DE
-	EX DE, HL; в HL у нас адрес на экране
-	call ScreenBuf.scr_to_buf4
-	POP DE; DE - адрес на экране
-
-	LD HL, GUI_SET
-	ScreenBuf.buf4_to_scr
-	;call Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес
+	CALL buf_and_show_cursor
 	POP HL
 	jp rpglang.process_lp
 
@@ -120,7 +110,26 @@ cmd_2:
 	jp rpglang.process_lp
 
 cmd_3:
+	PUSH HL
+	CALL and_show_cursor
+	POP HL
 	jp rpglang.process_lp
+
+buf_and_show_cursor:
+	LD DE, (old_curPos); старая позиция
+	CALL math.pos_scr; в DE - адрес на экране
+	ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
+and_show_cursor:
+	LD DE, (curPos)
+	LD (old_curPos), DE
+	CALL math.pos_scr; в DE - адрес на экране
+	PUSH DE
+	EX DE, HL
+	CALL ScreenBuf.scr_to_buf4
+	POP DE
+	LD HL, GUI_SET
+	CALL Tiles16.show_tile_on_map;HL - указатель на спрайт ;DE - экранный адрес */
+	RET
 
 waitKey:
 	halt

@@ -214,7 +214,7 @@ spr_loop_1
   call math.addr_to_attr
   LDI // LD (DE),(HL)
   LDI // LD (DE),(HL)
-  PUSH HL
+  ;PUSH HL
   ;LD BC, 30
   ;EX DE, HL
   ;ADD HL, BC
@@ -222,12 +222,12 @@ spr_loop_1
   LD a,e
   ADD a,30
   LD e,a
-  JR NC, no_down8
-  LD a,d
-  ADD a,8
-  LD d,a
+  ;JR NC, no_down8
+  ;LD a,d
+  ;ADD a,8
+  ;LD d,a
 no_down8:
-  POP HL
+  ;POP HL
   LDI
   LDI
   RET
