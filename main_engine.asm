@@ -10,7 +10,7 @@ _core:
 	include "rpglang/core/tiles16.asm"
 	include "rpglang/core/screen_buf.asm"
 	include "rpglang/core/scankeys.asm"
-	include "rpglang/text.asm"
+	include "rpglang/core/text68.asm"
 
 _middle:
 	include "rpglang/middle/map.asm"
@@ -30,8 +30,8 @@ main:
 	;LD SP, #FFFF; а и фиг со стеком!
 	LD SP, #5800-1; а и фиг со стеком!
 	;call routines.fill_scr_table
-	LD A, high p84_font
-	call graphic_system.init_font
+	;LD A, high p84_font
+	;call graphic_system.init_font
 	call interrupt.int_init
 	call script_pre_init_asm;
 	rpglang.start SCRIPT_SET
@@ -82,8 +82,10 @@ SCRIPT_SET:
 MY_HELLO: defb "HELLO!",0
 
 	ORG (high $+1)*256
-p84_font:
-	incbin "p8_font.bin"
+;p84_font:
+;	incbin "p8_font.bin"
+p68_font:
+	incbin "AONfont_revert.fnt"
 
 _data_end;
 ; ------------- data end ---------------
@@ -94,7 +96,7 @@ _vt_end
 ;display "center_at_map", Map.center_at_map
 display "prog: ", _prog_start, " ", _prog_end, " ", /D, _prog_end - _prog_start
 display "data: ", _data_start, " ", _data_end, " ", /D, _data_end - _data_start
-display "font addr: ", p84_font
+display "font addr: ", p68_font
 display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interrupt_end
 
 ;display "TILE_SET: ", TILE_SET

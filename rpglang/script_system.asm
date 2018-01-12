@@ -117,7 +117,7 @@ cmd_2: ; ================ FPS_CALC
 	LD A,D
 	ADD A,'0'
 	LD (str_fps+2),A
-	Text.print64at 0,0,str_fps
+	;Text.print64at 0,0,str_fps
 
 	LD A, (globaldata.frame_counter); frame_counter ����������  � ������� frame_current
 	LD (globaldata.frame_current), A

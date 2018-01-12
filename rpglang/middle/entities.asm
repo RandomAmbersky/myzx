@@ -104,7 +104,7 @@ charLookAtCell:
   Entities.calcCellType
   LD IY, HL
   LD HL, (IY+CellType.name_ptr)
-  Text.print64at 0,22, HL
+  Text68.print68at 0,22, HL
   RET
 
 /*charLoops:
