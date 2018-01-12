@@ -28,7 +28,8 @@ _global:
 	include "rpglang/input_system.asm"
 main:
 	;LD SP, #FFFF; а и фиг со стеком!
-	LD SP, #5800-1; а и фиг со стеком!
+	;LD SP, #5800-1; а и фиг со стеком!
+	;LD SP, STACK_BUFF
 	;call routines.fill_scr_table
 	;LD A, high p84_font
 	;call graphic_system.init_font

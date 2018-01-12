@@ -6,11 +6,14 @@
     CALL Text68.print_68at
   ENDM
 
-
 ; DE - pos
 ; HL - text pointer
 print_68at:
   CALL math.pos_scr
+  PUSH DE
+  LD A,1
+  CALL ScreenBuf.clean_rows
+  POP DE
   LD C, 7
 LOOP:
 ;-----

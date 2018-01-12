@@ -11,6 +11,24 @@
   EI
   ENDM
 
+;в A - ширина окошка
+;в HL - адрес первой строки знакоместа
+clean_rows:
+  LD B, A
+  LD A, #00
+  LD B, 32; экранчик
+show_clean_space_loop:
+  PUSH DE
+  DUP 8
+  LD (DE),A
+  INC D
+  EDUP
+  POP DE
+  INC DE
+  DJNZ show_clean_space_loop
+
+  RET
+
 ; копируем 2x2 знакоместа в буфер из экрана
 ; HL - адрес на экране
 ;так как адресация экрана не линейная то мы не можем использовать
