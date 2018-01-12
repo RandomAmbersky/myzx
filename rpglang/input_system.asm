@@ -21,9 +21,12 @@
 	defb 3
 	ENDM
 
+	MACRO CURSOR_SHOW_INFO; показать информацию о клетке под курсором
+	defb input_system_num
+	defb 4
+	ENDM
+
 	;include "rpglang/keyboard.asm"
-curPos Point 0,0
-old_curPos Point 0,0
 
 enter:
 	rLDAor
@@ -34,6 +37,8 @@ enter:
 	JP Z, cmd_2
 	DEC A
 	JP Z, cmd_3
+	DEC A
+	JP Z, cmd_4
 	;DEC A
 	jp rpglang.process_lp
 
@@ -54,36 +59,36 @@ cmd_1: ;// CURSOR_SCR_MOVE
 	JR Z, cursor_right
 	jp rpglang.process_lp;  что-то непонятное пришло
 cursor_up:
-  LD A, (curPos.y)
+  LD A, (Map.curPos.y)
   DEC A
 	JP M, rpglang.process_lp
 	DEC A
   JP M, rpglang.process_lp
-  LD (curPos.y),A
+  LD (Map.curPos.y),A
 	jp show_cursor
 cursor_down:
-	LD A, (curPos.y)
+	LD A, (Map.curPos.y)
 	INC A
 	INC A
   CP scrHeight*2
 	JP NC, rpglang.process_lp
-	LD (curPos.y),A
+	LD (Map.curPos.y),A
 	jp show_cursor
 cursor_left:
-	LD A, (curPos.x)
+	LD A, (Map.curPos.x)
 	DEC A
 	JP M, rpglang.process_lp
 	DEC A
 	JP M, rpglang.process_lp
-	LD (curPos.x),A
+	LD (Map.curPos.x),A
 	jp show_cursor
 cursor_right:
-	LD A, (curPos.x)
+	LD A, (Map.curPos.x)
 	INC A
 	INC A
 	CP scrWidth*2
 	JP NC, rpglang.process_lp
-	LD (curPos.x),A
+	LD (Map.curPos.x),A
 	;jp show_cursor
 	/* DUP 300
 	jp rpglang.process
@@ -112,17 +117,17 @@ cmd_3: ; ==== CURSOR_SCR_INIT
 
 cursor_scr_center:
 	LD DE, #0e0a
-	LD (curPos), DE
-	LD (old_curPos), DE
+	LD (Map.curPos), DE
+	LD (Map.old_curPos), DE
 	CALL and_show_cursor
 	RET
 
 buf_and_show_cursor:
-	LD DE, (old_curPos); старая позиция
+	LD DE, (Map.old_curPos); старая позиция
 	CALL math.pos_scr; в DE - адрес на экране
 	ScreenBuf.buf4_to_scr; восстанавливаем прежнее изображение под курсором
-	LD DE, (curPos)
-	LD (old_curPos), DE
+	LD DE, (Map.curPos)
+	LD (Map.old_curPos), DE
 and_show_cursor:
 	CALL math.pos_scr; в DE - адрес на экране
 	PUSH DE
@@ -150,5 +155,21 @@ noKey
 	and 31
 	jr nz,noKey
 	ret
+
+cmd_4: ; ====== CURSOR_SHOW_INFO
+	LD HL, (Map.curPos)
+	;LD DE, Map.scrWidthHalf*256+Map.scrHeightHalf
+	LD A,H
+	RRCA
+	;SUB Map.scrWidthHalf
+	LD H,A
+	LD A,L
+	RRCA
+	;SUB Map.scrHeightHalf
+	LD L,A
+	;SUB HL, DE
+	CALL Entities.charLookAtCell
+	jp rpglang.process_lp
+
 input_system_end:
 	ENDMODULE

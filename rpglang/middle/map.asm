@@ -1,6 +1,12 @@
 MODULE Map
 
+; по идее конечно надо сделать map_view но...
 mapPos Point 0,0
+curPos Point 0,0
+old_curPos Point 0,0
+
+;TODO перенести процедуры работы с курсором в MAP,
+;определить чтобы было удобно обрабатывать MapPos относительно героя
 
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
@@ -57,7 +63,8 @@ centr_Y_max:
   JP calc_pos
 set_y:
   LD E, A
-  JP calc_pos
+  LD (mapPos),DE
+  ;JP calc_pos
 
 look_at_map:
   LD DE, (mapPos)
@@ -67,9 +74,9 @@ look_at_map:
 calc_pos:
   LD HL, #0000
   PUSH DE
-  ;LD C,D; запоминаем posX в C
+  LD C,D; запоминаем posX в C
   LD A,E
-  OR A
+  CP 00
   JR Z, no_mul; если ноль по Y то не будем прибавлять ничего
   LD B,E; кидаем posY в B - по B будет автодекрементный цикл
   LD D,0
@@ -153,7 +160,7 @@ scr_right:
   LD (mapPos.x),A
   RET
 
-; двигаем курсор
+;двигаем курсор
 /* cur_up:
   LD A, (curPos.y)
   DEC A

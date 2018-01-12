@@ -1,5 +1,5 @@
 DEVICE zxspectrum48
-ORG #8000
+ORG #6000
 ; ------------- prog begin ---------------
 _prog_start: jp main
 
@@ -10,6 +10,7 @@ _core:
 	include "rpglang/core/tiles16.asm"
 	include "rpglang/core/screen_buf.asm"
 	include "rpglang/core/scankeys.asm"
+	include "rpglang/text.asm"
 
 _middle:
 	include "rpglang/middle/map.asm"
@@ -19,7 +20,6 @@ _global:
 	include "rpglang/global_data.asm"
 	include "rpglang/global_routines.asm"
 	include "rpglang/rpglang.asm"
-	include "rpglang/text.asm"
 	include "rpglang/graphic_system64.asm"
 	include "rpglang/sound_system.asm"
 	include "rpglang/gfx_system.asm"
@@ -97,14 +97,16 @@ display "data: ", _data_start, " ", _data_end, " ", /D, _data_end - _data_start
 display "font addr: ", p84_font
 display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interrupt_end
 
-display "TILE_SET: ", TILE_SET
-display "TILE_SET_END: ", TILE_SET_END
-display "GUI_SET: ", GUI_SET
-display "MAP_SET: ", MAP_SET
-display "MAP_SET_END: ", MAP_SET_END
+;display "TILE_SET: ", TILE_SET
+;display "TILE_SET_END: ", TILE_SET_END
+;display "GUI_SET: ", GUI_SET
+;display "MAP_SET: ", MAP_SET
+;display "MAP_SET_END: ", MAP_SET_END
 
-display "calc_pos: ", Map.calc_pos
-display "show_tile_on_map: ", Tiles16.show_tile_on_map
+;display "calc_pos: ", Map.calc_pos
+;display "show_tile_on_map: ", Tiles16.show_tile_on_map
+
+display "CURSOR_SHOW_INFO: ", input_system.cmd_4
 
 ;display "show_cursor: ", input_system.show_cursor
 ;display "scr_to_buf4: ", ScreenBuf.scr_to_buf4

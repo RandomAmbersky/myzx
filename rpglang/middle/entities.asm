@@ -54,6 +54,15 @@ flags db 00; признаки-флаги
 name_p dw #0000
 ENDS
 
+; на входе в A - индекс типа ячейки
+; на выходе - указатель на массив с ячейкой
+  MACRO Entities.calcCellType:
+  LD DE, CellType
+  CALL math.mul_ADE
+  LD DE, CELL_TYPES
+  ADD HL, DE
+  ENDM
+
 ; перебираем по кругу персонажей от стартового до последнего и опять на первый
 loopNextChar:
   CALL nextChar
@@ -82,6 +91,20 @@ lookChar:; смотрим на текущего персонажа
   LD DE, (IX+Hero.pos)
   CALL Map.center_at_map
   CALL Map.showMap
+  RET
+
+; TODO сделать признак что на ячейке есть персонаж
+; на входе HL - координаты курсора
+charLookAtCell:
+  LD DE, (Map.mapPos)
+  ADD HL, DE; получаем позицию pos куда смотрит курсор
+  EX DE, HL
+  CALL Map.calc_pos; в HL указатель на ячейку
+  LD A, (HL); вот оно!!!! получили ячейку из карты =)
+  Entities.calcCellType
+  LD IY, HL
+  LD HL, (IY+CellType.name_ptr)
+  Text.print64at 0,22, HL
   RET
 
 /*charLoops:

@@ -101,10 +101,10 @@ cursorMode:
 
 charScanKeysTable:
 	;KEY_N, keyNextChar
-	KEY_W, keyCharUp
-	KEY_S, keyCharDown
-	KEY_A, keyCharLeft
-	KEY_D, keyCharRight
+	KEY_Q, keyCharUp
+	KEY_A, keyCharDown
+	KEY_O, keyCharLeft
+	KEY_P, keyCharRight
 	KEY_SPACE, proc_setCursorMode
 	defb _endByte
 
@@ -122,36 +122,41 @@ charScanKeysTable:
 	;defb _endByte
 
 cursorScanKeysTable:
-	KEY_W, keyCursorUp
-	KEY_S, keyCursorDown
-	KEY_A, keyCursorLeft
-	KEY_D, keyCursorRight
+	KEY_Q, keyCursorUp
+	KEY_A, keyCursorDown
+	KEY_O, keyCursorLeft
+	KEY_P, keyCursorRight
 	KEY_SPACE, proc_setCharMode
 	defb _endByte
 
+proc_show_info
+	;PRINT_AT 22,0, MY_HELLO
+	CURSOR_SHOW_INFO
+	defb _endByte
+
 keyCursorUp
-	rBorder PEN_WHITE
+	;rBorder PEN_WHITE
 	CURSOR_SCR_MOVE dir_up
 	WAIT 5
-	defb _endByte
+	GOTO proc_show_info
 
 keyCursorDown
-	rBorder PEN_RED
+	;rBorder PEN_RED
 	CURSOR_SCR_MOVE dir_down
 	WAIT 5
-	defb _endByte
+	GOTO proc_show_info
 
 keyCursorLeft
-	rBorder PEN_BLUE
+	;rBorder PEN_BLUE
 	CURSOR_SCR_MOVE dir_left
 	WAIT 5
-	defb _endByte
+	GOTO proc_show_info
 
 keyCursorRight
-	rBorder PEN_CYAN
+	;rBorder PEN_CYAN
 	CURSOR_SCR_MOVE dir_right
 	WAIT 5
-	defb _endByte
+	GOTO proc_show_info
 
 /* keyCharEnd:
 	;rpg.NextChar

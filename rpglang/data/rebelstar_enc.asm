@@ -1,12 +1,27 @@
 
 CELL_TYPES:
-Cell_Type_Empty:    Entities.CellType Empty_cell_name,    0000
-Cell_Type_Floor:    Entities.CellType Floor_cell_name,    0000
-Cell_Type_Computer: Entities.CellType Computer_cell_name, 0000
-Cell_Type_Door:     Entities.CellType Door_cell_name,     0000
-Cell_Type_Wall:     Entities.CellType Wall_cell_name,     0000
-Cell_Type_Ballon:   Entities.CellType Ballon_cell_name,   0000
+Cell_Type_Empty:    Entities.CellType Empty_cell_name,    no_script ; 0
+Cell_Type_Wall:     Entities.CellType Wall_cell_name,     no_script ; 1
+Cell_Type_Door:     Entities.CellType Door_cell_name,     no_script ; 2
+Cell_Type_Floor:    Entities.CellType Floor_cell_name,    no_script ; 3
+Cell_Type_Computer: Entities.CellType Computer_cell_name, no_script ; 4
+Cell_Type_Ballon:   Entities.CellType Ballon_cell_name,   no_script ; 5
+Cell_Type_GridWall: Entities.CellType Ballon_cell_name,   no_script ; 6
+Cell_Type_Canister: Entities.CellType Ballon_cell_name,   no_script ; 7
+Cell_Type_Palm:     Entities.CellType Ballon_cell_name,   no_script ; 8
+Cell_Type_Human:    Entities.CellType Ballon_cell_name,   no_script ; 9
+Cell_Type_1:        Entities.CellType Ballon_cell_name,   no_script ; A
+Cell_Type_2:        Entities.CellType Ballon_cell_name,   no_script ; B
+Cell_Type_3:        Entities.CellType Ballon_cell_name,   no_script ; C
+Cell_Type_4:        Entities.CellType Ballon_cell_name,   no_script ; D
+Cell_Type_5:        Entities.CellType Ballon_cell_name,   no_script ; E
+Cell_Type_6:        Entities.CellType Ballon_cell_name,   no_script ; F
 
+  DUP Entities.CellType*256
+  defb 00
+  EDUP
+no_script:
+  defb _endByte
 ;CellType2: Entities.CellType 0,0,tHeroName1
 ;CellType3: Entities.CellType 0,0,tHeroName1
 ;CellType4: Entities.CellType 0,0,tHeroName1

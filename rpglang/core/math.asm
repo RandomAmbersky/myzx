@@ -22,6 +22,19 @@ _decbcd_4
 	LD D,A
 	RET
 
+; А - индекс
+; DE - размер данных
+; на выходе HL = A*DE
+mul_ADE:
+	LD HL, #0000
+	OR A
+	RET Z
+	LD B,A
+mul_ADE_loop:
+	ADD HL, DE
+	DJNZ mul_ADE_loop
+	RET
+
 ;	процедура деления H/L = B ( C - остаток)
 ;	често стырена из сорцов демки SancheZ Survivesection
 div_byte
