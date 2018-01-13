@@ -28,8 +28,10 @@ script_pre_init_asm:
 	;LD C,A
 	;NOP
 	;POP HL
-	LD HL, MAP_SET
-	CALL Tiles16.show_tile_map;
+	CALL ScreenBuf.clean_all_screen
+
+	;LD HL, MAP_SET
+	;CALL Tiles16.show_tile_map;
 	;loopNextChar
 	;CALL Entities.lookChar
 	;LD DE, #0505
@@ -61,11 +63,11 @@ script_begin:
 	;rpg.InitTiles TILE_SET
 	;rpg.InitMap MAP_SET
 	;rpg.InitChars CHARS_SET
-	;rBorder PEN_BLACK
+	rBorder PEN_BLACK
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 	;rExec Map.look_at_map
-	;WAIT_ANY_KEY
+	WAIT_ANY_KEY
 	;defb _endByte
 	rSetVar gm_var, gm_CHAR_MOVE
 	;CURSOR_SCR_INIT
@@ -88,14 +90,13 @@ proc_setCharMode:
 	defb _endByte
 
 charMode:
-	rBorder PEN_BLACK
+	;rBorder PEN_BLACK
 	rExec Entities.lookChar
 	rScanKeys charScanKeysTable
 	GOTO script_loop
 
 cursorMode:
-	rBorder PEN_YELLOW
-	;CURSOR_SHOW
+	;rBorder PEN_YELLOW
 	rScanKeys cursorScanKeysTable
 	GOTO script_loop
 

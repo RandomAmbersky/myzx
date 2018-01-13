@@ -86,7 +86,8 @@ MY_HELLO: defb "HELLO!",0
 ;p84_font:
 ;	incbin "p8_font.bin"
 p68_font:
-	incbin "AONfont_revert.fnt"
+	;incbin "AONfont_revert.fnt"
+	incbin "casa2_revert.fnt"
 
 _data_end;
 ; ------------- data end ---------------

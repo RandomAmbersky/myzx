@@ -11,10 +11,33 @@
   EI
   ENDM
 
+clean_all_screen:
+  LD DE, SCREEN_ADDR
+  LD A,24
+  CALL clean_rows
+  RET
+
+clean_info_screen:
+  LD DE, #0*256+22
+  CALL math.pos_scr
+  PUSH DE;запомнили адрес
+  LD A,2
+  CALL clean_rows
+  POP DE; / адрес
+  RET
+
 ;в A - ширина окошка
-;в HL - адрес первой строки знакоместа
+;в DE - адрес первой строки знакоместа
+;(!!!) процедура не учитывает переход между третями экрана
 clean_rows:
   LD B, A
+  PUSH DE
+  PUSH BC
+
+show_clean_space_loop_top:
+  PUSH BC
+  PUSH DE
+
   LD A, #00
   LD B, 32; экранчик
 show_clean_space_loop:
@@ -27,6 +50,29 @@ show_clean_space_loop:
   INC DE
   DJNZ show_clean_space_loop
 
+  POP DE
+  ;INC E
+  LD A, #20
+  ADD A,E
+  LD E,A
+  ;INC D
+  POP BC
+  DJNZ show_clean_space_loop_top
+
+  POP BC
+  POP DE
+  CALL math.addr_to_attr
+
+show_clean_space_loop2_lvl2:
+  PUSH BC
+  LD B, 32; экранчик
+  LD A, %00000100
+show_clean_space_loop2:
+  LD (DE), A
+  INC DE
+  DJNZ show_clean_space_loop2
+  POP BC
+  DJNZ show_clean_space_loop2_lvl2
   RET
 
 ; копируем 2x2 знакоместа в буфер из экрана

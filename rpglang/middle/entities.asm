@@ -96,6 +96,10 @@ lookChar:; смотрим на текущего персонажа
 ; TODO сделать признак что на ячейке есть персонаж
 ; на входе HL - координаты курсора
 charLookAtCell:
+  PUSH HL; запоминаем
+  CALL ScreenBuf.clean_info_screen
+  POP HL
+  PUSH DE; запомнили адрес экрана который очистили
   LD DE, (Map.mapPos)
   ADD HL, DE; получаем позицию pos куда смотрит курсор
   EX DE, HL
@@ -104,7 +108,14 @@ charLookAtCell:
   Entities.calcCellType
   LD IY, HL
   LD HL, (IY+CellType.name_ptr)
-  Text68.print68at 0,22, HL
+  POP DE
+  INC E; ( отступ в одно знакоместо ))
+  LD A, #20
+  ADD A,E
+  LD E, A
+  ;INC D
+  CALL Text68.print_68at
+  ;Text68.print68at 1,22, HL
   RET
 
 /*charLoops:

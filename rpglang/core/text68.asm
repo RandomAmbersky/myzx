@@ -1,19 +1,19 @@
   MODULE Text68
 
-  MACRO Text68.print68at posx,posy,text
+  /* MACRO Text68.print68at posx,posy,text
     LD HL,text
     LD DE,posx*256+posy
     CALL Text68.print_68at
-  ENDM
+  ENDM */
 
-; DE - pos
+; DE - screen pointer
 ; HL - text pointer
 print_68at:
-  CALL math.pos_scr
-  PUSH DE
-  LD A,1
-  CALL ScreenBuf.clean_rows
-  POP DE
+  ;CALL math.pos_scr
+  ;PUSH DE
+  ;LD A,1
+  ;CALL ScreenBuf.clean_rows
+  ;POP DE
   LD C, 7
 LOOP:
 ;-----
