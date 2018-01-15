@@ -86,3 +86,16 @@ PEN_WHITE equ 7
 		LD B, (HL)
 		INC HL
 	ENDM
+
+	; первые резервные переменные
+system_data.act_var equ 0; // переменная 0 - действие
+  ;act_var equ 1; // переменная 1 что возвратили из скрипта
+system_data.ret_var equ 2; // переменная 2 что возвратили из скрипта
+
+	MACRO system_data.setVar var, val
+    LD ( system_data.varsTab + var ), val
+  ENDM
+
+	MACRO system_data.getVar perem, var
+    LD perem, ( system_data.varsTab + var )
+  ENDM

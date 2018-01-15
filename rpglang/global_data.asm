@@ -12,6 +12,7 @@ STACK_BUFF
   DUP 256
   db 0
   EDUP
+
 ;таблица экранных адресов
 SCREEN_ADDR_TABLE:
    DUP scrWidth * scrHeight;

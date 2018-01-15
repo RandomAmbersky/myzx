@@ -109,8 +109,10 @@ display "interrupt_routine : ", interrupt.interrupt_begin, " ", interrupt.interr
 
 ;display "calc_pos: ", Map.calc_pos
 ;display "show_tile_on_map: ", Tiles16.show_tile_on_map
+;display "check_action: ", Entities.check_action
+display "SET_ACTION_CELL: ", Entities.setActionCell
 
-display "CURSOR_SHOW_INFO: ", input_system.cmd_4
+;display "CURSOR_SHOW_INFO: ", input_system.cmd_4
 
 ;display "show_cursor: ", input_system.show_cursor
 ;display "scr_to_buf4: ", ScreenBuf.scr_to_buf4

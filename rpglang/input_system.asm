@@ -26,6 +26,12 @@
 	defb 4
 	ENDM
 
+	MACRO SET_ACTION_CELL type_of_cell; показать информацию о клетке под курсором
+	defb input_system_num
+	defb 5
+	defb type_of_cell
+	ENDM
+
 	;include "rpglang/keyboard.asm"
 
 enter:
@@ -39,6 +45,8 @@ enter:
 	JP Z, cmd_3
 	DEC A
 	JP Z, cmd_4
+	DEC A
+	JP Z, cmd_5
 	;DEC A
 	jp rpglang.process_lp
 
@@ -169,6 +177,13 @@ cmd_4: ; ====== CURSOR_SHOW_INFO
 	LD L,A
 	;SUB HL, DE
 	CALL Entities.charLookAtCell
+	jp rpglang.process_lp
+
+cmd_5
+	rLDA
+	PUSH HL
+	CALL Entities.setActionCell
+	POP HL
 	jp rpglang.process_lp
 
 input_system_end:

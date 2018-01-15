@@ -2,7 +2,7 @@
 ; конечный автомат конечно же это )
 
 ; game mode
-gm_var equ 0; системная переменная номер 0
+gm_var equ 10; системная переменная номер 10
 gm_CHAR_MOVE equ 1; режим передвижения
 gm_CURSOR_MOVE equ 2; режим курсора
 
@@ -67,7 +67,7 @@ script_begin:
 	;rExec Entities.loopNextChar
 	;rExec Entities.lookChar
 	;rExec Map.look_at_map
-	WAIT_ANY_KEY
+	;WAIT_ANY_KEY
 	;defb _endByte
 	rSetVar gm_var, gm_CHAR_MOVE
 	;CURSOR_SCR_INIT

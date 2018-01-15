@@ -21,6 +21,7 @@ RevertPersonageNum db #00; инверсный номер персонажа ( о
 MapCell_xy dw #0000;  // координаты на карте на которую воздействует персонаж ( заполняется в процедуре charCheckAction )
 MapCell_ptr dw #0000;  // указатель на ячейку карты на которую воздействует персонаж ( заполняется в процедуре charCheckAction )
 
+
 ; тип ячейки на карте
 STRUCT CellType
 name_ptr dw 00; указатель на имя типа
@@ -56,12 +57,12 @@ ENDS
 
 ; на входе в A - индекс типа ячейки
 ; на выходе - указатель на массив с ячейкой
-  MACRO Entities.calcCellType:
+calcCellType:
   LD DE, CellType
   CALL math.mul_ADE
   LD DE, CELL_TYPES
   ADD HL, DE
-  ENDM
+  RET
 
 ; перебираем по кругу персонажей от стартового до последнего и опять на первый
 loopNextChar:
@@ -93,6 +94,12 @@ lookChar:; смотрим на текущего персонажа
   CALL Map.showMap
   RET
 
+; в A - тип ячейки которую надо установить на карту на которую воздействует персонаж
+setActionCell
+  LD HL, (MapCell_ptr)
+  LD (HL), A
+  RET
+
 ; TODO сделать признак что на ячейке есть персонаж
 ; на входе HL - координаты курсора
 charLookAtCell:
@@ -105,7 +112,7 @@ charLookAtCell:
   EX DE, HL
   CALL Map.calc_pos; в HL указатель на ячейку
   LD A, (HL); вот оно!!!! получили ячейку из карты =)
-  Entities.calcCellType
+  CALL Entities.calcCellType
   LD IY, HL
   LD HL, (IY+CellType.name_ptr)
   POP DE
@@ -262,11 +269,20 @@ check_right:
   JR NC, charCheck_no
   LD D,A
 check_action:; в DE у нас координаты ячейки на которую воздействует персонаж
+  LD A,B
+  system_data.setVar system_data.act_var, A; запоминаем в системной переменной действие
+  LD A, 1
+  system_data.setVar system_data.ret_var, A; запоминаем в системной переменной действие
   LD ( MapCell_xy ), DE
   call Map.calc_pos ; получаем указатель на ячейку карты в HL
   LD ( MapCell_ptr), HL
   LD A, (HL);  и берем оттуда индекс !
-  DEC A; забавы ))
+  CALL Entities.calcCellType
+  LD IY, HL
+  LD HL, (IY+CellType.script_ptr)
+  CALL rpglang.process_lp
+  system_data.getVar A, system_data.ret_var
+  OR A
   JR Z, charCheck_no
 charCheck_yes
   SCF ; устанавливаем бит переноса и инвертируем его ))
