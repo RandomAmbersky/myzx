@@ -30,7 +30,7 @@ process_lp:
   dec a; graphic system
   jp z, graphic_system.enter
   dec a; input system
-  jr z, input_system.enter
+  jp z, input_system.enter
   dec a; sound system
   jp z, sound_system.enter
   dec a; gfx system

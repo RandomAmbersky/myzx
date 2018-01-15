@@ -22,6 +22,19 @@ _decbcd_4
 	LD D,A
 	RET
 
+; А - индекс
+; DE - размер данных
+; на выходе HL = A*DE
+mul_ADE:
+	LD HL, #0000
+	OR A
+	RET Z
+	LD B,A
+mul_ADE_loop:
+	ADD HL, DE
+	DJNZ mul_ADE_loop
+	RET
+
 ;	процедура деления H/L = B ( C - остаток)
 ;	често стырена из сорцов демки SancheZ Survivesection
 div_byte
@@ -106,6 +119,29 @@ down_line:
     ;ADD A,-8
     LD D,A
     RET
+
+/* ;взято из процедуры Wanderers
+; in: A = bit num
+; out: HL = bit adr, C = bit mask, A = bit state (0,1), Z/NZ = bit state
+bitAdr	ld hl,bitsTab
+badr0	ld c,a
+	rra
+	rra
+	rra
+	and 0x3f
+	ADDA h,l
+	ld a,c
+	and 7
+	ld c,0x01
+	jr z,badr2
+badr1	rlc c
+	dec a
+	jr nz,badr1
+badr2	ld a,(hl)
+	and c
+	ret z
+	inc a
+	ret */
 
 ; стырено из Wanderers SamStyle
 ; в a - rnd

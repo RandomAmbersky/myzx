@@ -12,10 +12,10 @@
 	; ����� ������� ���� ���������������� ��������� �� �����
 	; ����� ������������ ����������� �� �������� ����� ( ������� =0 )
 	; ������� � ������� �������� ������ ���� ���� � �������� �
-init_font:
-	LD ( Text.PR_64_L+1),A
-  LD ( Text.PR_64_R+1),A
-  RET
+;init_font:
+	;LD ( Text.PR_64_L+1),A
+  ;LD ( Text.PR_64_R+1),A
+  ;RET
 
 enter:
 	rLDAor
@@ -36,7 +36,7 @@ cmd_0:
   PUSH HL
   PUSH BC
   POP HL
-  CALL Text.print_64at
+  CALL Text68.print_68at
 	POP HL
 	jp rpglang.process_lp
 

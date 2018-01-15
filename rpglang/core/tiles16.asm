@@ -2,7 +2,7 @@
 ; для работы надо установить sprArray - указатель на массив тайлов
   MODULE Tiles16
 
-  MACRO Tiles16.setTiles spr_ptr
+  /* MACRO Tiles16.setTiles spr_ptr
     LD HL, spr_ptr
     LD (Tiles16.sprArray), HL
   ENDM
@@ -11,7 +11,7 @@
     LD DE, xy
     LD A, spr
     CALL Tiles16.show_tile
-  ENDM
+  ENDM */
 
 ; переводим индекс карты в указатель на начало данных спрайта
 ; A - номер спрайта
@@ -35,10 +35,11 @@
 ;показываем 1 тайл на карте
 ;HL - указатель на спрайт
 ;DE - экранный адрес
- MACRO show_tile_on_map
+show_tile_on_map:
    PUSH DE
  // thanks to Alone Coder!
-   LD B,8
+   LD BC,#0808
+   ;LD C,0 ; 0E 00
 _my_spr_loop_1:
    LDI // LD (DE),(HL)  DE+1, HL+1, BC-1
    LD A,(HL)
@@ -56,7 +57,7 @@ _my_spr_loop_1:
    ADD HL, BC
    EX HL, DE; DE = DE + 32
 
-   LD B, 8
+   LD BC,#0808
 _my_spr_loop_2:
      LDI // LD (DE),(HL)  DE+1, HL+1
      LD A,(HL)
@@ -78,8 +79,9 @@ _my_spr_loop_2:
      LD E,A
      LDI
      LDI
+     RET
 
- ENDM
+; LDI - ED
 
  ; по текущему адресу тайла на экране получаем адрес тайла справа от него
  ; в DE - адрес тайла на экране
@@ -107,6 +109,7 @@ next_tile_pos_down_exit:
 ; программа показывает на экране карту тайлов
 ; в HL - адрес первого тайла на карте
 show_tile_map:
+  DI ; лишний раз не теребим стек
   LD DE, SCREEN_ADDR ; current pos draw variable
   LD B, scrHeight
 show_tile_map_loop2: ; цикл по столбцам
@@ -123,7 +126,7 @@ show_tile_map_loop1: ; цикл по строкам
 
   LD A,(HL)
   spr_index_to_addr
-  show_tile_on_map
+  call show_tile_on_map
   POP DE; ---- снимаем все со стека
   next_tile_pos_right
   POP HL
@@ -139,7 +142,7 @@ show_tile_map_loop1: ; цикл по строкам
   ADD HL, BC; прибавляем к указателю на начало тайлов ширину - сдвигаем указатель вниз на 1 тайл
   POP BC
   DJNZ show_tile_map_loop2
-
+  EI
   RET
 
 ; программа показывает один тайл на экране
@@ -161,7 +164,7 @@ show_tile:
   ADD HL,HL; x32
   POP BC; // снимаем со стека x4 - еще 4 байта цветности
   ADD HL, BC
-p_sprArray:
+;p_sprArray:
   LD BC, #0000;
   ADD HL, BC
   call math.pos_scr
@@ -212,7 +215,7 @@ spr_loop_1
   call math.addr_to_attr
   LDI // LD (DE),(HL)
   LDI // LD (DE),(HL)
-  PUSH HL
+  ;PUSH HL
   ;LD BC, 30
   ;EX DE, HL
   ;ADD HL, BC
@@ -220,16 +223,16 @@ spr_loop_1
   LD a,e
   ADD a,30
   LD e,a
-  JR NC, no_down8
-  LD a,d
-  ADD a,8
-  LD d,a
+  ;JR NC, no_down8
+  ;LD a,d
+  ;ADD a,8
+  ;LD d,a
 no_down8:
-  POP HL
+  ;POP HL
   LDI
   LDI
   RET
 
-sprArray EQU p_sprArray+1
+sprArray dw 00 ;EQU p_sprArray+1
 
   ENDMODULE

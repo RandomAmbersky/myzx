@@ -7,18 +7,6 @@ act_take  EQU 0x03
 act_use   EQU 0x04
 ;act_fire  EQU 0x05
 
-;указатели направления
-dir_up   EQU 0
-dir_down EQU 1
-dir_left  EQU 2
-dir_right  EQU 3
-
-; не используется но вдруг!!! ;)
-dir_up_left EQU 4
-dir_up_right EQU 5
-dir_down_left EQU 6
-dir_down_right EQU 7
-
 ; ячейка карты cell
 ; действия :
 ; stand  - встать на ячейку карты
@@ -33,15 +21,20 @@ RevertPersonageNum db #00; инверсный номер персонажа ( о
 MapCell_xy dw #0000;  // координаты на карте на которую воздействует персонаж ( заполняется в процедуре charCheckAction )
 MapCell_ptr dw #0000;  // указатель на ячейку карты на которую воздействует персонаж ( заполняется в процедуре charCheckAction )
 
+
 ; тип ячейки на карте
 STRUCT CellType
-prot db 00; проницаемость для предметов
-force_destr db 00; сила для уничтожения
+name_ptr dw 00; указатель на имя типа
+script_ptr dw 00; указатель на скрипт обработки действий если нужен, иначе 0000
+;--- разные части
+;prot db 00; проницаемость для предметов, 00 - полностью проницаем
+;force_destr db 00; сила для уничтожения
 ENDS
 
 STRUCT Cell
-type_c db 00; супертип ячейки
-sprite db 00; спрайт
+type_ptr dw 00; указатель на тип ячейки
+sprite db 00; текущий спрайт
+flags db 00; первые 7 флагов
 ENDS
 
 STRUCT Item
@@ -61,6 +54,15 @@ ground db 00; на чем стоит
 flags db 00; признаки-флаги
 name_p dw #0000
 ENDS
+
+; на входе в A - индекс типа ячейки
+; на выходе - указатель на массив с ячейкой
+calcCellType:
+  LD DE, CellType
+  CALL math.mul_ADE
+  LD DE, CELL_TYPES
+  ADD HL, DE
+  RET
 
 ; перебираем по кругу персонажей от стартового до последнего и опять на первый
 loopNextChar:
@@ -92,6 +94,37 @@ lookChar:; смотрим на текущего персонажа
   CALL Map.showMap
   RET
 
+; в A - тип ячейки которую надо установить на карту на которую воздействует персонаж
+setActionCell
+  LD HL, (MapCell_ptr)
+  LD (HL), A
+  RET
+
+; TODO сделать признак что на ячейке есть персонаж
+; на входе HL - координаты курсора
+charLookAtCell:
+  PUSH HL; запоминаем
+  CALL ScreenBuf.clean_info_screen
+  POP HL
+  PUSH DE; запомнили адрес экрана который очистили
+  LD DE, (Map.mapPos)
+  ADD HL, DE; получаем позицию pos куда смотрит курсор
+  EX DE, HL
+  CALL Map.calc_pos; в HL указатель на ячейку
+  LD A, (HL); вот оно!!!! получили ячейку из карты =)
+  CALL Entities.calcCellType
+  LD IY, HL
+  LD HL, (IY+CellType.name_ptr)
+  POP DE
+  INC E; ( отступ в одно знакоместо ))
+  LD A, #20
+  ADD A,E
+  LD E, A
+  ;INC D
+  CALL Text68.print_68at
+  ;Text68.print68at 1,22, HL
+  RET
+
 /*charLoops:
   call firstChar;
 char_loop:
@@ -107,14 +140,19 @@ persArray_ptr:
   LD HL, #0000
 PersonagesNum_ptr:
   LD B, PersonagesNum
-  ;LD HL, persArray
 init_loop; пробегаемся по всем персонажам и размещаем их на карте
   LD DE, Hero
   PUSH BC
   PUSH DE
   PUSH HL
   LD IX,HL
-  call ground_to_pers_floor
+
+  LD DE, (IX+Hero.pos)
+  call Map.calc_pos
+  LD A,(HL)
+  LD (IX+Hero.ground),A; ячейку карты ставим на пол персонажа
+  LD A,(IX+Hero.sprite)
+  LD (HL),A ; ставим спрайт персонажа на карту
   POP HL
   POP DE
   POP BC
@@ -123,7 +161,7 @@ init_loop; пробегаемся по всем персонажам и разм
   CALL firstChar
   RET
 
-; инициализация и размещение персонажа на карте
+/* ; инициализация и размещение персонажа на карте
 ; в IX - указатель на персонажа
 ground_to_pers_floor;
   LD DE, (IX+Hero.pos)
@@ -132,16 +170,16 @@ ground_to_pers_floor;
   LD (IX+Hero.ground),A; ячейку карты ставим на пол персонажа
   LD A,(IX+Hero.sprite)
   LD (HL),A ; ставим спрайт персонажа на карту
-  RET
+  RET */
 
-; возвращаем "пол" на котором стоял персонаж обратно на карту
+/* ; возвращаем "пол" на котором стоял персонаж обратно на карту
 ; IX - указатель на текущего персонажа
 pesr_floor_to_ground:
   LD DE, (IX+Hero.pos)
   call Map.calc_pos
   LD A,(IX+Hero.ground)
   LD (HL),A
-  RET
+  RET */
 
 ; двигаем персонажа вверх
 charMoveUp
@@ -158,7 +196,7 @@ char_to_map_moved: ; двигаем персонажа на позицию MapCe
   LD (HL),A            ; и ставим на карту спрайт пола
   LD DE, ( MapCell_xy )
   LD (IX+Hero.pos), DE
-  ;call ground_to_pers_floor
+  ;call ground_to_pers_floor; вместо этого - процедура ниже
   LD HL,( MapCell_ptr )
   LD A,(HL)
   LD (IX+Hero.ground),A; ячейку карты ставим на пол персонажа
@@ -231,9 +269,21 @@ check_right:
   JR NC, charCheck_no
   LD D,A
 check_action:; в DE у нас координаты ячейки на которую воздействует персонаж
+  LD A,B
+  system_data.setVar system_data.act_var, A; запоминаем в системной переменной действие
+  LD A, 1
+  system_data.setVar system_data.ret_var, A; запоминаем в системной переменной действие
   LD ( MapCell_xy ), DE
-  call Map.calc_pos
+  call Map.calc_pos ; получаем указатель на ячейку карты в HL
   LD ( MapCell_ptr), HL
+  LD A, (HL);  и берем оттуда индекс !
+  CALL Entities.calcCellType
+  LD IY, HL
+  LD HL, (IY+CellType.script_ptr)
+  CALL rpglang.process_lp
+  system_data.getVar A, system_data.ret_var
+  OR A
+  JR Z, charCheck_no
 charCheck_yes
   SCF ; устанавливаем бит переноса и инвертируем его ))
   CCF
@@ -241,77 +291,6 @@ charCheck_yes
 charCheck_no
   SCF
   RET
-
-/* charCheckActionDown
-    LD IX, (activePersonage_ptr)
-    LD DE, (IX+Hero.pos);  D - x, E - y
-    LD A, E
-    DEC A
-    JP M, charCheckActionUP_no
-    LD E,A
-    call Map.calc_pos; в DE у нас координаты x, y-1
-  charCheckActionUP_yes
-    SCF ; устанавливаем бит переноса и инвертируем его ))
-    CCF
-    RET
-  charCheckActionUP_no
-    SCF
-    RET
- */
-
-; передвижение персонажа
-; фактически - только изменение его координат в массиве!
-; карту в этих процедурах вообще не трогаем
-; указатель на текущего персонажа - IX
-/* charUp
-  RET
-  LD IX, (activePersonage_ptr)
-  call pesr_floor_to_ground
-  LD A, (IX+Hero.pos.y)
-  DEC A
-  ;JP M, char_to_map
-  LD (IX+Hero.pos.y),A
-*/
-//char_to_map:
-  //;call ground_to_pers_floor
-  ;;RET
-
-/*
-charLeft
-  LD IX, (activePersonage_ptr)
-  call pesr_floor_to_ground
-  LD A, (IX+Hero.pos.x)
-  DEC A
-  JP M, char_to_map
-  LD (IX+Hero.pos.x),A
-  JP char_to_map
-   call ground_to_pers_floor
-  RET */
-
-/*
-charRight
-  LD IX, (activePersonage_ptr)
-  call pesr_floor_to_ground
-  LD A, (IX+Hero.pos.x)
-  INC A
-  CP mapSize
-  JP NC, char_to_map
-  LD (IX+Hero.pos.x),A
-  JP char_to_map
-  call ground_to_pers_floor
-  RET */
-
-/* charDown
-  LD IX, (activePersonage_ptr)
-  call pesr_floor_to_ground
-  LD A, (IX+Hero.pos.y)
-  INC A
-  CP mapSize
-  JP NC, char_to_map
-  LD (IX+Hero.pos.y),A
-  JP char_to_map
-   call ground_to_pers_floor
-  RET */
 
 persArray equ persArray_ptr+1 // указатель на массив карты
   ENDMODULE

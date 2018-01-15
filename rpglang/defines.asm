@@ -1,6 +1,17 @@
 _endByte equ #00; и низя никакой другой ибо используется в keyscan таблицах
 ;_endTable equ #00
 
+;указатели направления
+dir_up   EQU 0
+dir_down EQU 1
+dir_left  EQU 2
+dir_right  EQU 3
+; не используется но вдруг!!! ;)
+dir_up_left EQU 4
+dir_up_right EQU 5
+dir_down_left EQU 6
+dir_down_right EQU 7
+
 ;system
 ;0 - script system
 ;1 - graphic system
@@ -20,10 +31,10 @@ SCREEN_ADDR equ #4000
 ATTR_ADDR EQU SCREEN_ADDR+#1800
 
 mapSize equ 32
-scrWidth equ 16
-scrHeight equ 12
-;scrWidth equ 15
-;scrHeight equ 11
+;scrWidth equ 16
+;scrHeight equ 12
+scrWidth equ 15
+scrHeight equ 11
 
 STRUCT Point
 y db 0
@@ -41,6 +52,19 @@ PEN_WHITE equ 7
 
 	MACRO MAP_SHOW_TILE
 		call Tiles16.show_tile
+	ENDM
+
+	MACRO ADDA hr,lr
+		add a,lr;  a = a + lr
+		ld lr,a ; lr = a + lr
+		adc a,hr ; a = a + lr + hr + (carry )
+		sub lr; a = a + hr
+		ld hr,a
+	ENDM
+
+	MACRO rLDA
+		LD A, (HL)
+		INC HL
 	ENDM
 
 	MACRO rLDAor
@@ -62,3 +86,16 @@ PEN_WHITE equ 7
 		LD B, (HL)
 		INC HL
 	ENDM
+
+	; первые резервные переменные
+system_data.act_var equ 0; // переменная 0 - действие
+  ;act_var equ 1; // переменная 1 что возвратили из скрипта
+system_data.ret_var equ 2; // переменная 2 что возвратили из скрипта
+
+	MACRO system_data.setVar var, val
+    LD ( system_data.varsTab + var ), val
+  ENDM
+
+	MACRO system_data.getVar perem, var
+    LD perem, ( system_data.varsTab + var )
+  ENDM

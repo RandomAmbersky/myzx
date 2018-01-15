@@ -1,7 +1,12 @@
 MODULE Map
 
+; по идее конечно надо сделать map_view но...
 mapPos Point 0,0
 curPos Point 0,0
+old_curPos Point 0,0
+
+;TODO перенести процедуры работы с курсором в MAP,
+;определить чтобы было удобно обрабатывать MapPos относительно героя
 
 scrWindowMaxX equ mapSize-scrWidth+1  ; максимальная позиция окна отображения карты, иначе выходим за границу
 scrWindowMaxY equ mapSize-scrHeight+1 ; максимальная позиция окна отображения карты, иначе выходим за границу
@@ -58,7 +63,8 @@ centr_Y_max:
   JP calc_pos
 set_y:
   LD E, A
-  JP calc_pos
+  LD (mapPos),DE
+  ;JP calc_pos
 
 look_at_map:
   LD DE, (mapPos)
@@ -67,6 +73,7 @@ look_at_map:
 ; Выход: HL - указатель
 calc_pos:
   LD HL, #0000
+  PUSH DE
   LD C,D; запоминаем posX в C
   LD A,E
   CP 00
@@ -78,11 +85,12 @@ mul_loop
   ADD HL,DE
   DJNZ mul_loop
 no_mul
+  POP DE
+  LD E,D
   LD D,0
-  LD E,C
   ADD HL,DE; в HL у нас
-mapArray_ptr:
-  LD DE, #0000
+;mapArray_ptr:
+  LD DE, (Map.mapArray)
   ADD HL, DE
   RET; нельзя отказаться от RET здесь!! - эта процедура используется еще для добавления спрайтов на карту!!!
 
@@ -152,37 +160,37 @@ scr_right:
   LD (mapPos.x),A
   RET
 
-; двигаем курсор
-cur_up:
+;двигаем курсор
+/* cur_up:
   LD A, (curPos.y)
   DEC A
   JP M, scr_up
   LD (curPos.y),A
-  RET
+  RET */
 
-cur_left:
+/* cur_left:
   LD A, (curPos.x)
   DEC A
   JP M, scr_left
   LD (curPos.x),A
-  RET
+  RET */
 
-cur_down:
+/* cur_down:
   LD A, (curPos.y)
   INC A
   CP scrHeight
   JP NC, scr_down
   LD (curPos.y),A
-  RET
+  RET */
 
-cur_right:
+/* cur_right:
   LD A, (curPos.x)
   INC A
   CP scrWidth
   JP NC, scr_right
   LD (curPos.x),A
-  RET
+  RET */
 
-mapArray equ mapArray_ptr+1 // указатель на массив карты
+mapArray dw 00;equ mapArray_ptr+1 // указатель на массив карты
 
 ENDMODULE

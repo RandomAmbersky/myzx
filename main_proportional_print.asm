@@ -1,3 +1,6 @@
+DEVICE zxspectrum128
+ORG     #8000
+
 loop_snd_init:
   EI
   LD HL,#0000
@@ -131,6 +134,7 @@ FONT:
   incbin "AONfont_revert.fnt"
   ;incbin "f3_font.bin"
 
-
 DISPLAY FONT, ' font'
 DISPLAY HIGH FONT, ' high font'
+
+SAVESNA "myzx.sna",loop_snd_init

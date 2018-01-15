@@ -38,6 +38,33 @@
 	defw code_ptr
 	ENDM
 
+	MACRO rSetVar var,value; var = value
+	defb script_system_num
+	defb 6
+	defb var
+	defb value
+	ENDM
+
+	/* MACRO rScanVar var,table_ptr; таблица значений и переход
+	defb script_system_num
+	defb 7
+	defb var
+	defw table_ptr
+	ENDM */
+
+	MACRO rIfVar var,value,code_ptr; вызов процедуры в ко
+	defb script_system_num
+	defb 7
+	defb var
+	defb value
+	defw code_ptr
+	ENDM
+
+	/* MACRO rRet; выход из процедуры
+	defb script_system_num
+	defb 6
+	ENDM */
+
 enter: rLDAor
 	JR Z, cmd_0
 	DEC A
@@ -49,13 +76,20 @@ enter: rLDAor
 	DEC A
 	JR Z, cmd_4
 	DEC A
-	JR Z, cmd_5
+	JP Z, cmd_5
+	DEC A
+	JP Z, cmd_6
+	DEC A
+	JP Z, cmd_7
 	jp rpglang.process_lp
 
 cmd_0: ; ================ rJP
-	LD DE, (HL)
-	PUSH DE
-	POP HL
+	LD E, (HL)
+	INC HL
+	LD D, (HL)
+	;PUSH DE
+	;POP HL
+	EX HL, DE
 	JP rpglang.process_lp
 
 cmd_1: ; ================ rWait
@@ -83,7 +117,7 @@ cmd_2: ; ================ FPS_CALC
 	LD A,D
 	ADD A,'0'
 	LD (str_fps+2),A
-	Text.print64at 0,0,str_fps
+	;Text.print64at 0,0,str_fps
 
 	LD A, (globaldata.frame_counter); frame_counter ����������  � ������� frame_current
 	LD (globaldata.frame_current), A
@@ -96,11 +130,57 @@ cmd_3: ; ================ scan keys
 	rLDE
 	PUSH HL
 	/* LD HL,DE */
-	PUSH DE
-	POP HL
+	;PUSH DE
+	;POP HL
+	EX DE, HL
 	call scanKeys; возвратились из scankeys, в DE - указатель на процедуру
 	JR NZ, cmd_4_call; если флаг не 0 то клавиша есть
 	POP HL
+	JP rpglang.process_lp
+
+cmd_4: ; ================ rCALL
+	rLDE
+	PUSH HL
+cmd_4_call:
+	;PUSH DE
+	;POP HL
+	EX DE, HL
+	;;LD DE, HL
+	;LD HL, DE
+	call rpglang.process_lp
+cmd_4_ret:
+	POP HL
+	JP rpglang.process_lp
+
+cmd_5: ; ================ rExec
+	rLDE
+	PUSH HL
+	LD HL,DE
+	CALL callHL
+	POP HL
+	JP rpglang.process_lp
+
+callHL	jp (hl)
+
+cmd_6: ; ================ rSetVar
+	rLDA
+	;ld a,(hl)	; 3,16,n,x	var n = x
+	;inc hl
+	call getVar
+	ld a,(hl)
+	inc hl
+	ld (de),a
+	JP rpglang.process_lp
+
+cmd_7: ; ================ rIfVar var,value,code_ptr
+	rLDA
+	call getVar
+	cp (hl)
+	INC HL
+	JP Z, cmd_0; переход по GOTO
+cmd_7_no_goto:
+	inc hl
+	inc hl
 	JP rpglang.process_lp
 
 	// честно стырено из движка Wanderers
@@ -121,27 +201,30 @@ scanKeys:
 	or 2
 	ret
 
-cmd_4: ; ================ rCALL
-	rLDE
-	PUSH HL
-cmd_4_call:
-	PUSH DE
-	POP HL
-	;;LD DE, HL
-	;LD HL, DE
-	call rpglang.process_lp
-	POP HL
-	JP rpglang.process_lp
+/* waitKey:
+	halt
+	;call aniSR
+	xor a
+	in a,(0xfe)
+	cpl
+	and 31
+	jr z,waitKey
+	ret
 
-cmd_5: ; ================ rExec
-	rLDE
-	PUSH HL
-	LD HL,DE
-	CALL callHL
-	POP HL
-	JP rpglang.process_lp
+noKey
+	halt
+	;call aniSR
+	xor a
+	in a,(0xfe)
+	cpl
+	and 31
+	jr nz,noKey
+	ret */
 
-callHL	jp (hl)
+/* cmd_6_ret: defb 0;
+cmd_6:
+	LD HL, cmd_6_ret
+	JP rpglang.process_lp */
 
 /*cmd_3: ; ================ FPS_CLEAR
 	XOR A
@@ -149,6 +232,12 @@ callHL	jp (hl)
 	JP rpglang.process_lp*/
 
 str_fps: defb "000 fps",0
+
+getVar:
+	ld de,system_data.varsTab
+	ADDA d,e
+	ld a,(de)
+	ret
 
 /*
  ; ================ rRandomScreen

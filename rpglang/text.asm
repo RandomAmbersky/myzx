@@ -12,8 +12,8 @@
   ENDM
 
   MACRO Text.print64at posx,posy,text
-    LD HL,posx*256+posy
     LD DE,text
+    LD HL,posx*256+posy
     CALL Text.print_64at
   ENDM
 
