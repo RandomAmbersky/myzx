@@ -106,7 +106,7 @@ charScanKeysTable:
 	KEY_A, keyCharDown
 	KEY_O, keyCharLeft
 	KEY_P, keyCharRight
-	KEY_SPACE, proc_setCursorMode
+	KEY_L, proc_setCursorMode
 	defb _endByte
 
 ;keyNextChar:

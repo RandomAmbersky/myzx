@@ -1,7 +1,11 @@
 
+Door_closed equ #02
 Door_half_open equ #12
 Door_open equ #22
 
+Computer_on equ #04
+Computer_off equ #14
+Computer_break equ #24
 
 CELL_TYPES:
 
@@ -11,7 +15,7 @@ Cell_Type_Empty:    Entities.CellType Empty_cell_name,    no_script ; 0
 Cell_Type_Wall:     Entities.CellType Wall_cell_name,     wall_script ; 1
 Cell_Type_Door:     Entities.CellType Door_cell_name,     door_script ; 2
 Cell_Type_Floor:    Entities.CellType Floor_cell_name,    no_script ; 3
-Cell_Type_Computer: Entities.CellType Computer_cell_name, no_way_script ; 4
+Cell_Type_Computer: Entities.CellType Computer_cell_name, computer_on_script ; 4
 Cell_Type_Ballon:   Entities.CellType Ballon_cell_name,   no_way_script ; 5
 Cell_Type_GridWall: Entities.CellType Ballon_cell_name,   no_script ; 6
 Cell_Type_Canister: Entities.CellType Ballon_cell_name,   no_script ; 7
@@ -31,7 +35,7 @@ Cell_Type_10:        Entities.CellType Empty_cell_name,   no_script ; 0
 Cell_Type_11:        Entities.CellType Empty_cell_name,   no_script ; 1
 Cell_Type_12:        Entities.CellType Door_cell_name,    door_script ; 2
 Cell_Type_13:        Entities.CellType Empty_cell_name,   no_script ; 3
-Cell_Type_14:        Entities.CellType Empty_cell_name,   no_script ; 4
+Cell_Type_Off_Computer: Entities.CellType Computer_cell_name, computer_off_script ; 4
 Cell_Type_15:        Entities.CellType Empty_cell_name,   no_script ; 5
 Cell_Type_16:        Entities.CellType Empty_cell_name,   no_script ; 6
 Cell_Type_17:        Entities.CellType Empty_cell_name,   no_script ; 7
@@ -48,9 +52,9 @@ Cell_Type_1F:        Entities.CellType Empty_cell_name,   no_script ; F
 
 Cell_Type_20:        Entities.CellType Empty_cell_name,   no_script ; 0
 Cell_Type_21:        Entities.CellType Empty_cell_name,   no_script ; 1
-Cell_Type_Door_Open: Entities.CellType Door_cell_name,    no_script ; 2
+Cell_Type_Door_Open: Entities.CellType Door_cell_name,    door_open_script ; 2
 Cell_Type_23:        Entities.CellType Empty_cell_name,   no_script ; 3
-Cell_Type_24:        Entities.CellType Empty_cell_name,   no_script ; 4
+Cell_Type_Computer_Break: Entities.CellType Computer_cell_name, computer_break_script ; 4
 Cell_Type_25:        Entities.CellType Empty_cell_name,   no_script ; 5
 Cell_Type_26:        Entities.CellType Empty_cell_name,   no_script ; 6
 Cell_Type_27:        Entities.CellType Empty_cell_name,   no_script ; 7
@@ -117,25 +121,37 @@ wall_script:
   ;rBorder PEN_BLACK
   GOTO no_way_script
 
+door_open_script:
+  defb _endByte
+  /* SET_ACTION_CELL Door_half_open
+  rExec Entities.lookChar
+  WAIT 5
+  SET_ACTION_CELL Door_closed
+  rExec Entities.lookChar
+  WAIT 5
+  GOTO no_w */
+
 door_script:
   ;rPlayLaser 1
   SET_ACTION_CELL Door_half_open
   rExec Entities.lookChar
   WAIT 5
   SET_ACTION_CELL Door_open
-  rExec Entities.lookChar
-  ;WAIT 5
-  ;WAIT_NO_KEY
-  ;WAIT_ANY_KEY
-  ;WAIT 250
-  ;rPlayLaser 1
-  ;SET_ACTION_CELL 1
   ;rExec Entities.lookChar
-  ;WAIT 250
-  ;rPlayLaser 1
-  ;SET_ACTION_CELL 2
-  ;rExec Entities.lookChar
-  ;WAIT 250
+  GOTO no_way_script
+
+computer_on_script:
+  rPlayLaser 1
+  SET_ACTION_CELL Computer_off
+  GOTO no_way_script
+
+computer_off_script:
+  rPlayLaser 1
+  SET_ACTION_CELL Computer_on
+  GOTO no_way_script
+
+computer_break_script:
+  rPlayLaser 1
   GOTO no_way_script
 
 ;CellType2: Entities.CellType 0,0,tHeroName1
